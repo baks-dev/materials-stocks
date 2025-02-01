@@ -1,0 +1,77 @@
+# Role
+ROLE_MATERIAL_STOCK:
+  header: 'Warehouse'
+  name: 'Warehouse accounting'
+  desc: 'Warehouse accounting of goods'
+
+
+# Role
+ROLE_MATERIAL_STOCK_INDEX:
+  header: 'Orders'
+  name: 'View'
+  desc: 'Warehouse accounting of goods'
+
+
+ROLE_MATERIAL_STOCK_EDIT:
+  name: 'Edit balances'
+  desc: 'Edit warehouse balances and reserve'
+
+ROLE_MATERIAL_STOCK_STORAGE:
+  name: 'Edit storage location'
+  desc: 'Edit storage location'
+
+ROLE_MATERIAL_STOCK_CANCEL:
+  name: 'Cancel'
+  desc: 'Cancel request'
+
+
+# Rules
+
+
+ROLE_MATERIAL_STOCK_INCOMING:
+  name: 'Incoming orders'
+  desc: 'List of receipt orders for warehouse'
+
+ROLE_MATERIAL_STOCK_INCOMING_ACCEPT:
+  name: 'Add arrival'
+
+
+
+ROLE_MATERIAL_STOCK_MOVING:
+  name: 'Moves'
+  desc: 'Move goods between warehouses'
+
+ROLE_MATERIAL_STOCK_MOVING_NEW:
+  name: 'Add movement'
+  desc: 'Add a request to move goods from the warehouse'
+
+
+
+
+ROLE_MATERIAL_STOCK_PURCHASE:
+  name: 'Purchases'
+  desc: 'Procurement of goods'
+
+ROLE_MATERIAL_STOCK_PURCHASE_DELETE:
+  name: 'Delete purchase'
+  desc: 'Delete purchase'
+
+
+ROLE_MATERIAL_STOCK_PURCHASE_NEW:
+  name: 'Add purchase'
+  desc: 'Add purchase of goods to warehouse'
+
+ROLE_MATERIAL_STOCK_WAREHOUSE:
+  name: 'Receipts to warehouse'
+  desc: 'List of warehouse receipts'
+
+ROLE_MATERIAL_STOCK_WAREHOUSE_SEND:
+  name: 'Send to warehouse'
+
+ROLE_MATERIAL_STOCK_PACKAGE:
+  name: 'Packaging orders'
+  desc: 'Packaging loading orders'
+
+ROLE_MATERIAL_STOCK_PICKUP:
+  name: 'Issuing orders'
+  desc: 'Pickup of orders at the pick-up point (Pickup)'

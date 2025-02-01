@@ -1,0 +1,91 @@
+{% trans_default_domain('materials-stocks.admin') %}
+
+{# ПЕЧАТЬ  #}
+
+<div style="max-width: 850px">
+
+
+    {% for item in query.data|filter(v => v.user_profile_id == app.user.profile) %}
+
+        <div class="d-flex align-items-center w-100">
+
+            <div class="w-25">
+                <img src='{{ qrcode(item.id) }}' alt='QR Code' class="w-100"/>
+            </div>
+
+            <div class="ms-3">
+                <div># {{ item.number }}</div>
+
+                {# Название #}
+                <strong class="fw-bolder text-muted">
+                    {{ item.material_name }}
+
+                    {# Значение множественного варианта ТП #}
+                    {{ item.material_variation_value|call_twig_func(item.material_variation_reference~'_render')
+                    ~ item.material_modification_value|call_twig_func(item.material_modification_reference~'_render') }}
+
+                    {# Значение торгового предложения #}
+                    {{ item.material_offer_value|call_twig_func(item.material_offer_reference~'_render') }}
+
+                    {# Постфикс торгового предложения #}
+                    {{ item.material_offer_postfix }}
+                    {# Постфикс множественного варианта #}
+                    {{ item.material_variation_postfix }}
+                    {# Постфикс модификации #}
+                    {{ item.material_modification_postfix }}
+
+                </strong>
+
+                {# Артикул #}
+                <div class="text-muted ">
+                    <small>Количество:</small> &nbsp; <strong>{{ item.total }}</strong>
+                    {% if app.user.profile == item.user_profile_id %}
+
+                        &nbsp;
+
+                        ( <small>В наличии:</small> &nbsp; <strong>{{ item.stock_total }}</strong>
+
+                        {% if item.stock_storage %}
+                            &nbsp;
+                            <small>Место:</small> &nbsp; <strong>{{ item.stock_storage }}</strong>
+                        {% endif %})
+
+                    {% endif %}
+                </div>
+
+                <div class="text-muted">
+                    {% if app.user.profile == item.user_profile_id %}
+                        <small>Склад назначения:</small>
+                        &nbsp; <strong>{{ item.users_profile_destination }}</strong>
+                    {% else %}
+                        <small>Склад отгрузки:</small>
+                        &nbsp; <strong>{{ item.users_profile_username }}</strong>
+                    {% endif %}
+                </div>
+
+                {% if item.comment is not null %}
+                    <div class="fw-bolder">
+                        <small>Комментарий:</small> &nbsp; <strong>{{ item.comment }}</strong>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+
+        {% if loop.index is divisible by(5) %}
+            {# Вставляем разрыв страницы #}
+            <div style="page-break-before:always; position: unset !important;">&nbsp;</div>
+        {% else %}
+            <hr>
+        {% endif %}
+
+    {% else %}
+        <div class="alert alert-warning m-3 w-100" role="alert">
+            Информация перемещении отсутствует
+        </div>
+    {% endfor %}
+
+    {# {% endcache %} #}
+
+</div>

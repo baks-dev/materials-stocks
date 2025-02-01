@@ -1,0 +1,85 @@
+<?php
+/*
+ *  Copyright 2024.  Baks.dev <admin@baks.dev>
+ *  
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is furnished
+ *  to do so, subject to the following conditions:
+ *  
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ *  
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
+
+declare(strict_types=1);
+
+namespace BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\Tests;
+
+use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
+use BaksDev\Materials\Stocks\Repository\CurrentMaterialStocks\CurrentMaterialStocksInterface;
+use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\MaterialStockStatusCollection;
+use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\Tests\PurchaseMaterialStockTest;
+use BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\WarehouseMaterialStockDTO;
+use BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\WarehouseMaterialStockHandler;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use BaksDev\Users\User\Type\Id\UserUid;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\Attribute\When;
+
+/**
+ * @group materials-stocks
+ * @group materials-stocks-warehouse
+ *
+ * @depends BaksDev\Materials\Stocks\UseCase\Admin\Purchase\Tests\PurchaseMaterialStockTest::class
+ * @see     PurchaseMaterialStockTest
+ */
+#[When(env: 'test')]
+final class WarehouseMaterialStockTest extends KernelTestCase
+{
+    /**
+     * Тест нового закупочного листа
+     */
+    public function testUseCase(): void
+    {
+        /** @var MaterialStockStatusCollection $MaterialStockStatusCollection */
+
+        $MaterialStockStatusCollection = self::getContainer()->get(MaterialStockStatusCollection::class);
+        $MaterialStockStatusCollection->cases();
+
+        /** @var CurrentMaterialStocksInterface $CurrentMaterialStocksInterface */
+        $CurrentMaterialStocksInterface = self::getContainer()->get(CurrentMaterialStocksInterface::class);
+        $MaterialStockEvent = $CurrentMaterialStocksInterface->getCurrentEvent(new MaterialStockUid());
+
+        /** @var WarehouseMaterialStockDTO $WarehouseMaterialStockDTO */
+        $WarehouseMaterialStockDTO = new WarehouseMaterialStockDTO(new UserUid());
+        $MaterialStockEvent->getDto($WarehouseMaterialStockDTO);
+
+        self::assertNotEquals(new UserProfileUid(), $WarehouseMaterialStockDTO->getProfile());
+        $WarehouseMaterialStockDTO->setProfile(new UserProfileUid());
+
+        self::assertEquals('Comment', $WarehouseMaterialStockDTO->getComment());
+        $WarehouseMaterialStockDTO->setComment('WarehouseComment');
+
+        self::assertInstanceOf(MaterialStockStatus::class, $WarehouseMaterialStockDTO->getStatus());
+        self::assertTrue($WarehouseMaterialStockDTO->getStatus()->equals(MaterialStockstatus\MaterialStockStatusWarehouse::class));
+
+        /** @var WarehouseMaterialStockHandler $WarehouseMaterialStockHandler */
+        $WarehouseMaterialStockHandler = self::getContainer()->get(WarehouseMaterialStockHandler::class);
+        $handle = $WarehouseMaterialStockHandler->handle($WarehouseMaterialStockDTO);
+
+        self::assertTrue(($handle instanceof MaterialStock), $handle.': Ошибка MaterialStock');
+
+    }
+}

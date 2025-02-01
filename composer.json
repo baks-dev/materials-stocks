@@ -1,7 +1,7 @@
 {
-  "name": "baks-dev/materials-stock",
+  "name": "baks-dev/materials-stocks",
   "description": "Модуль складского учета сырья",
-  "homepage": "https://github.com/baks-dev/materials-stock",
+  "homepage": "https://github.com/baks-dev/materials-stocks",
   "keywords": [
     "symfony",
     "bundle",

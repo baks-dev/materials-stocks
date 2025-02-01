@@ -1,0 +1,225 @@
+<?php
+/*
+ *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *  
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is furnished
+ *  to do so, subject to the following conditions:
+ *  
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ *  
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
+
+declare(strict_types=1);
+
+namespace BaksDev\Materials\Stocks\Repository\MaterialStocksTotalStorage;
+
+use BaksDev\Core\Doctrine\ORMQueryBuilder;
+use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
+use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
+use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
+use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
+use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
+use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use InvalidArgumentException;
+
+final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalStorageInterface
+{
+    private UserProfileUid|string $profile;
+
+    private ProductUid|string $material;
+
+    private MaterialOfferConst|string|null $offer = null;
+
+    private MaterialVariationConst|string|null $variation = null;
+
+    private MaterialModificationConst|string|null $modification = null;
+
+    private ?string $storage = null;
+
+    public function __construct(private readonly ORMQueryBuilder $ORMQueryBuilder) {}
+
+    public function profile(UserProfileUid|string $profile): self
+    {
+        if(is_string($profile))
+        {
+            $profile = new UserProfileUid($profile);
+        }
+
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    public function material(ProductUid|string $material): self
+    {
+        if(is_string($material))
+        {
+            $material = new ProductUid($material);
+        }
+
+        $this->material = $material;
+
+        return $this;
+    }
+
+    public function offer(MaterialOfferConst|string|false|null $offer): self
+    {
+        if(empty($offer))
+        {
+            $this->offer = null;
+            return $this;
+        }
+
+        if(is_string($offer))
+        {
+            $offer = new MaterialOfferConst($offer);
+        }
+
+        $this->offer = $offer;
+
+        return $this;
+    }
+
+    public function variation(MaterialVariationConst|string|false|null $variation): self
+    {
+        if(empty($variation))
+        {
+            $this->variation = null;
+            return $this;
+        }
+
+        if(is_string($variation))
+        {
+            $variation = new MaterialVariationConst($variation);
+        }
+
+        $this->variation = $variation;
+
+        return $this;
+    }
+
+    public function modification(MaterialModificationConst|string|false|null $modification): self
+    {
+        if(empty($modification))
+        {
+            $this->modification = null;
+            return $this;
+        }
+
+        if(is_string($modification))
+        {
+            $modification = new MaterialModificationConst($modification);
+        }
+
+        $this->modification = $modification;
+
+        return $this;
+    }
+
+
+    public function storage(string|false|null $storage): self
+    {
+        if(empty($storage))
+        {
+            $this->storage = null;
+            return $this;
+        }
+
+        $storage = trim($storage);
+        $storage = mb_strtolower($storage);
+
+        $this->storage = $storage;
+
+        return $this;
+    }
+
+
+    /** Метод возвращает складской остаток (место для хранения указанной продукции) указанного профиля */
+    public function find(): ?MaterialStockTotal
+    {
+        if(empty($this->profile))
+        {
+            throw new InvalidArgumentException('Invalid Argument profile');
+        }
+
+        if(empty($this->material))
+        {
+            throw new InvalidArgumentException('Invalid Argument material');
+        }
+
+        $orm = $this->ORMQueryBuilder->createQueryBuilder(self::class);
+
+        $orm->select('stock');
+
+        $orm->from(MaterialStockTotal::class, 'stock');
+
+        $orm
+            ->andWhere('stock.profile = :profile')
+            ->setParameter('profile', $this->profile, UserProfileUid::TYPE);
+
+        $orm
+            ->andWhere('stock.material = :material')
+            ->setParameter('material', $this->material, ProductUid::TYPE);
+
+
+        if($this->storage)
+        {
+            $orm
+                ->andWhere('LOWER(stock.storage) = :storage')
+                ->setParameter('storage', $this->storage);
+        }
+        else
+        {
+            $orm->andWhere('stock.storage IS NULL');
+        }
+
+        if($this->offer)
+        {
+            $orm
+                ->andWhere('stock.offer = :offer')
+                ->setParameter('offer', $this->offer, MaterialOfferConst::TYPE);
+        }
+        else
+        {
+            $orm->andWhere('stock.offer IS NULL');
+        }
+
+        if($this->variation)
+        {
+            $orm
+                ->andWhere('stock.variation = :variation')
+                ->setParameter('variation', $this->variation, MaterialVariationConst::TYPE);
+        }
+        else
+        {
+            $orm->andWhere('stock.variation IS NULL');
+        }
+
+        if($this->modification)
+        {
+            $orm
+                ->andWhere('stock.modification = :modification')
+                ->setParameter('modification', $this->modification, MaterialModificationConst::TYPE);
+        }
+        else
+        {
+            $orm->andWhere('stock.modification IS NULL');
+        }
+
+        $orm->setMaxResults(1);
+
+        return $orm->getOneOrNullResult();
+    }
+}

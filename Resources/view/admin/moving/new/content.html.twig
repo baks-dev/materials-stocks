@@ -1,0 +1,6 @@
+<style></style>
+
+{{ include(_self|replace({ "content.html.twig": baks_settings.device~"/content.html.twig" })) }}
+
+<script async nonce="{{ csp_nonce() }}" data-src="/assets/materials_stocks/moving.js?v={{ version }}"
+        class="lazy"></script>

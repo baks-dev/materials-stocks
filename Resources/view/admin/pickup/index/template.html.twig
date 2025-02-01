@@ -1,0 +1,99 @@
+{% trans_default_domain 'materials-stocks.admin' %}
+
+{% set ROLE = 'ROLE_MATERIAL_STOCK' %}
+
+{# ---- CSS ------------------------------------------------------------ #}
+{% block title %}
+    {{ 'page.pickup'|trans }}
+{% endblock %}
+
+{# ---- ШАБЛОН ------------------------------------------------------------ #}
+{% extends Template('/admin/base.html.twig') %}
+
+{# ---- CSS ------------------------------------------------------------ #}
+{% block stylesheets %}
+    <link href="/assets/plugins/nice-select2/nice-select2.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/plugins/datepicker/datepicker.min.css" rel="stylesheet">
+{% endblock %}
+
+
+{# ---- КОНТЕНТ-БЛОК ------------------------------------------------------------ #}
+{% block content %}
+    {{ include(_self|replace({ "template.html.twig": baks_settings.device~"/content.html.twig" })) }}
+{% endblock %}
+
+
+{% block javascript %}
+<script nonce='{{ csp_nonce() }}' async data-src="/assets/plugins/nice-select2/nice-select2.min.js?v={{ version }}" class="lazy"></script>
+<script nonce='{{ csp_nonce() }}' async data-src="/assets/materials_stocks/moving.min.js?v={{ version }}" class="lazy"></script>
+<script nonce='{{ csp_nonce() }}' async data-src="/assets/plugins/datepicker/datepicker.min.js?v={{ version }}" class="lazy"></script>
+<script nonce='{{ csp_nonce() }}' async data-src="/assets/js/print.min.js?v={{ version }}" class="lazy"></script>
+<script nonce='{{ csp_nonce() }}' async data-src="/assets/js/copy.min.js?v={{ version }}" class="lazy"></script>
+
+ <script nonce="{{ csp_nonce() }}" class="lazy">
+ window.centrifugo_dsn = "{{ centrifugo_dsn }}";
+ window.centrifugo_token = "{{ token }}";
+ </script>
+
+<script nonce='{{ csp_nonce() }}' async data-src="/assets/centrifugo/centrifuge.min.js?v={{ version }}" class='lazy'></script>
+<script nonce='{{ csp_nonce() }}' async data-src="/assets/centrifugo/socket.min.js?v={{ version }}" class='lazy'></script>
+
+
+    <script nonce="{{ csp_nonce() }}">
+
+        document.addEventListener("DOMContentLoaded", (event) =>
+        {
+
+            const form = document.forms.material_stock_pickup_filter_form;
+            form.addEventListener('change', () => { setTimeout(() => { form.submit(); }, 300); });
+
+            form.addEventListener('keydown', function(event)
+            {
+                if(event.key === "Enter")
+                {
+                    form.submit();
+                }
+            });
+
+                let hZmBqNQQ = 100;
+
+                setTimeout(function yZugPWYF()
+                {
+                    if(typeof centrifuge !== 'object')
+                    {
+                        if(hZmBqNQQ > 1000) { return; }
+
+                        hZmBqNQQ = hZmBqNQQ * 2;
+                        return setTimeout(yZugPWYF, hZmBqNQQ);
+                    }
+
+                    /** Удаляем из списка тикет у других */
+                    centrifuge.newSubscription('remove').on('publication', function(ctx)
+                    {
+
+                        if(ctx.data.profile === '{{ current_profile }}')
+                        {
+                            return;
+                        }
+
+                        let $identifier = document.getElementById(ctx.data.identifier);
+
+                        if($identifier)
+                        {
+                            $identifier.remove();
+                        }
+
+                    }).subscribe();
+
+                }, 100);
+        });
+
+        function changeDatapicker(input)
+        {
+            let forms = input.closest('form');
+            forms.submit();
+        }
+
+    </script>
+{% endblock %}
+

@@ -1,0 +1,83 @@
+# Роль
+ROLE_MATERIAL_STOCK:
+  header: 'Склад'
+  name: 'Складской учет'
+  desc: 'Складской учет товаров'
+
+
+
+# Роль
+ROLE_MATERIAL_STOCK_INDEX:
+  header: 'Заказы'
+  name: 'Просмотр'
+  desc: 'Складской учет товаров'
+
+
+
+
+ROLE_MATERIAL_STOCK_EDIT:
+  name: 'Редактировать остатки'
+  desc: 'Редактировать складские остатки и резерв'
+
+
+ROLE_MATERIAL_STOCK_STORAGE:
+  name: 'Изменить место складирования'
+  desc: 'Изменить место складирования продукции'
+
+
+ROLE_MATERIAL_STOCK_CANCEL:
+  name: 'Отмена'
+  desc: 'Отменить заявку'
+
+
+# Правила
+
+
+ROLE_MATERIAL_STOCK_INCOMING:
+  name: 'Приходные ордера'
+  desc: 'Список приходных ордеров на сколад'
+
+ROLE_MATERIAL_STOCK_INCOMING_ACCEPT:
+  name: 'Добавить приход'
+
+
+
+ROLE_MATERIAL_STOCK_MOVING:
+  name: 'Перемещения'
+  desc: 'Перемещение товаров между складами'
+
+ROLE_MATERIAL_STOCK_MOVING_NEW:
+  name: 'Добавить перемещение'
+  desc: 'Добавить заявку на перемещение товаров с со склада'
+
+
+
+
+ROLE_MATERIAL_STOCK_PURCHASE:
+  name: 'Закупки'
+  desc: 'Закупки товаров'
+
+ROLE_MATERIAL_STOCK_PURCHASE_NEW:
+  name: 'Добавить закупку'
+  desc: 'Добавить закупку товара на склад'
+
+ROLE_MATERIAL_STOCK_PURCHASE_DELETE:
+  name: 'Удалить закупку'
+  desc: 'Удалить закупку'
+
+
+
+ROLE_MATERIAL_STOCK_WAREHOUSE:
+  name: 'Поступления на склад'
+  desc: 'Список поступлений на склад'
+
+ROLE_MATERIAL_STOCK_WAREHOUSE_SEND:
+  name: 'Отправить на склад'
+
+ROLE_MATERIAL_STOCK_PACKAGE:
+  name: 'Упаковка заказов'
+  desc: 'Упаковка заказов на погрузку'
+
+ROLE_MATERIAL_STOCK_PICKUP:
+  name: 'Выдача заказов'
+  desc: 'Выдача заказов в пункте выдачи (Самовывоз)'
