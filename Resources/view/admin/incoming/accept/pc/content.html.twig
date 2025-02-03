@@ -11,7 +11,7 @@
                     {{ 'Принять перемещение по заказу'|trans }}
                 {% else %}
 
-                    {{ 'Добавить приход на склад'|trans }}
+                    {{ 'Добавить приход на склад'|trans }} #{{ name }}
                 {% endif %}
 
             </h5>
@@ -25,12 +25,12 @@
                 </div>
             {% else %}
                 <div class="alert alert-warning mb-3" role="alert">
-                    Место складирования указанной продукции не найдено
+                    Место складирования указанной сырья не найдено
                 </div>
             {% endif %}
 
             <div class="d-flex justify-content-between align-items-center gap-3 text-uppercase text-muted opacity-50">
-                <div class="w-100">Продукция</div>
+                <div class="w-100">сырьё</div>
                 <div class="w-25 text-center">Количество</div>
                 {% if not order %}
                     <div class="w-25 text-center">Место</div>{% endif %}

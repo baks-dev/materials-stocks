@@ -23,21 +23,16 @@
 
 namespace BaksDev\Materials\Stocks\UseCase\Admin\Purchase;
 
-use BaksDev\Materials\Catalog\Type\Event\ProductEventUid;
+use BaksDev\Materials\Catalog\Repository\MaterialChoice\MaterialChoiceInterface;
+use BaksDev\Materials\Catalog\Repository\MaterialModificationChoice\MaterialModificationChoiceInterface;
+use BaksDev\Materials\Catalog\Repository\MaterialOfferChoice\MaterialOfferChoiceInterface;
+use BaksDev\Materials\Catalog\Repository\MaterialVariationChoice\MaterialVariationChoiceInterface;
 use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
-use BaksDev\Materials\Catalog\Type\Offers\Id\ProductOfferUid;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
-use BaksDev\Materials\Catalog\Type\Offers\Variation\Id\ProductVariationUid;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
-use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\Id\ProductModificationUid;
-use BaksDev\Materials\Category\Repository\CategoryChoice\CategoryChoiceInterface;
+use BaksDev\Materials\Category\Repository\CategoryChoice\CategoryMaterialChoiceInterface;
 use BaksDev\Materials\Category\Type\Id\CategoryMaterialUid;
-use BaksDev\Materials\Product\Repository\ProductChoice\ProductChoiceInterface;
-use BaksDev\Materials\Product\Repository\ProductModificationChoice\ProductModificationChoiceInterface;
-use BaksDev\Materials\Product\Repository\ProductOfferChoice\ProductOfferChoiceInterface;
-use BaksDev\Materials\Product\Repository\ProductVariationChoice\ProductVariationChoiceInterface;
-use BaksDev\Users\Profile\UserProfile\Repository\UserProfileTokenStorage\UserProfileTokenStorageInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -46,9 +41,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -59,25 +52,17 @@ final class PurchaseMaterialStockForm extends AbstractType
 {
     public function __construct(
         #[AutowireIterator('baks.reference.choice')] private readonly iterable $reference,
-        private readonly CategoryChoiceInterface $categoryChoice,
-        private readonly ProductChoiceInterface $materialChoice,
-        private readonly ProductOfferChoiceInterface $materialOfferChoice,
-        private readonly ProductVariationChoiceInterface $materialVariationChoice,
-        private readonly ProductModificationChoiceInterface $modificationChoice,
-        private readonly UserProfileTokenStorageInterface $userProfileTokenStorage
+        private readonly CategoryMaterialChoiceInterface $categoryChoice,
+        private readonly MaterialChoiceInterface $materialChoice,
+        private readonly MaterialOfferChoiceInterface $materialOfferChoice,
+        private readonly MaterialVariationChoiceInterface $materialVariationChoice,
+        private readonly MaterialModificationChoiceInterface $modificationChoice,
     ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Номер заявки
-        $builder->add('number', TextType::class);
 
-
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event): void {
-            /** @var PurchaseMaterialStockDTO $PurchaseMaterialStockDTO */
-            $PurchaseMaterialStockDTO = $event->getData();
-            $PurchaseMaterialStockDTO->setProfile($this->userProfileTokenStorage->getProfile());
-        });
+        $builder->add('invariable', Invariable\PurchaseMaterialInvariableForm::class, ['label' => false]);
 
         $builder->add('category', ChoiceType::class, [
             'choices' => $this->categoryChoice->findAll(),
@@ -93,22 +78,22 @@ final class PurchaseMaterialStockForm extends AbstractType
 
 
         /**
-         * Продукция категории
+         * сырьё категории
          */
 
         $builder->add(
-            'preProduct',
+            'preMaterial',
             HiddenType::class,
         );
 
         $builder
-            ->get('preProduct')->addModelTransformer(
+            ->get('preMaterial')->addModelTransformer(
                 new CallbackTransformer(
                     function($material) {
-                        return $material instanceof ProductUid ? $material->getValue() : $material;
+                        return $material instanceof MaterialUid ? $material->getValue() : $material;
                     },
                     function($material) {
-                        return $material ? new ProductUid($material) : null;
+                        return $material ? new MaterialUid($material) : null;
                     }
                 ),
             );
@@ -191,13 +176,13 @@ final class PurchaseMaterialStockForm extends AbstractType
                 }
 
                 $category = $parent->get('category')->getData();
-                $material = $parent->get('preProduct')->getData();
+                $material = $parent->get('preMaterial')->getData();
                 $offer = $parent->get('preOffer')->getData();
                 $variation = $parent->get('preVariation')->getData();
 
                 if($category)
                 {
-                    $this->formProductModifier($event->getForm()->getParent(), $category);
+                    $this->formMaterialModifier($event->getForm()->getParent(), $category);
                 }
 
                 if($material)
@@ -244,15 +229,14 @@ final class PurchaseMaterialStockForm extends AbstractType
     }
 
 
-    private function formProductModifier(FormInterface $form, ?CategoryMaterialUid $category): void
+    private function formMaterialModifier(FormInterface $form, ?CategoryMaterialUid $category): void
     {
 
-        /** Получаем список доступной продукции */
-        $materialChoice = $this->materialChoice->fetchAllMaterial($category ?: false);
-
+        /** Получаем список доступной сырья */
+        $materialChoice = $this->materialChoice->findAll($category ?: false);
 
         $form->add(
-            'preProduct',
+            'preMaterial',
             ChoiceType::class,
             [
                 'choices' => $materialChoice,
@@ -339,7 +323,7 @@ final class PurchaseMaterialStockForm extends AbstractType
             return;
         }
 
-        $variations = $this->materialVariationChoice->fetchProductVariationByOfferConst($offer);
+        $variations = $this->materialVariationChoice->fetchMaterialVariationByOfferConst($offer);
 
         // Если у продукта нет множественных вариантов
         if(!$variations->valid())

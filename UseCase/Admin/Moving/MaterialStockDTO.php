@@ -65,7 +65,7 @@ final class MaterialStockDTO implements MaterialStockEventInterface
     //    #[Assert\Uuid]
     //    private ?ContactsRegionCallConst $destination = null;
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     #[Assert\Valid]
     private ArrayCollection $material;
 
@@ -77,7 +77,7 @@ final class MaterialStockDTO implements MaterialStockEventInterface
 
     public function __construct()
     {
-        $this->status = new MaterialStockStatus(new MaterialStockstatus\MaterialStockStatusMoving());
+        $this->status = new MaterialStockStatus(new MaterialStockstatus\Collection\MaterialStockStatusMoving());
         $this->material = new ArrayCollection();
         //$this->number = time().random_int(100, 999);
 
@@ -96,7 +96,7 @@ final class MaterialStockDTO implements MaterialStockEventInterface
         $this->id = $id;
     }
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     public function getMaterial(): ArrayCollection
     {
         /** Сбрасываем идентификатор заявки */
@@ -109,9 +109,9 @@ final class MaterialStockDTO implements MaterialStockEventInterface
         $this->material = $material;
     }
 
-    public function addMaterial(Products\MaterialStockDTO $material): void
+    public function addMaterial(Materials\MaterialStockDTO $material): void
     {
-        $containsProducts = $this->material->filter(function(Products\MaterialStockDTO $element) use ($material) {
+        $containsMaterials = $this->material->filter(function(Materials\MaterialStockDTO $element) use ($material) {
 
             return
                 $element->getMaterial()->equals($material->getMaterial()) &&
@@ -121,13 +121,13 @@ final class MaterialStockDTO implements MaterialStockEventInterface
         });
 
 
-        if($containsProducts->isEmpty())
+        if($containsMaterials->isEmpty())
         {
             $this->material->add($material);
         }
     }
 
-    public function removeMaterial(Products\MaterialStockDTO $material): void
+    public function removeMaterial(Materials\MaterialStockDTO $material): void
     {
         $this->material->removeElement($material);
     }
@@ -171,27 +171,6 @@ final class MaterialStockDTO implements MaterialStockEventInterface
         $this->number = $number;
     }
 
-    //    /** Константа Целевого склада */
-    //    public function getWarehouse(): ?ContactsRegionCallConst
-    //    {
-    //        return $this->warehouse;
-    //    }
-    //
-    //    public function setWarehouse(?ContactsRegionCallConst $warehouse): void
-    //    {
-    //        $this->warehouse = $warehouse;
-    //    }
-
-    //    /** Константа склада назначения при перемещении */
-    //    public function getDestination(): ?ContactsRegionCallConst
-    //    {
-    //        return $this->destination;
-    //    }
-    //
-    //    public function setDestination(?ContactsRegionCallConst $destination): void
-    //    {
-    //        $this->destination = $destination;
-    //    }
 
     /** Склад назначения при перемещении */
     public function getMove(): Move\MaterialStockMoveDTO

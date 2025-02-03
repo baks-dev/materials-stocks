@@ -28,6 +28,24 @@ namespace BaksDev\Materials\Stocks\Repository\MaterialsByMaterialStocks;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Delivery\Entity\Fields\DeliveryField;
 use BaksDev\Delivery\Entity\Fields\Trans\DeliveryFieldTrans;
+use BaksDev\Materials\Catalog\Entity\Category\MaterialCategory;
+use BaksDev\Materials\Catalog\Entity\Info\MaterialInfo;
+use BaksDev\Materials\Catalog\Entity\Material;
+use BaksDev\Materials\Catalog\Entity\Offers\Image\MaterialOfferImage;
+use BaksDev\Materials\Catalog\Entity\Offers\MaterialOffer;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Image\MaterialVariationImage;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\MaterialVariation;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Modification\Image\MaterialModificationImage;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Modification\MaterialModification;
+use BaksDev\Materials\Catalog\Entity\Photo\MaterialPhoto;
+use BaksDev\Materials\Catalog\Entity\Trans\MaterialTrans;
+use BaksDev\Materials\Category\Entity\CategoryMaterial;
+use BaksDev\Materials\Category\Entity\Offers\CategoryMaterialOffers;
+use BaksDev\Materials\Category\Entity\Offers\Trans\CategoryMaterialOffersTrans;
+use BaksDev\Materials\Category\Entity\Offers\Variation\CategoryMaterialVariation;
+use BaksDev\Materials\Category\Entity\Offers\Variation\Modification\CategoryMaterialModification;
+use BaksDev\Materials\Category\Entity\Offers\Variation\Modification\Trans\CategoryMaterialModificationTrans;
+use BaksDev\Materials\Category\Entity\Offers\Variation\Trans\CategoryMaterialVariationTrans;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Entity\Stock\Materials\MaterialStockMaterial;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
@@ -40,25 +58,6 @@ use BaksDev\Orders\Order\Entity\Order;
 use BaksDev\Orders\Order\Entity\User\Delivery\Field\OrderDeliveryField;
 use BaksDev\Orders\Order\Entity\User\Delivery\OrderDelivery;
 use BaksDev\Orders\Order\Entity\User\OrderUser;
-use BaksDev\Products\Category\Entity\CategoryProduct;
-use BaksDev\Products\Category\Entity\Info\CategoryProductInfo;
-use BaksDev\Products\Category\Entity\Offers\CategoryProductOffers;
-use BaksDev\Products\Category\Entity\Offers\Trans\CategoryProductOffersTrans;
-use BaksDev\Products\Category\Entity\Offers\Variation\CategoryProductVariation;
-use BaksDev\Products\Category\Entity\Offers\Variation\Modification\CategoryProductModification;
-use BaksDev\Products\Category\Entity\Offers\Variation\Modification\Trans\CategoryProductModificationTrans;
-use BaksDev\Products\Category\Entity\Offers\Variation\Trans\CategoryProductVariationTrans;
-use BaksDev\Products\Product\Entity\Category\ProductCategory;
-use BaksDev\Products\Product\Entity\Info\ProductInfo;
-use BaksDev\Products\Product\Entity\Offers\Image\ProductOfferImage;
-use BaksDev\Products\Product\Entity\Offers\ProductOffer;
-use BaksDev\Products\Product\Entity\Offers\Variation\Image\ProductVariationImage;
-use BaksDev\Products\Product\Entity\Offers\Variation\Modification\Image\ProductModificationImage;
-use BaksDev\Products\Product\Entity\Offers\Variation\Modification\ProductModification;
-use BaksDev\Products\Product\Entity\Offers\Variation\ProductVariation;
-use BaksDev\Products\Product\Entity\Photo\ProductPhoto;
-use BaksDev\Products\Product\Entity\Product;
-use BaksDev\Products\Product\Entity\Trans\ProductTrans;
 use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use InvalidArgumentException;
@@ -87,7 +86,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
     }
 
     /**
-     * Метод возвращает информацию о продукции в складской заявке.
+     * Метод возвращает информацию о сырья в складской заявке.
      */
     public function find(): array|bool
     {
@@ -246,23 +245,22 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
 
 
         /**
-         * Продукция
+         * сырьё
          */
 
         $dbal
             ->addSelect('material.id AS material_id')
             ->join(
                 'stock',
-                Product::class,
+                Material::class,
                 'material',
                 'material.id = stock_material.material'
             );
 
 
-        $dbal->addSelect('material_info.url AS material_url');//->addGroupBy('material_info.url');
         $dbal->join(
             'material',
-            ProductInfo::class,
+            MaterialInfo::class,
             'material_info',
             'material_info.material = stock_material.material '
         );
@@ -272,7 +270,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             ->addSelect('material_trans.name AS material_name')
             ->leftJoin(
                 'material',
-                ProductTrans::class,
+                MaterialTrans::class,
                 'material_trans',
                 'material_trans.event = material.event AND material_trans.local = :local'
             );
@@ -283,10 +281,9 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
         $dbal
             ->addSelect('material_offer.const AS material_offer_const')
             ->addSelect('material_offer.value AS material_offer_value')
-            ->addSelect('material_offer.postfix AS material_offer_postfix')
             ->leftJoin(
                 'material',
-                ProductOffer::class,
+                MaterialOffer::class,
                 'material_offer',
                 'material_offer.const = stock_material.offer AND material_offer.event = material.event'
             );
@@ -299,7 +296,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             ->addSelect('category_offer_trans.name AS material_offer_name')
             ->leftJoin(
                 'material_offer',
-                CategoryProductOffers::class,
+                CategoryMaterialOffers::class,
                 'category_offer',
                 'category_offer.id = material_offer.category_offer'
             );
@@ -307,7 +304,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
         /* Название торгового предложения */
         $dbal->leftJoin(
             'category_offer',
-            CategoryProductOffersTrans::class,
+            CategoryMaterialOffersTrans::class,
             'category_offer_trans',
             'category_offer_trans.offer = category_offer.id AND category_offer_trans.local = :local'
         );
@@ -320,10 +317,9 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
         $dbal
             ->addSelect('material_variation.const AS material_variation_const')
             ->addSelect('material_variation.value AS material_variation_value')
-            ->addSelect('material_variation.postfix AS material_variation_postfix')
             ->leftJoin(
                 'material_offer',
-                ProductVariation::class,
+                MaterialVariation::class,
                 'material_variation',
                 'stock_material.variation IS NOT NULL AND  material_variation.offer = material_offer.id AND material_variation.const = stock_material.variation'
             );
@@ -334,7 +330,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             ->addSelect('category_variation.reference AS material_variation_reference')
             ->leftJoin(
                 'material_variation',
-                CategoryProductVariation::class,
+                CategoryMaterialVariation::class,
                 'category_variation',
                 'category_variation.id = material_variation.category_variation'
             );
@@ -344,7 +340,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             ->addSelect('category_variation_trans.name AS material_variation_name')
             ->leftJoin(
                 'category_variation',
-                CategoryProductVariationTrans::class,
+                CategoryMaterialVariationTrans::class,
                 'category_variation_trans',
                 'category_variation_trans.variation = category_variation.id AND category_variation_trans.local = :local'
             );
@@ -357,10 +353,9 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
         $dbal
             ->addSelect('material_modification.const AS material_modification_const')
             ->addSelect('material_modification.value AS material_modification_value')
-            ->addSelect('material_modification.postfix AS material_modification_postfix')
             ->leftJoin(
                 'material_variation',
-                ProductModification::class,
+                MaterialModification::class,
                 'material_modification',
                 'stock_material.modification IS NOT NULL AND material_modification.variation = material_variation.id AND material_modification.const = stock_material.modification'
             );
@@ -370,7 +365,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             ->addSelect('category_modification.reference AS material_modification_reference')
             ->leftJoin(
                 'material_modification',
-                CategoryProductModification::class,
+                CategoryMaterialModification::class,
                 'category_modification',
                 'category_modification.id = material_modification.category_modification'
             );
@@ -380,7 +375,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             ->addSelect('category_modification_trans.name AS material_modification_name')
             ->leftJoin(
                 'category_modification',
-                CategoryProductModificationTrans::class,
+                CategoryMaterialModificationTrans::class,
                 'category_modification_trans',
                 'category_modification_trans.modification = category_modification.id AND category_modification_trans.local = :local'
             );
@@ -390,28 +385,28 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
 
         $dbal->leftJoin(
             'material',
-            ProductPhoto::class,
+            MaterialPhoto::class,
             'material_photo',
             'material_photo.event = material.event AND material_photo.root = true'
         );
 
         $dbal->leftJoin(
             'material_offer',
-            ProductOfferImage::class,
+            MaterialOfferImage::class,
             'material_offer_image',
             'material_offer_image.offer = material_offer.id AND material_offer_image.root = true'
         );
 
         $dbal->leftJoin(
             'material_variation',
-            ProductVariationImage::class,
+            MaterialVariationImage::class,
             'material_variation_image',
             'material_variation_image.variation = material_variation.id AND material_variation_image.root = true'
         );
 
         $dbal->leftJoin(
             'material_modification',
-            ProductModificationImage::class,
+            MaterialModificationImage::class,
             'material_modification_image',
             'material_modification_image.modification = material_modification.id AND material_modification_image.root = true'
         );
@@ -420,13 +415,13 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             ->addSelect("
          CASE
                WHEN material_modification_image.name IS NOT NULL THEN
-                    CONCAT ( '/upload/".$dbal->table(ProductModificationImage::class)."' , '/', material_modification_image.name)
+                    CONCAT ( '/upload/".$dbal->table(MaterialModificationImage::class)."' , '/', material_modification_image.name)
                WHEN material_variation_image.name IS NOT NULL THEN
-                    CONCAT ( '/upload/".$dbal->table(ProductVariationImage::class)."' , '/', material_variation_image.name)
+                    CONCAT ( '/upload/".$dbal->table(MaterialVariationImage::class)."' , '/', material_variation_image.name)
                WHEN material_offer_image.name IS NOT NULL THEN
-                    CONCAT ( '/upload/".$dbal->table(ProductOfferImage::class)."' , '/', material_offer_image.name)
+                    CONCAT ( '/upload/".$dbal->table(MaterialOfferImage::class)."' , '/', material_offer_image.name)
                WHEN material_photo.name IS NOT NULL THEN
-                    CONCAT ( '/upload/".$dbal->table(ProductPhoto::class)."' , '/', material_photo.name)
+                    CONCAT ( '/upload/".$dbal->table(MaterialPhoto::class)."' , '/', material_photo.name)
                ELSE NULL
             END
            AS material_image")
@@ -475,7 +470,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
         /* Категория */
         $dbal->join(
             'material',
-            ProductCategory::class,
+            MaterialCategory::class,
             'material_category',
             'material_category.event = material.event AND material_category.root = true'
         );
@@ -483,20 +478,10 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
 
         $dbal->join(
             'material_category',
-            CategoryProduct::class,
+            CategoryMaterial::class,
             'category',
             'category.id = material_category.category'
         );
-
-
-        $dbal
-            ->addSelect('category_info.url AS category_url')
-            ->leftJoin(
-                'category',
-                CategoryProductInfo::class,
-                'category_info',
-                'category_info.event = category.event'
-            );
 
 
         /** Наличие и место на складе */

@@ -26,16 +26,21 @@ namespace BaksDev\Materials\Stocks\Repository\AllMaterialStocksIncoming;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Services\Paginator\PaginatorInterface;
 use BaksDev\Materials\Catalog\Forms\MaterialFilter\Admin\MaterialFilterDTO;
+use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use BaksDev\Users\User\Entity\User;
+use BaksDev\Users\User\Type\Id\UserUid;
 
 interface AllMaterialStocksIncomingInterface
 {
-    public function search(SearchDTO $search): static;
+    public function search(SearchDTO $search): self;
 
-    public function filter(MaterialFilterDTO $filter): static;
+    public function filter(MaterialFilterDTO $filter): self;
+
+    public function user(User|UserUid|string $user): self;
+
+    public function profile(UserProfile|UserProfileUid|string $profile): self;
 
     /** Возвращает список всех принятых на склад продуктов */
-    public function fetchAllMaterialStocksAssociative(
-        UserProfileUid $profile
-    ): PaginatorInterface;
+    public function findPaginator(): PaginatorInterface;
 }

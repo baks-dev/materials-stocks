@@ -27,10 +27,14 @@ use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Services\Paginator\PaginatorInterface;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use BaksDev\Users\User\Entity\User;
+use BaksDev\Users\User\Type\Id\UserUid;
 
 interface AllMaterialStocksPurchaseInterface
 {
     public function search(SearchDTO $search): self;
+
+    public function user(User|UserUid|string $user): self;
 
     public function profile(UserProfile|UserProfileUid|string $profile): self;
 

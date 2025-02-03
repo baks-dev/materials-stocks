@@ -51,7 +51,7 @@ final readonly class AddMaterialStocksReserveMessage
     }
 
     /**
-     * Product
+     * Material
      */
     public function getMaterial(): MaterialUid
     {

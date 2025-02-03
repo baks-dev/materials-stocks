@@ -32,7 +32,7 @@ use BaksDev\Materials\Stocks\Messenger\MaterialStockMessage;
 use BaksDev\Materials\Stocks\Messenger\Stocks\AddMaterialStocksReserve\AddMaterialStocksReserveMessage;
 use BaksDev\Materials\Stocks\Repository\CurrentMaterialStocks\CurrentMaterialStocksInterface;
 use BaksDev\Materials\Stocks\Repository\MaterialStocksById\MaterialStocksByIdInterface;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusPackage;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusPackage;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Target;
@@ -51,7 +51,7 @@ final readonly class AddReserveMaterialStocksTotalByPackage
     ) {}
 
     /**
-     * Резервирование на складе продукции при статусе "ОТПАРВЛЕН НА СБОРКУ"
+     * Резервирование на складе сырья при статусе "ОТПАРВЛЕН НА СБОРКУ"
      */
     public function __invoke(MaterialStockMessage $message): void
     {
@@ -65,18 +65,18 @@ final readonly class AddReserveMaterialStocksTotalByPackage
             return;
         }
 
-        if(false === $MaterialStockEvent->getStatus()->equals(MaterialStockStatusPackage::class))
+        if(false === $MaterialStockEvent->equalsMaterialStockStatus(MaterialStockStatusPackage::class))
         {
             return;
         }
 
 
-        // Получаем всю продукцию в ордере со статусом Package (УПАКОВКА)
+        // Получаем всю сырьё в ордере со статусом Package (УПАКОВКА)
         $materials = $this->materialStocks->getMaterialsPackageStocks($message->getId());
 
         if(empty($materials))
         {
-            $this->logger->warning('Заявка не имеет продукции в коллекции', [self::class.':'.__LINE__]);
+            $this->logger->warning('Заявка не имеет сырья в коллекции', [self::class.':'.__LINE__]);
             return;
         }
 
@@ -95,19 +95,19 @@ final readonly class AddReserveMaterialStocksTotalByPackage
         }
 
         /** Идентификатор профиля, куда была отправлена заявка на упаковку */
-        $UserProfileUid = $MaterialStockEvent->getProfile();
+        $UserProfileUid = $MaterialStockEvent->getStocksProfile();
 
         /** @var MaterialStockMaterial $material */
         foreach($materials as $key => $material)
         {
             $this->logger->info(
-                'Добавляем резерв продукции на складе при создании заявки на упаковку',
+                'Добавляем резерв сырья на складе при создании заявки на упаковку',
                 ['total' => $material->getTotal()]
             );
 
 
             /**
-             * Создаем резерв на единицу продукции при упаковке
+             * Создаем резерв на единицу сырья при упаковке
              */
             for($i = 1; $i <= $material->getTotal(); $i++)
             {

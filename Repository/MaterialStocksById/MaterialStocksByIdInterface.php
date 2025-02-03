@@ -24,12 +24,12 @@
 namespace BaksDev\Materials\Stocks\Repository\MaterialStocksById;
 
 use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\MaterialStockStatusInterface;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\MaterialStockStatusInterface;
 
 interface MaterialStocksByIdInterface
 {
     /**
-     * Метод возвращает всю продукцию с определенным статусом
+     * Метод возвращает всю сырьё с определенным статусом
      */
     public function getMaterialsByMaterialStocksStatus(
         MaterialStockUid $id,
@@ -37,22 +37,22 @@ interface MaterialStocksByIdInterface
     ): ?array;
 
     /**
-     * Метод возвращает всю продукцию в приходном ордере (Move)
+     * Метод возвращает всю сырьё в приходном ордере (Move)
      */
     public function getMaterialsIncomingStocks(MaterialStockUid $id): ?array;
 
     /**
-     * Метод возвращает всю продукцию отправленную на склад
+     * Метод возвращает всю сырьё отправленную на склад
      */
     public function getMaterialsWarehouseStocks(MaterialStockUid $id): ?array;
 
     /**
-     * Метод возвращает всю продукцию для сборки (Package)
+     * Метод возвращает всю сырьё для сборки (Package)
      */
     public function getMaterialsPackageStocks(MaterialStockUid $id): ?array;
 
     /**
-     * Метод возвращает всю продукцию в отмененной заявке
+     * Метод возвращает всю сырьё в отмененной заявке
      */
     public function getMaterialsCancelStocks(MaterialStockUid $id): ?array;
 

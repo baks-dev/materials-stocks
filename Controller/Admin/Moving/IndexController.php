@@ -40,7 +40,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[RoleSecurity('ROLE_MATERIAL_STOCK_MOVING')]
 final class IndexController extends AbstractController
 {
-    /** Перемещения продукции на другой склад */
+    /** Перемещения сырья на другой склад */
     #[Route('/admin/material/stocks/movings/{page<\d+>}', name: 'admin.moving.index', methods: ['GET', 'POST'])]
     public function incoming(
         Request $request,
@@ -62,7 +62,7 @@ final class IndexController extends AbstractController
             ->handleRequest($request);
 
         /**
-         * Фильтр продукции по ТП
+         * Фильтр сырья по ТП
          */
         $filter = new MaterialFilterDTO($request);
         $filterForm = $this

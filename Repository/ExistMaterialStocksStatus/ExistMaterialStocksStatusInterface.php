@@ -26,7 +26,7 @@ namespace BaksDev\Materials\Stocks\Repository\ExistMaterialStocksStatus;
 use BaksDev\Materials\Stocks\Type\Event\MaterialStockEventUid;
 use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\MaterialStockStatusInterface;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\MaterialStockStatusInterface;
 
 interface ExistMaterialStocksStatusInterface
 {

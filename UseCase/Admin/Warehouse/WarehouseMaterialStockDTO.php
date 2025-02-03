@@ -27,7 +27,7 @@ use BaksDev\Contacts\Region\Type\Call\Const\ContactsRegionCallConst;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEventInterface;
 use BaksDev\Materials\Stocks\Type\Event\MaterialStockEventUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusWarehouse;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusWarehouse;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\User\Entity\User;
 use BaksDev\Users\User\Type\Id\UserUid;
@@ -51,10 +51,10 @@ final class WarehouseMaterialStockDTO implements MaterialStockEventInterface
     //    #[Assert\Uuid]
     //    private ?UserProfileUid $destination = null;
 
-    /** Ответственное лицо (Профиль пользователя) */
-    #[Assert\NotBlank]
-    #[Assert\Uuid]
-    private UserProfileUid $profile;
+    //    /** Ответственное лицо (Профиль пользователя) */
+    //    #[Assert\NotBlank]
+    //    #[Assert\Uuid]
+    //    private UserProfileUid $profile;
 
     /** Статус заявки - ОТПАРВЛЕН НА СКЛАД */
     #[Assert\NotBlank]
@@ -63,8 +63,8 @@ final class WarehouseMaterialStockDTO implements MaterialStockEventInterface
     /** Комментарий */
     private ?string $comment = null;
 
-    /** Вспомогательные свойства - для выбора доступных профилей */
-    private readonly UserUid $usr;
+    //    /** Вспомогательные свойства - для выбора доступных профилей */
+    //    private readonly UserUid $usr;
 
     /** Коллекция перемещения  */
     #[Assert\Valid]
@@ -74,17 +74,23 @@ final class WarehouseMaterialStockDTO implements MaterialStockEventInterface
     #[Assert\IsNull]
     private readonly ?UserProfileUid $fixed;
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     #[Assert\Valid]
     private ArrayCollection $material;
 
 
+    #[Assert\Valid]
+    private Invariable\WarehouseMaterialInvariableDTO $invariable;
+
+
     public function __construct(User|UserUid $usr)
     {
-        $this->usr = $usr instanceof User ? $usr->getId() : $usr;
+        //$this->usr = $usr instanceof User ? $usr->getId() : $usr;
         $this->status = new MaterialStockStatus(MaterialStockStatusWarehouse::class);
         $this->fixed = null;
         $this->material = new ArrayCollection();
+
+        $this->invariable = new Invariable\WarehouseMaterialInvariableDTO();
     }
 
     public function getEvent(): ?MaterialStockEventUid
@@ -157,7 +163,7 @@ final class WarehouseMaterialStockDTO implements MaterialStockEventInterface
     }
 
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     public function getMaterial(): ArrayCollection
     {
         return $this->material;
@@ -168,8 +174,16 @@ final class WarehouseMaterialStockDTO implements MaterialStockEventInterface
         $this->material = $material;
     }
 
-    public function addMaterial(Products\MaterialStockDTO $material): void
+    public function addMaterial(Materials\MaterialStockDTO $material): void
     {
         $this->material->add($material);
+    }
+
+    /**
+     * Invariable
+     */
+    public function getInvariable(): Invariable\WarehouseMaterialInvariableDTO
+    {
+        return $this->invariable;
     }
 }

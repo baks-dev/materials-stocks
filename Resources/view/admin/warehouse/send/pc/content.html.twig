@@ -8,14 +8,14 @@
 
         <div class="modal-header">
             <h5 class="modal-title">
-                {{ 'Отправить продукцию на склад'|trans }}
+                {{ 'Отправить сырьё на склад'|trans }}
             </h5>
         </div>
 
         <div class="modal-body">
 
             <div class="d-flex justify-content-between align-items-center gap-3 text-uppercase text-muted opacity-50">
-                <div class="w-100">Продукция</div>
+                <div class="w-100">сырьё</div>
                 <div class="w-25 text-center">Количество</div>
                 {# {% if not order %} <div class="w-25 text-center">Место</div>{% endif %} #}
             </div>
@@ -92,11 +92,21 @@
 
             <hr>
 
-            {% if form.profile is defined %}
-                {{ form_row(form.profile, {
-                    label: 'Склад значения', placeholder: 'Выберите склад из списка...', attr: { 'data-select' : 'select2' }
-                }) }}
-            {% endif %}
+
+            <div class="d-flex gap-2">
+
+                <div class="w-50">
+                    {{ form_row(form.invariable.number, { label: 'Номер закупки' }) }}
+                </div>
+
+                <div class="w-100">
+                    {{ form_row(form.invariable.profile, {
+                        label: 'Склад значения', placeholder: 'Выберите склад из списка...', attr: { 'data-select' : 'select2' }
+                    }) }}
+
+                </div>
+
+            </div>
 
             {{ form_row(form.comment, { label: form.comment.vars.data ? 'Комментарий'|trans : false , attr: { placeholder : 'Комментарий' } }) }}
 

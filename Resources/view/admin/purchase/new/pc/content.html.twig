@@ -8,7 +8,7 @@
 
         <div class="modal-header">
             <h5 class="modal-title">
-                {{ 'Добавить лист закупки продукции'|trans }}
+                {{ 'Добавить лист закупки сырья'|trans }}
             </h5>
         </div>
 
@@ -17,7 +17,7 @@
 
             <div class="d-flex gap-3">
                 <div class="w-50">
-                    {{ form_row(form.number, { label: 'Номер закупки' }) }}
+                    {{ form_row(form.invariable.number, { label: 'Номер закупки' }) }}
                 </div>
 
                 <div class="w-50">
@@ -32,11 +32,11 @@
 
             <div class="d-flex gap-3 align-content-center">
 
-                <div class="w-100 d-none" id="preProduct">
-                    {{ form_row(form.preProduct, {
+                <div class="w-100 d-none" id="preMaterial">
+                    {{ form_row(form.preMaterial, {
                         label: 'Продукт',
-                        placeholder: 'Выберите продукцию из списка...',
-                        attr: { 'data-select' : 'select2', placeholder: form.preProduct.vars.data ?: 'Продукция на складе отстутсвует', } }) }}
+                        placeholder: 'Выберите сырьё из списка...',
+                        attr: { 'data-select' : 'select2', placeholder: form.preMaterial.vars.data ?: 'сырьё на складе отстутсвует', } }) }}
                 </div>
 
                 <div class="w-100 d-none" id="preOffer">

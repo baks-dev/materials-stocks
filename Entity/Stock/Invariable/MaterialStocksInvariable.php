@@ -23,21 +23,9 @@
 
 namespace BaksDev\Materials\Stocks\Entity\Stock\Invariable;
 
-use BaksDev\Core\Entity\EntityEvent;
 use BaksDev\Core\Entity\EntityReadonly;
-use BaksDev\Materials\Catalog\Type\Barcode\ProductBarcode;
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
-use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
-use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
-use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;
-use BaksDev\Orders\Order\Type\Id\OrderUid;
-use BaksDev\Orders\Order\Type\Product\OrderProductUid;
-use BaksDev\Products\Product\Entity\Event\ProductEvent;
-use BaksDev\Products\Product\Entity\Product;
-use BaksDev\Products\Sign\Entity\Event\ProductSignEvent;
-use BaksDev\Products\Sign\Type\Id\ProductSignUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\User\Type\Id\UserUid;
 use Doctrine\DBAL\Types\Types;
@@ -71,10 +59,9 @@ class MaterialStocksInvariable extends EntityReadonly
     private readonly UserUid $usr;
 
     /** Профиль пользователя */
-    #[Assert\NotBlank]
     #[Assert\Uuid]
-    #[ORM\Column(type: UserProfileUid::TYPE)]
-    private UserProfileUid $profile;
+    #[ORM\Column(type: UserProfileUid::TYPE, nullable: true)]
+    private ?UserProfileUid $profile = null;
 
     /** Номер заявки */
     #[Assert\NotBlank]
@@ -111,7 +98,7 @@ class MaterialStocksInvariable extends EntityReadonly
     /**
      * Profile
      */
-    public function getProfile(): UserProfileUid
+    public function getProfile(): ?UserProfileUid
     {
         return $this->profile;
     }
@@ -137,6 +124,11 @@ class MaterialStocksInvariable extends EntityReadonly
         }
 
         throw new InvalidArgumentException(sprintf('Class %s interface error', $dto::class));
+    }
+
+    public function getNumber(): string
+    {
+        return $this->number;
     }
 
 }

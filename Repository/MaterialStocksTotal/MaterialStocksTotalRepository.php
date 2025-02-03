@@ -46,11 +46,11 @@ final class MaterialStocksTotalRepository implements MaterialStocksTotalInterfac
     private ?MaterialModificationConst $modification = null;
 
 
-    public function material(ProductUid|string $material): self
+    public function material(MaterialUid|string $material): self
     {
         if(is_string($material))
         {
-            $material = new ProductUid($material);
+            $material = new MaterialUid($material);
         }
 
         $this->material = $material;
@@ -110,7 +110,7 @@ final class MaterialStocksTotalRepository implements MaterialStocksTotalInterfac
     }
 
     /**
-     * Метод возвращает общее количество продукции на всех складах (без учета резерва)
+     * Метод возвращает общее количество сырья на всех складах (без учета резерва)
      */
     public function get(): int
     {
@@ -125,7 +125,7 @@ final class MaterialStocksTotalRepository implements MaterialStocksTotalInterfac
             ->select('SUM(stock.total)')
             ->from(MaterialStockTotal::class, 'stock')
             ->andWhere('stock.material = :material')
-            ->setParameter('material', $this->material, ProductUid::TYPE);
+            ->setParameter('material', $this->material, MaterialUid::TYPE);
 
         if($this->offer)
         {

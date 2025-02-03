@@ -32,6 +32,23 @@ use BaksDev\Delivery\Entity\Event\DeliveryEvent;
 use BaksDev\Delivery\Entity\Trans\DeliveryTrans;
 use BaksDev\Delivery\Type\Id\DeliveryUid;
 use BaksDev\DeliveryTransport\BaksDevDeliveryTransportBundle;
+use BaksDev\Materials\Catalog\Entity\Category\MaterialCategory;
+use BaksDev\Materials\Catalog\Entity\Event\MaterialEvent;
+use BaksDev\Materials\Catalog\Entity\Info\MaterialInfo;
+use BaksDev\Materials\Catalog\Entity\Material;
+use BaksDev\Materials\Catalog\Entity\Offers\Image\MaterialOfferImage;
+use BaksDev\Materials\Catalog\Entity\Offers\MaterialOffer;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Image\MaterialVariationImage;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\MaterialVariation;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Modification\Image\MaterialModificationImage;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Modification\MaterialModification;
+use BaksDev\Materials\Catalog\Entity\Photo\MaterialPhoto;
+use BaksDev\Materials\Catalog\Entity\Trans\MaterialTrans;
+use BaksDev\Materials\Category\Entity\CategoryMaterial;
+use BaksDev\Materials\Category\Entity\Offers\CategoryMaterialOffers;
+use BaksDev\Materials\Category\Entity\Offers\Variation\CategoryMaterialVariation;
+use BaksDev\Materials\Category\Entity\Offers\Variation\Modification\CategoryMaterialModification;
+use BaksDev\Materials\Category\Entity\Trans\CategoryMaterialTrans;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Entity\Stock\Materials\MaterialStockMaterial;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
@@ -42,24 +59,6 @@ use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
 use BaksDev\Orders\Order\Entity\Order;
 use BaksDev\Orders\Order\Entity\User\Delivery\OrderDelivery;
 use BaksDev\Orders\Order\Entity\User\OrderUser;
-use BaksDev\Products\Category\Entity\CategoryProduct;
-use BaksDev\Products\Category\Entity\Info\CategoryProductInfo;
-use BaksDev\Products\Category\Entity\Offers\CategoryProductOffers;
-use BaksDev\Products\Category\Entity\Offers\Variation\CategoryProductVariation;
-use BaksDev\Products\Category\Entity\Offers\Variation\Modification\CategoryProductModification;
-use BaksDev\Products\Category\Entity\Trans\CategoryProductTrans;
-use BaksDev\Products\Product\Entity\Category\ProductCategory;
-use BaksDev\Products\Product\Entity\Event\ProductEvent;
-use BaksDev\Products\Product\Entity\Info\ProductInfo;
-use BaksDev\Products\Product\Entity\Offers\Image\ProductOfferImage;
-use BaksDev\Products\Product\Entity\Offers\ProductOffer;
-use BaksDev\Products\Product\Entity\Offers\Variation\Image\ProductVariationImage;
-use BaksDev\Products\Product\Entity\Offers\Variation\Modification\Image\ProductModificationImage;
-use BaksDev\Products\Product\Entity\Offers\Variation\Modification\ProductModification;
-use BaksDev\Products\Product\Entity\Offers\Variation\ProductVariation;
-use BaksDev\Products\Product\Entity\Photo\ProductPhoto;
-use BaksDev\Products\Product\Entity\Product;
-use BaksDev\Products\Product\Entity\Trans\ProductTrans;
 use BaksDev\Users\Profile\UserProfile\Entity\Event\UserProfileEvent;
 use BaksDev\Users\Profile\UserProfile\Entity\Info\UserProfileInfo;
 use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
@@ -115,7 +114,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'event.id = stock.event AND event.status = :status AND event.profile = :profile'
             )
             ->setParameter('profile', $profile, UserProfileUid::TYPE)
-            ->setParameter('status', new MaterialStockStatus(new MaterialStockstatus\MaterialStockStatusExtradition()), MaterialStockStatus::TYPE);
+            ->setParameter('status', new MaterialStockStatus(new MaterialStockstatus\Collection\MaterialStockStatusExtradition()), MaterialStockStatus::TYPE);
 
 
         // MaterialStockModify
@@ -138,14 +137,12 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'stock_material.event = stock.event'
             );
 
-
-        // Product
         $dbal
             ->addSelect('material.id as material_id')
             ->addSelect('material.event as material_event')
             ->join(
                 'stock_material',
-                Product::class,
+                Material::class,
                 'material',
                 'material.id = stock_material.material'
             );
@@ -153,16 +150,15 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
         // Material Event
         $dbal->join(
             'material',
-            ProductEvent::class,
+            MaterialEvent::class,
             'material_event',
             'material_event.id = material.event'
         );
 
         $dbal
-            ->addSelect('material_info.url AS material_url')
             ->leftJoin(
                 'material_event',
-                ProductInfo::class,
+                MaterialInfo::class,
                 'material_info',
                 'material_info.material = material.id'
             );
@@ -172,7 +168,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             ->addSelect('material_trans.name as material_name')
             ->join(
                 'material_event',
-                ProductTrans::class,
+                MaterialTrans::class,
                 'material_trans',
                 'material_trans.event = material_event.id AND material_trans.local = :local'
             );
@@ -182,10 +178,9 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
         $dbal
             ->addSelect('material_offer.id as material_offer_uid')
             ->addSelect('material_offer.value as material_offer_value')
-            ->addSelect('material_offer.postfix as material_offer_postfix')
             ->leftJoin(
                 'material_event',
-                ProductOffer::class,
+                MaterialOffer::class,
                 'material_offer',
                 'material_offer.event = material_event.id AND material_offer.const = stock_material.offer'
             );
@@ -195,7 +190,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             ->addSelect('category_offer.reference as material_offer_reference')
             ->leftJoin(
                 'material_offer',
-                CategoryProductOffers::class,
+                CategoryMaterialOffers::class,
                 'category_offer',
                 'category_offer.id = material_offer.category_offer'
             );
@@ -206,10 +201,9 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
         $dbal
             ->addSelect('material_variation.id as material_variation_uid')
             ->addSelect('material_variation.value as material_variation_value')
-            ->addSelect('material_variation.postfix as material_variation_postfix')
             ->leftJoin(
                 'material_offer',
-                ProductVariation::class,
+                MaterialVariation::class,
                 'material_variation',
                 'material_variation.offer = material_offer.id AND material_variation.const = stock_material.variation'
             );
@@ -219,7 +213,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             ->addSelect('category_offer_variation.reference as material_variation_reference')
             ->leftJoin(
                 'material_variation',
-                CategoryProductVariation::class,
+                CategoryMaterialVariation::class,
                 'category_offer_variation',
                 'category_offer_variation.id = material_variation.category_variation'
             );
@@ -230,10 +224,9 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
         $dbal
             ->addSelect('material_modification.id as material_modification_uid')
             ->addSelect('material_modification.value as material_modification_value')
-            ->addSelect('material_modification.postfix as material_modification_postfix')
             ->leftJoin(
                 'material_variation',
-                ProductModification::class,
+                MaterialModification::class,
                 'material_modification',
                 'material_modification.variation = material_variation.id AND material_modification.const = stock_material.modification'
             );
@@ -244,7 +237,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             ->addSelect('category_modification.reference as material_modification_reference')
             ->leftJoin(
                 'material_modification',
-                CategoryProductModification::class,
+                CategoryMaterialModification::class,
                 'category_modification',
                 'category_modification.id = material_modification.category_modification'
             );
@@ -264,7 +257,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
 
         $dbal->leftJoin(
             'material_modification',
-            ProductModificationImage::class,
+            MaterialModificationImage::class,
             'material_modification_image',
             '
 			material_modification_image.modification = material_modification.id AND
@@ -274,7 +267,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
 
         $dbal->leftJoin(
             'material_offer',
-            ProductVariationImage::class,
+            MaterialVariationImage::class,
             'material_variation_image',
             '
 			material_variation_image.variation = material_variation.id AND
@@ -284,7 +277,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
 
         $dbal->leftJoin(
             'material_offer',
-            ProductOfferImage::class,
+            MaterialOfferImage::class,
             'material_offer_images',
             '
 			material_variation_image.name IS NULL AND
@@ -295,7 +288,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
 
         $dbal->leftJoin(
             'material_offer',
-            ProductPhoto::class,
+            MaterialPhoto::class,
             'material_photo',
             '
 			material_offer_images.name IS NULL AND
@@ -309,16 +302,16 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
 			CASE
 			 
                WHEN material_modification_image.name IS NOT NULL 
-               THEN CONCAT ( '/upload/".$dbal->table(ProductModificationImage::class)."' , '/', material_modification_image.name)
+               THEN CONCAT ( '/upload/".$dbal->table(MaterialModificationImage::class)."' , '/', material_modification_image.name)
 					
 			   WHEN material_variation_image.name IS NOT NULL 
-			   THEN CONCAT ( '/upload/".$dbal->table(ProductVariationImage::class)."' , '/', material_variation_image.name)
+			   THEN CONCAT ( '/upload/".$dbal->table(MaterialVariationImage::class)."' , '/', material_variation_image.name)
 					
 			   WHEN material_offer_images.name IS NOT NULL 
-			   THEN CONCAT ( '/upload/".$dbal->table(ProductOfferImage::class)."' , '/', material_offer_images.name)
+			   THEN CONCAT ( '/upload/".$dbal->table(MaterialOfferImage::class)."' , '/', material_offer_images.name)
 					
 			   WHEN material_photo.name IS NOT NULL 
-			   THEN CONCAT ( '/upload/".$dbal->table(ProductPhoto::class)."' , '/', material_photo.name)
+			   THEN CONCAT ( '/upload/".$dbal->table(MaterialPhoto::class)."' , '/', material_photo.name)
 					
 			   ELSE NULL
 			END AS material_image
@@ -369,14 +362,14 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
         // Категория
         $dbal->leftJoin(
             'material_event',
-            ProductCategory::class,
+            MaterialCategory::class,
             'material_event_category',
             'material_event_category.event = material_event.id AND material_event_category.root = true'
         );
 
         $dbal->leftJoin(
             'material_event_category',
-            CategoryProduct::class,
+            CategoryMaterial::class,
             'category',
             'category.id = material_event_category.category'
         );
@@ -385,18 +378,9 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             ->addSelect('category_trans.name AS category_name')
             ->leftJoin(
                 'category',
-                CategoryProductTrans::class,
+                CategoryMaterialTrans::class,
                 'category_trans',
                 'category_trans.event = category.event AND category_trans.local = :local'
-            );
-
-        $dbal
-            ->addSelect('category_info.url AS category_url')
-            ->leftJoin(
-                'category',
-                CategoryProductInfo::class,
-                'category_info',
-                'category_info.event = category.event'
             );
 
         // ОТВЕТСТВЕННЫЙ

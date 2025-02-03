@@ -37,8 +37,6 @@ use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
 
-// MaterialStockProductMaterial
-
 #[ORM\Entity]
 #[ORM\Table(name: 'material_stock_material')]
 class MaterialStockMaterial extends EntityEvent

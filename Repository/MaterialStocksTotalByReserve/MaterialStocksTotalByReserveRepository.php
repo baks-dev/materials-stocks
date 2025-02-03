@@ -46,11 +46,11 @@ final class MaterialStocksTotalByReserveRepository implements MaterialStocksTota
     private ?MaterialModificationConst $modification = null;
 
 
-    public function material(ProductUid|string $material): self
+    public function material(MaterialUid|string $material): self
     {
         if(is_string($material))
         {
-            $material = new ProductUid($material);
+            $material = new MaterialUid($material);
         }
 
         $this->material = $material;
@@ -110,7 +110,7 @@ final class MaterialStocksTotalByReserveRepository implements MaterialStocksTota
     }
 
 
-    /** Метод возвращает общее количество резерва продукции на всех складах */
+    /** Метод возвращает общее количество резерва сырья на всех складах */
     public function get(): int
     {
         if(empty($this->material))
@@ -124,7 +124,7 @@ final class MaterialStocksTotalByReserveRepository implements MaterialStocksTota
             ->select('SUM(stock.reserve)')
             ->from(MaterialStockTotal::class, 'stock')
             ->andWhere('stock.material = :material')
-            ->setParameter('material', $this->material, ProductUid::TYPE);
+            ->setParameter('material', $this->material, MaterialUid::TYPE);
 
         if($this->offer)
         {

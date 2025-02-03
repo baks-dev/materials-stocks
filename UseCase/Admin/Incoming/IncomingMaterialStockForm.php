@@ -27,12 +27,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class IncomingMaterialStockForm extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         // Section Collection
         $builder->add('material', CollectionType::class, [
-            'entry_type' => Products\MaterialStockForm::class,
+            'entry_type' => Materials\MaterialStockForm::class,
             'entry_options' => ['label' => false],
             'label' => false,
             'by_reference' => false,

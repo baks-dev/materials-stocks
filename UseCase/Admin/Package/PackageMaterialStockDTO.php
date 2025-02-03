@@ -28,7 +28,7 @@ use BaksDev\Core\Type\UidType\Uid;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEventInterface;
 use BaksDev\Materials\Stocks\Type\Event\MaterialStockEventUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusPackage;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusPackage;
 use BaksDev\Orders\Order\Entity\Event\OrderEventInterface;
 use BaksDev\Orders\Order\Entity\Invariable\OrderInvariableInterface;
 use BaksDev\Orders\Order\Type\Event\OrderEventUid;
@@ -43,13 +43,6 @@ final class PackageMaterialStockDTO implements MaterialStockEventInterface, Orde
 {
     /** Идентификатор */
     private ?MaterialStockEventUid $id = null;
-
-    /**
-     * Ответственное лицо (Профиль пользователя)
-     * @deprecated Переносится в Invariable
-     */
-    #[Assert\Uuid]
-    private ?UserProfileUid $profile = null;
 
     /** Статус заявки - УПАКОВКА */
     #[Assert\NotBlank]
@@ -80,7 +73,7 @@ final class PackageMaterialStockDTO implements MaterialStockEventInterface, Orde
     /** Идентификатор заказа на сборку */
     private Orders\MaterialStockOrderDTO $ord;
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     #[Assert\Valid]
     private ArrayCollection $material;
 
@@ -131,7 +124,7 @@ final class PackageMaterialStockDTO implements MaterialStockEventInterface, Orde
         $this->id = null;
     }
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     public function getMaterial(): ArrayCollection
     {
         return $this->material;
@@ -142,12 +135,12 @@ final class PackageMaterialStockDTO implements MaterialStockEventInterface, Orde
         $this->material = $material;
     }
 
-    public function addMaterial(Products\MaterialStockDTO $material): void
+    public function addMaterial(Materials\MaterialStockDTO $material): void
     {
         $this->material->add($material);
     }
 
-    public function removeMaterial(Products\MaterialStockDTO $material): void
+    public function removeMaterial(Materials\MaterialStockDTO $material): void
     {
         $this->material->removeElement($material);
     }

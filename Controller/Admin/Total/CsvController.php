@@ -52,7 +52,7 @@ final class CsvController extends AbstractController
     ): Response
     {
         /**
-         * Фильтр продукции по ТП
+         * Фильтр сырья по ТП
          */
         $filter = new MaterialFilterDTO();
         $filterForm = $this
@@ -105,9 +105,6 @@ final class CsvController extends AbstractController
                 $offer = $call->call($environment, $data['material_offer_value'], $data['material_offer_reference'].'_render');
                 $name .= $offer ? ' '.$offer : null;
 
-                $name .= $data['material_offer_postfix'] ? ' '.$data['material_offer_postfix'] : null;
-                $name .= $data['material_variation_postfix'] ? ' '.$data['material_variation_postfix'] : null;
-                $name .= $data['material_modification_postfix'] ? ' '.$data['material_modification_postfix'] : null;
 
                 $Money = new Money($data['material_price'], true);
                 $quantity = ($data['stock_total'] - $data['stock_reserve']);
@@ -128,7 +125,7 @@ final class CsvController extends AbstractController
                 ]);
             }
 
-            /** Общее количество продукции и общая стоимость */
+            /** Общее количество сырья и общая стоимость */
             fputcsv($handle, [
                 '',
                 '',

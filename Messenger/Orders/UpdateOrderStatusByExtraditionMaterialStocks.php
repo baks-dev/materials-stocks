@@ -29,7 +29,7 @@ use BaksDev\Centrifugo\Server\Publish\CentrifugoPublishInterface;
 use BaksDev\Core\Deduplicator\DeduplicatorInterface;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Messenger\MaterialStockMessage;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusExtradition;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusExtradition;
 use BaksDev\Orders\Order\Repository\CurrentOrderEvent\CurrentOrderEventInterface;
 use BaksDev\Orders\Order\Type\Status\OrderStatus\OrderStatusExtradition;
 use BaksDev\Orders\Order\UseCase\Admin\Status\OrderStatusDTO;
@@ -67,7 +67,7 @@ final readonly class UpdateOrderStatusByExtraditionMaterialStocks
         }
 
         // Если Статус складской заявки не является "Extradition «Укомплектована, готова к выдаче»
-        if(false === $MaterialStockEvent->getStatus()->equals(MaterialStockStatusExtradition::class))
+        if(false === $MaterialStockEvent->equalsMaterialStockStatus(MaterialStockStatusExtradition::class))
         {
             return;
         }

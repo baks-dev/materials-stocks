@@ -28,42 +28,46 @@ namespace BaksDev\Materials\Stocks\Repository\AllMaterialStocksPurchase;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Services\Paginator\PaginatorInterface;
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
+use BaksDev\Materials\Catalog\Entity\Category\MaterialCategory;
+use BaksDev\Materials\Catalog\Entity\Event\MaterialEvent;
+use BaksDev\Materials\Catalog\Entity\Info\MaterialInfo;
+use BaksDev\Materials\Catalog\Entity\Material;
+use BaksDev\Materials\Catalog\Entity\Offers\Image\MaterialOfferImage;
+use BaksDev\Materials\Catalog\Entity\Offers\MaterialOffer;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Image\MaterialVariationImage;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\MaterialVariation;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Modification\Image\MaterialModificationImage;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Modification\MaterialModification;
+use BaksDev\Materials\Catalog\Entity\Photo\MaterialPhoto;
+use BaksDev\Materials\Catalog\Entity\Trans\MaterialTrans;
+use BaksDev\Materials\Category\Entity\CategoryMaterial;
+use BaksDev\Materials\Category\Entity\Offers\CategoryMaterialOffers;
+use BaksDev\Materials\Category\Entity\Offers\Variation\CategoryMaterialVariation;
+use BaksDev\Materials\Category\Entity\Offers\Variation\Modification\CategoryMaterialModification;
+use BaksDev\Materials\Category\Entity\Trans\CategoryMaterialTrans;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
+use BaksDev\Materials\Stocks\Entity\Stock\Invariable\MaterialStocksInvariable;
 use BaksDev\Materials\Stocks\Entity\Stock\Materials\MaterialStockMaterial;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Entity\Stock\Modify\MaterialStockModify;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Products\Category\Entity\CategoryProduct;
-use BaksDev\Products\Category\Entity\Info\CategoryProductInfo;
-use BaksDev\Products\Category\Entity\Offers\CategoryProductOffers;
-use BaksDev\Products\Category\Entity\Offers\Variation\CategoryProductVariation;
-use BaksDev\Products\Category\Entity\Offers\Variation\Modification\CategoryProductModification;
-use BaksDev\Products\Category\Entity\Trans\CategoryProductTrans;
-use BaksDev\Products\Product\Entity\Category\ProductCategory;
-use BaksDev\Products\Product\Entity\Event\ProductEvent;
-use BaksDev\Products\Product\Entity\Info\ProductInfo;
-use BaksDev\Products\Product\Entity\Offers\Image\ProductOfferImage;
-use BaksDev\Products\Product\Entity\Offers\ProductOffer;
-use BaksDev\Products\Product\Entity\Offers\Variation\Image\ProductVariationImage;
-use BaksDev\Products\Product\Entity\Offers\Variation\Modification\Image\ProductModificationImage;
-use BaksDev\Products\Product\Entity\Offers\Variation\Modification\ProductModification;
-use BaksDev\Products\Product\Entity\Offers\Variation\ProductVariation;
-use BaksDev\Products\Product\Entity\Photo\ProductPhoto;
-use BaksDev\Products\Product\Entity\Product;
-use BaksDev\Products\Product\Entity\Trans\ProductTrans;
 use BaksDev\Users\Profile\UserProfile\Entity\Avatar\UserProfileAvatar;
 use BaksDev\Users\Profile\UserProfile\Entity\Event\UserProfileEvent;
 use BaksDev\Users\Profile\UserProfile\Entity\Info\UserProfileInfo;
 use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use BaksDev\Users\User\Entity\User;
+use BaksDev\Users\User\Type\Id\UserUid;
 
 final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurchaseInterface
 {
+    private UserUid|false $usr = false;
+
     private UserProfileUid|false $profile = false;
 
     private SearchDTO|false $search = false;
+
 
     public function __construct(
         private readonly DBALQueryBuilder $DBALQueryBuilder,
@@ -75,6 +79,24 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
         $this->search = $search;
         return $this;
     }
+
+    public function user(User|UserUid|string $user): self
+    {
+        if($user instanceof User)
+        {
+            $user = $user->getId();
+        }
+
+        if(is_string($user))
+        {
+            $user = new UserUid($user);
+        }
+
+        $this->usr = $user;
+
+        return $this;
+    }
+
 
     public function profile(UserProfile|UserProfileUid|string $profile): self
     {
@@ -99,34 +121,52 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             ->createQueryBuilder(self::class)
             ->bindLocal();
 
-        // Stock
-
-        // MaterialStock
         $dbal
-            ->select('stock.id')
-            ->addSelect('stock.event')
-            ->from(MaterialStock::class, 'stock');
+            ->addSelect('invariable.number')
+            ->from(MaterialStocksInvariable::class, 'invariable');
 
-        // MaterialStockEvent
-        // $dbal->addSelect('event.total');
+        if($this->usr instanceof UserUid)
+        {
+            $dbal
+                ->where('invariable.usr = :usr')
+                ->setParameter('usr', $this->usr, UserUid::TYPE);
+        }
+
+        if($this->profile instanceof UserProfileUid)
+        {
+            $dbal
+                ->andWhere('invariable.profile = :profile')
+                ->setParameter('profile', $this->profile, UserProfileUid::TYPE);
+        }
+
+
         $dbal
-            ->addSelect('event.number')
+            ->addSelect('stock.id AS id')
+            ->addSelect('stock.event AS event')
+            ->join(
+                'invariable',
+                MaterialStock::class,
+                'stock',
+                'stock.id = invariable.main'
+            );
+
+
+        $dbal
             ->addSelect('event.comment')
             ->addSelect('event.status')
             ->join(
                 'stock',
                 MaterialStockEvent::class,
                 'event',
-                'event.id = stock.event AND event.status = :status'.($this->profile ? ' AND event.profile = :profile' : '')
+                'event.id = stock.event AND event.status = :status'
             );
 
 
-        if($this->profile)
-        {
-            $dbal->setParameter('profile', $this->profile, UserProfileUid::TYPE);
-        }
-
-        $dbal->setParameter('status', new MaterialStockStatus(new MaterialStockstatus\MaterialStockStatusPurchase()), MaterialStockStatus::TYPE);
+        $dbal->setParameter(
+            'status',
+            MaterialStockStatus\Collection\MaterialStockStatusPurchase::class,
+            MaterialStockStatus::TYPE
+        );
 
 
         // MaterialStockModify
@@ -149,14 +189,12 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'stock_material.event = stock.event'
             );
 
-
-        // Product
         $dbal
             ->addSelect('material.id as material_id')
             ->addSelect('material.event as material_event')
             ->join(
                 'stock_material',
-                Product::class,
+                Material::class,
                 'material',
                 'material.id = stock_material.material'
             );
@@ -164,16 +202,15 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
         // Material Event
         $dbal->join(
             'material',
-            ProductEvent::class,
+            MaterialEvent::class,
             'material_event',
             'material_event.id = material.event'
         );
 
         $dbal
-            ->addSelect('material_info.url AS material_url')
             ->leftJoin(
                 'material_event',
-                ProductInfo::class,
+                MaterialInfo::class,
                 'material_info',
                 'material_info.material = material.id'
             );
@@ -183,7 +220,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             ->addSelect('material_trans.name as material_name')
             ->join(
                 'material_event',
-                ProductTrans::class,
+                MaterialTrans::class,
                 'material_trans',
                 'material_trans.event = material_event.id AND material_trans.local = :local'
             );
@@ -193,10 +230,9 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
         $dbal
             ->addSelect('material_offer.id as material_offer_uid')
             ->addSelect('material_offer.value as material_offer_value')
-            ->addSelect('material_offer.postfix as material_offer_postfix')
             ->leftJoin(
                 'material_event',
-                ProductOffer::class,
+                MaterialOffer::class,
                 'material_offer',
                 'material_offer.event = material_event.id AND material_offer.const = stock_material.offer'
             );
@@ -206,7 +242,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             ->addSelect('category_offer.reference as material_offer_reference')
             ->leftJoin(
                 'material_offer',
-                CategoryProductOffers::class,
+                CategoryMaterialOffers::class,
                 'category_offer',
                 'category_offer.id = material_offer.category_offer'
             );
@@ -216,10 +252,9 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
         $dbal
             ->addSelect('material_offer_variation.id as material_variation_uid')
             ->addSelect('material_offer_variation.value as material_variation_value')
-            ->addSelect('material_offer_variation.postfix as material_variation_postfix')
             ->leftJoin(
                 'material_offer',
-                ProductVariation::class,
+                MaterialVariation::class,
                 'material_offer_variation',
                 'material_offer_variation.offer = material_offer.id AND material_offer_variation.const = stock_material.variation'
             );
@@ -229,7 +264,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             ->addSelect('category_offer_variation.reference as material_variation_reference')
             ->leftJoin(
                 'material_offer_variation',
-                CategoryProductVariation::class,
+                CategoryMaterialVariation::class,
                 'category_offer_variation',
                 'category_offer_variation.id = material_offer_variation.category_variation'
             );
@@ -239,10 +274,9 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
         $dbal
             ->addSelect('material_offer_modification.id as material_modification_uid')
             ->addSelect('material_offer_modification.value as material_modification_value')
-            ->addSelect('material_offer_modification.postfix as material_modification_postfix')
             ->leftJoin(
                 'material_offer_variation',
-                ProductModification::class,
+                MaterialModification::class,
                 'material_offer_modification',
                 'material_offer_modification.variation = material_offer_variation.id AND material_offer_modification.const = stock_material.modification'
             );
@@ -252,7 +286,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             ->addSelect('category_offer_modification.reference as material_modification_reference')
             ->leftJoin(
                 'material_offer_modification',
-                CategoryProductModification::class,
+                CategoryMaterialModification::class,
                 'category_offer_modification',
                 'category_offer_modification.id = material_offer_modification.category_modification'
             );
@@ -275,7 +309,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
 
         $dbal->leftJoin(
             'material_offer_modification',
-            ProductModificationImage::class,
+            MaterialModificationImage::class,
             'material_offer_modification_image',
             '
 			material_offer_modification_image.modification = material_offer_modification.id AND
@@ -285,7 +319,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
 
         $dbal->leftJoin(
             'material_offer',
-            ProductVariationImage::class,
+            MaterialVariationImage::class,
             'material_offer_variation_image',
             '
 			material_offer_variation_image.variation = material_offer_variation.id AND
@@ -295,7 +329,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
 
         $dbal->leftJoin(
             'material_offer',
-            ProductOfferImage::class,
+            MaterialOfferImage::class,
             'material_offer_images',
             '
 			material_offer_variation_image.name IS NULL AND
@@ -306,7 +340,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
 
         $dbal->leftJoin(
             'material_offer',
-            ProductPhoto::class,
+            MaterialPhoto::class,
             'material_photo',
             '
 			material_offer_images.name IS NULL AND
@@ -320,13 +354,13 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
 			CASE
 			 
 			 WHEN material_offer_modification_image.name IS NOT NULL THEN
-					CONCAT ( '/upload/".$dbal->table(ProductModificationImage::class)."' , '/', material_offer_modification_image.name)
+					CONCAT ( '/upload/".$dbal->table(MaterialModificationImage::class)."' , '/', material_offer_modification_image.name)
 			   WHEN material_offer_variation_image.name IS NOT NULL THEN
-					CONCAT ( '/upload/".$dbal->table(ProductVariationImage::class)."' , '/', material_offer_variation_image.name)
+					CONCAT ( '/upload/".$dbal->table(MaterialVariationImage::class)."' , '/', material_offer_variation_image.name)
 			   WHEN material_offer_images.name IS NOT NULL THEN
-					CONCAT ( '/upload/".$dbal->table(ProductOfferImage::class)."' , '/', material_offer_images.name)
+					CONCAT ( '/upload/".$dbal->table(MaterialOfferImage::class)."' , '/', material_offer_images.name)
 			   WHEN material_photo.name IS NOT NULL THEN
-					CONCAT ( '/upload/".$dbal->table(ProductPhoto::class)."' , '/', material_photo.name)
+					CONCAT ( '/upload/".$dbal->table(MaterialPhoto::class)."' , '/', material_photo.name)
 			   ELSE NULL
 			END AS material_image
 		"
@@ -366,14 +400,14 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
         // Категория
         $dbal->leftJoin(
             'material_event',
-            ProductCategory::class,
+            MaterialCategory::class,
             'material_event_category',
             'material_event_category.event = material_event.id AND material_event_category.root = true'
         );
 
         $dbal->leftJoin(
             'material_event_category',
-            CategoryProduct::class,
+            CategoryMaterial::class,
             'category',
             'category.id = material_event_category.category'
         );
@@ -382,18 +416,9 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             ->addSelect('category_trans.name AS category_name')
             ->leftJoin(
                 'category',
-                CategoryProductTrans::class,
+                CategoryMaterialTrans::class,
                 'category_trans',
                 'category_trans.event = category.event AND category_trans.local = :local'
-            );
-
-        $dbal
-            ->addSelect('category_info.url AS category_url')
-            ->leftJoin(
-                'category',
-                CategoryProductInfo::class,
-                'category_info',
-                'category_info.event = category.event'
             );
 
         // ОТВЕТСТВЕННЫЙ
@@ -401,23 +426,23 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
         // UserProfile
         $dbal
             ->addSelect('users_profile.event as users_profile_event')
-            ->join(
+            ->leftJoin(
                 'event',
                 UserProfile::class,
                 'users_profile',
-                'users_profile.id = event.profile'
+                'users_profile.id = invariable.profile'
             );
 
         // Info
-        $dbal->join(
+        $dbal->leftJoin(
             'event',
             UserProfileInfo::class,
             'users_profile_info',
-            'users_profile_info.profile = event.profile'
+            'users_profile_info.profile = invariable.profile'
         );
 
         // Event
-        $dbal->join(
+        $dbal->leftJoin(
             'users_profile',
             UserProfileEvent::class,
             'users_profile_event',
@@ -427,7 +452,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
         // Personal
         $dbal
             ->addSelect('users_profile_personal.username AS users_profile_username')
-            ->join(
+            ->leftJoin(
                 'users_profile_event',
                 UserProfilePersonal::class,
                 'users_profile_personal',
@@ -455,7 +480,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
         {
             $dbal
                 ->createSearchQueryBuilder($this->search)
-                ->addSearchLike('event.number');
+                ->addSearchLike('invariable.number');
         }
 
         $dbal->orderBy('modify.mod_date');

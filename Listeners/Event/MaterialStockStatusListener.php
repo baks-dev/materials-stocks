@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace BaksDev\Materials\Stocks\Listeners\Event;
 
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\MaterialStockStatusCollection;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\MaterialStockStatusCollection;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatusType;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;

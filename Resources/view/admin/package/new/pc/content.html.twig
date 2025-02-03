@@ -8,15 +8,15 @@
 
         <div class="modal-header">
             <h5 class="modal-title">
-                {{ 'Добавить заявку на перемещение продукции'|trans }}
+                {{ 'Добавить заявку на перемещение сырья'|trans }}
             </h5>
         </div>
 
         <div class="modal-body">
 
             <div class="d-flex gap-3">
-                <div class="w-50" id="preProduct">
-                    {{ form_row(form.preProduct, { label: 'Продукт', placeholder: 'Выберите продукцию из списка...', attr: { 'data-select' : 'select2' } }) }}
+                <div class="w-50" id="preMaterial">
+                    {{ form_row(form.preMaterial, { label: 'Продукт', placeholder: 'Выберите сырьё из списка...', attr: { 'data-select' : 'select2' } }) }}
                 </div>
             </div>
 

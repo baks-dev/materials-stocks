@@ -38,7 +38,7 @@ final class MaterialWarehouseTotalRepository implements MaterialWarehouseTotalIn
     public function __construct(private readonly DBALQueryBuilder $DBALQueryBuilder) {}
 
     /**
-     * Метод возвращает доступное количество данной продукции на указанном складе
+     * Метод возвращает доступное количество данной сырья на указанном складе
      */
     public function getMaterialProfileTotal(
         UserProfileUid $profile,
@@ -59,7 +59,7 @@ final class MaterialWarehouseTotalRepository implements MaterialWarehouseTotalIn
         $qb->setParameter('profile', $profile, UserProfileUid::TYPE);
 
         $qb->andWhere('stock.material = :material');
-        $qb->setParameter('material', $material, ProductUid::TYPE);
+        $qb->setParameter('material', $material, MaterialUid::TYPE);
 
         if($offer)
         {
@@ -95,7 +95,7 @@ final class MaterialWarehouseTotalRepository implements MaterialWarehouseTotalIn
     }
 
     /**
-     * Метод возвращает весь резерв данной продукции на указанном складе
+     * Метод возвращает весь резерв данной сырья на указанном складе
      */
     public function getMaterialProfileReserve(
         UserProfileUid $profile,
@@ -116,7 +116,7 @@ final class MaterialWarehouseTotalRepository implements MaterialWarehouseTotalIn
         $qb->setParameter('profile', $profile, UserProfileUid::TYPE);
 
         $qb->andWhere('stock.material = :material');
-        $qb->setParameter('material', $material, ProductUid::TYPE);
+        $qb->setParameter('material', $material, MaterialUid::TYPE);
 
         if($offer)
         {
@@ -152,7 +152,7 @@ final class MaterialWarehouseTotalRepository implements MaterialWarehouseTotalIn
     }
 
     /**
-     * Метод возвращает количество данной продукции на указанном складе без резерва
+     * Метод возвращает количество данной сырья на указанном складе без резерва
      */
     public function getMaterialProfileTotalNotReserve(
         UserProfileUid $profile,
@@ -173,7 +173,7 @@ final class MaterialWarehouseTotalRepository implements MaterialWarehouseTotalIn
         $qb->setParameter('profile', $profile, UserProfileUid::TYPE);
 
         $qb->andWhere('stock.material = :material');
-        $qb->setParameter('material', $material, ProductUid::TYPE);
+        $qb->setParameter('material', $material, MaterialUid::TYPE);
 
         if($offer)
         {

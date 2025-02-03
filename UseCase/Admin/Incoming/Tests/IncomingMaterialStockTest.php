@@ -34,7 +34,7 @@ use BaksDev\Materials\Stocks\Repository\CurrentMaterialStocks\CurrentMaterialSto
 use BaksDev\Materials\Stocks\Repository\MaterialWarehouseTotal\MaterialWarehouseTotalInterface;
 use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\MaterialStockStatusCollection;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\MaterialStockStatusCollection;
 use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\IncomingMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\IncomingMaterialStockHandler;
 use BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\Tests\WarehouseMaterialStockTest;
@@ -72,14 +72,14 @@ final class IncomingMaterialStockTest extends KernelTestCase
         $IncomingMaterialStockDTO->setComment('IncomingComment');
 
         self::assertInstanceOf(MaterialStockStatus::class, $IncomingMaterialStockDTO->getStatus());
-        self::assertTrue($IncomingMaterialStockDTO->getStatus()->equals(MaterialStockstatus\MaterialStockStatusIncoming::class));
+        self::assertTrue($IncomingMaterialStockDTO->getStatus()->equals(MaterialStockstatus\Collection\MaterialStockStatusIncoming::class));
 
         self::assertCount(1, $IncomingMaterialStockDTO->getMaterial());
 
 
         $MaterialStockDTO = $IncomingMaterialStockDTO->getMaterial()->current();
 
-        $MaterialUid = new ProductUid();
+        $MaterialUid = new MaterialUid();
         self::assertTrue($MaterialUid->equals($MaterialStockDTO->getMaterial()));
 
         $MaterialOfferConst = new MaterialOfferConst();

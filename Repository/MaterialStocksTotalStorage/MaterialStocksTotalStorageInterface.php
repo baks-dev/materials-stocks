@@ -34,7 +34,7 @@ interface MaterialStocksTotalStorageInterface
 {
     public function profile(UserProfileUid|string $profile): self;
 
-    public function material(ProductUid|string $material): self;
+    public function material(MaterialUid|string $material): self;
 
     public function offer(MaterialOfferConst|string|false|null $offer): self;
 
@@ -44,6 +44,6 @@ interface MaterialStocksTotalStorageInterface
 
     public function storage(string|false|null $storage): self;
 
-    /** Метод возвращает складской остаток (место для хранения указанной продукции) указанного профиля */
+    /** Метод возвращает складской остаток (место для хранения указанной сырья) указанного профиля */
     public function find(): ?MaterialStockTotal;
 }

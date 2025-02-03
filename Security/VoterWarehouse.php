@@ -26,6 +26,7 @@ namespace BaksDev\Materials\Stocks\Security;
 
 use BaksDev\Menu\Admin\Command\Upgrade\MenuAdminInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\Group\Collection\MenuAdminSectionGroupCollectionInterface;
+use BaksDev\Products\Stocks\Security\MenuGroupStocks;
 use BaksDev\Users\Profile\Group\Security\RoleInterface;
 use BaksDev\Users\Profile\Group\Security\VoterInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
@@ -60,8 +61,9 @@ final class VoterWarehouse implements VoterInterface, MenuAdminInterface
     }
 
     /** Метод возвращает PATH раздела */
-    public function getPath(): string
+    public function getPath(): string|false
     {
+        return false;
         return 'materials-stocks:admin.warehouse.index';
     }
 
@@ -69,13 +71,14 @@ final class VoterWarehouse implements VoterInterface, MenuAdminInterface
     /** Метод возвращает секцию, в которую помещается ссылка на раздел */
     public function getGroupMenu(): MenuAdminSectionGroupCollectionInterface|bool
     {
+        return false;
         return new MenuGroupStocks();
     }
 
     /** Метод возвращает позицию, в которую располагается ссылка в секции меню */
     public function getSortMenu(): int
     {
-        return 130;
+        return 263;
     }
 
     /** Метод возвращает флаг "Показать в выпадающем меню"  */

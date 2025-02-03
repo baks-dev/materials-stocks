@@ -33,7 +33,7 @@ use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 interface MaterialWarehouseTotalInterface
 {
     /**
-     * Метод возвращает доступное количество (с учетом резерва!!!) данной продукции на указанном складе
+     * Метод возвращает доступное количество (с учетом резерва!!!) данной сырья на указанном складе
      */
     public function getMaterialProfileTotal(
         UserProfileUid $profile,
@@ -45,7 +45,7 @@ interface MaterialWarehouseTotalInterface
 
 
     /**
-     * Метод возвращает весь резерв данной продукции на указанном складе
+     * Метод возвращает весь резерв данной сырья на указанном складе
      */
     public function getMaterialProfileReserve(
         UserProfileUid $profile,
@@ -56,7 +56,7 @@ interface MaterialWarehouseTotalInterface
     ): int;
 
     /**
-     * Метод возвращает общее количество (без резерва!!!) данной продукции на указанном складе
+     * Метод возвращает общее количество (без резерва!!!) данной сырья на указанном складе
      */
     public function getMaterialProfileTotalNotReserve(
         UserProfileUid $profile,

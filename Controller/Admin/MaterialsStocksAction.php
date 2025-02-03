@@ -35,7 +35,7 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
-//#[RoleSecurity('ROLE_MATERIALS_STOCKS_EDIT')]
+//#[RoleSecurity('ROLE_materials-stocks_EDIT')]
 final class MaterialsStocksAction extends AbstractController
 {
     #[Route('/admin/material/stocks/action/{id}', name: 'admin.action', methods: ['GET', 'POST'])]
@@ -43,7 +43,6 @@ final class MaterialsStocksAction extends AbstractController
         Request $request,
         #[MapEntity] MaterialStock $MaterialStock,
         MaterialsStocksActionInterface $materialsStocksAction
-        //ProductsStocksHandler $MaterialsStocksHandler,
     ): Response
     {
         return $this->render([

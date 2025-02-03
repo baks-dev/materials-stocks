@@ -31,12 +31,12 @@ use BaksDev\Materials\Stocks\Entity\Stock\Materials\MaterialStockMaterial;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusCancel;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusIncoming;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusMoving;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusPackage;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusWarehouse;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\MaterialStockStatusInterface;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusCancel;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusIncoming;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusMoving;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusPackage;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusWarehouse;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\MaterialStockStatusInterface;
 
 final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
 {
@@ -73,42 +73,13 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
 
 
     /**
-     * Метод возвращает всю продукцию заявке с определенным статусом
+     * Метод возвращает всю сырьё заявке с определенным статусом
      */
     public function getMaterialsByMaterialStocksStatus(
         MaterialStockUid $id,
         MaterialStockStatus|MaterialStockStatusInterface|string $status
     ): ?array
     {
-        //        if(is_string($status))
-        //        {
-        //            $status = new $status;
-        //        }
-
-        //        $status = $status instanceof MaterialStockstatus ? $status : new MaterialStockstatus($status);
-        //
-        //        $qb = $this->entityManager->createQueryBuilder();
-        //
-        //        $qb->select('material');
-        //        $qb->from(MaterialStockEntity\MaterialStock::class, 'stock');
-        //
-        //        $qb->join(
-        //            MaterialStockEntity\Event\MaterialStockEvent::class,
-        //            'event',
-        //            'WITH',
-        //            'event.id = stock.event AND event.status = :status'
-        //        );
-        //
-        //        $qb->leftJoin(
-        //            MaterialStockEntity\Products\MaterialStockProductMaterial::class,
-        //            'material',
-        //            'WITH',
-        //            'material.event = event.id'
-        //        );
-        //
-        //        $qb->where('stock.id = :id');
-        //        $qb->setParameter('id', $id, MaterialStockUid::TYPE);
-        //        $qb->setParameter('status', $status, MaterialStockstatus::TYPE);
 
         $orm = $this->builder();
 
@@ -120,30 +91,9 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
     }
 
 
-    /** Метод возвращает всю продукция в приходном ордере */
+    /** Метод возвращает всю сырьё в приходном ордере */
     public function getMaterialsIncomingStocks(MaterialStockUid $id): ?array
     {
-        //        $qb = $this->entityManager->createQueryBuilder();
-        //
-        //        $qb->select('material');
-        //        $qb->from(MaterialStockEntity\MaterialStock::class, 'stock');
-        //
-        //        $qb->join(
-        //            MaterialStockEntity\Event\MaterialStockEvent::class,
-        //            'event',
-        //            'WITH',
-        //            'event.id = stock.event AND event.status = :status'
-        //        );
-        //
-        //        $qb->leftJoin(
-        //            MaterialStockEntity\Products\MaterialStockProductMaterial::class,
-        //            'material',
-        //            'WITH',
-        //            'material.event = event.id'
-        //        );
-        //
-        //        $qb->where('stock.id = :id');
-        //        $qb->setParameter('id', $id, MaterialStockUid::TYPE);
 
         $orm = $this->builder();
 
@@ -155,32 +105,10 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
 
 
     /**
-     * Метод возвращает всю продукцию для сборки (Package)
+     * Метод возвращает всю сырьё для сборки (Package)
      */
     public function getMaterialsPackageStocks(MaterialStockUid $id): ?array
     {
-        //        $qb = $this->entityManager->createQueryBuilder();
-        //
-        //        $qb->select('material');
-        //        $qb->from(MaterialStockEntity\MaterialStock::class, 'stock');
-        //
-        //        $qb->join(
-        //            MaterialStockEntity\Event\MaterialStockEvent::class,
-        //            'event',
-        //            'WITH',
-        //            'event.id = stock.event AND event.status = :status'
-        //        );
-        //
-        //        $qb->leftJoin(
-        //            MaterialStockEntity\Products\MaterialStockProductMaterial::class,
-        //            'material',
-        //            'WITH',
-        //            'material.event = event.id'
-        //        );
-        //
-        //        $qb->where('stock.id = :id');
-
-
         $orm = $this->builder();
 
         $orm->setParameter('id', $id, MaterialStockUid::TYPE);
@@ -190,31 +118,10 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
     }
 
     /**
-     * Метод возвращает всю продукцию для перемещения
+     * Метод возвращает всю сырьё для перемещения
      */
     public function getMaterialsMovingStocks(MaterialStockUid $id): ?array
     {
-        //        $qb = $this->entityManager->createQueryBuilder();
-        //
-        //        $qb->select('material');
-        //        $qb->from(MaterialStockEntity\MaterialStock::class, 'stock');
-        //
-        //        $qb->join(
-        //            MaterialStockEntity\Event\MaterialStockEvent::class,
-        //            'event',
-        //            'WITH',
-        //            'event.id = stock.event AND event.status = :status'
-        //        );
-        //
-        //        $qb->leftJoin(
-        //            MaterialStockEntity\Products\MaterialStockProductMaterial::class,
-        //            'material',
-        //            'WITH',
-        //            'material.event = event.id'
-        //        );
-        //
-        //        $qb->where('stock.id = :id');
-
         $orm = $this->builder();
 
         $orm->setParameter('id', $id, MaterialStockUid::TYPE);
@@ -225,31 +132,10 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
 
 
     /**
-     * Метод возвращает всю продукцию которая переместилась со склада
+     * Метод возвращает всю сырьё которая переместилась со склада
      */
     public function getMaterialsWarehouseStocks(MaterialStockUid $id): ?array
     {
-        //        $qb = $this->entityManager->createQueryBuilder();
-        //
-        //        $qb->select('material');
-        //        $qb->from(MaterialStockEntity\MaterialStock::class, 'stock');
-        //
-        //        $qb->join(
-        //            MaterialStockEntity\Event\MaterialStockEvent::class,
-        //            'event',
-        //            'WITH',
-        //            'event.id = stock.event AND event.status = :status'
-        //        );
-        //
-        //        $qb->leftJoin(
-        //            MaterialStockEntity\Products\MaterialStockProductMaterial::class,
-        //            'material',
-        //            'WITH',
-        //            'material.event = event.id'
-        //        );
-        //
-        //        $qb->where('stock.id = :id');
-
         $orm = $this->builder();
 
         $orm->setParameter('id', $id, MaterialStockUid::TYPE);
@@ -260,31 +146,10 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
 
 
     /**
-     * Метод возвращает всю продукцию в отмененной заявке
+     * Метод возвращает всю сырьё в отмененной заявке
      */
     public function getMaterialsCancelStocks(MaterialStockUid $id): ?array
     {
-        //        $qb = $this->entityManager->createQueryBuilder();
-        //
-        //        $qb->select('material');
-        //        $qb->from(MaterialStockEntity\MaterialStock::class, 'stock');
-        //
-        //        $qb->join(
-        //            MaterialStockEntity\Event\MaterialStockEvent::class,
-        //            'event',
-        //            'WITH',
-        //            'event.id = stock.event AND event.status = :status'
-        //        );
-        //
-        //        $qb->leftJoin(
-        //            MaterialStockEntity\Products\MaterialStockProductMaterial::class,
-        //            'material',
-        //            'WITH',
-        //            'material.event = event.id'
-        //        );
-        //
-        //        $qb->where('stock.id = :id');
-
         $orm = $this->builder();
 
         $orm->setParameter('id', $id, MaterialStockUid::TYPE);

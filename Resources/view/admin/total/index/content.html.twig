@@ -32,12 +32,6 @@
 
             {{ card.material_offer_value|call_twig_func(card.material_offer_reference~'_render') }}
 
-            {# Постфикс торгового предложения #}
-            {{ card.material_offer_postfix }}
-            {# Постфикс множественного варианта #}
-            {{ card.material_variation_postfix }}
-            {# Постфикс модификации #}
-            {{ card.material_modification_postfix }}
 
         <td> {{ (card.stock_total - card.stock_reserve) }}
         <td> {{ card.stock_storage }}

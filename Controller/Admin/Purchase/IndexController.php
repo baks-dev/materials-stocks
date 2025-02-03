@@ -38,7 +38,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[RoleSecurity('ROLE_MATERIAL_STOCK_PURCHASE')]
 final class IndexController extends AbstractController
 {
-    /** Закупки продукции */
+    /** Закупки сырья */
     #[Route('/admin/material/stocks/purchase/{page<\d+>}', name: 'admin.purchase.index', methods: ['GET', 'POST'])]
     public function incoming(
         Request $request,
@@ -58,7 +58,7 @@ final class IndexController extends AbstractController
             )
             ->handleRequest($request);
 
-        $this->isAdmin() ?: $allPurchase->profile($this->getProfileUid());
+        $this->isAdmin() ?: $allPurchase->user($this->getUsr());
 
         // Получаем список закупок ответственного лица
         $query = $allPurchase

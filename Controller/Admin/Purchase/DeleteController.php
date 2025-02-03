@@ -85,7 +85,7 @@ final class DeleteController extends AbstractController
         /**
          * Получаем информацию о продукте для отображения в форме.
          * Предполагается что в коллекции закупки должен быть один продукт.
-         * @var MaterialStockMaterial $MaterialStockProductMaterial
+         * @var MaterialStockMaterial $MaterialStockMaterial
          */
 
         if($MaterialStocksEvent->getMaterial()->isEmpty())
@@ -96,10 +96,10 @@ final class DeleteController extends AbstractController
         $MaterialStockMaterial = $MaterialStocksEvent->getMaterial()->current();
 
         $material = $MaterialDetailByConst
-            ->material($MaterialStockProductMaterial->getMaterial())
-            ->offerConst($MaterialStockProductMaterial->getOffer())
-            ->variationConst($MaterialStockProductMaterial->getVariation())
-            ->modificationConst($MaterialStockProductMaterial->getModification())
+            ->material($MaterialStockMaterial->getMaterial())
+            ->offerConst($MaterialStockMaterial->getOffer())
+            ->variationConst($MaterialStockMaterial->getVariation())
+            ->modificationConst($MaterialStockMaterial->getModification())
             ->find();
 
         if($material === false)

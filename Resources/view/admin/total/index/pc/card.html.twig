@@ -15,9 +15,7 @@
 </td> #}
 
     <td class="text-center">
-        <a href="{{ path('materials-material:user.catalog.category', {
-            category: item.category_url
-        }) }}" class="text-decoration-none" target="_detail">{{ item.category_name }}</a>
+        <a href="#" class="text-decoration-none" target="_detail">{{ item.category_name }}</a>
 
     </td>
 
@@ -34,17 +32,8 @@
                 {% set image_path = img_host ~ img_dir ~ img_file %}
             {% endif %}
 
-            {% set material_href = path('materials-material:user.detail', {
-                category: item.category_url,
-                url: item.material_url,
-                offer : item.material_offer_value,
-                variation : item.material_variation_value,
-                modification : item.material_modification_value,
-                postfix:  (item.material_modification_postfix ?: item.material_variation_postfix ?: item.material_offer_postfix ?: null )|replace({ '/': '-' })
-            }) %}
-
             <div>
-                <a href="{{ material_href }}" class="icon rounded-3 lazy bg-contain p-1"
+                <a href="#" class="icon rounded-3 lazy bg-contain p-1"
                    data-bg="{{ image_path }}"
                    style="width: 45px; height: 45px;"
                    target="_detail"
@@ -54,7 +43,7 @@
             <div>
 
                 {# Название #}
-                <a href="{{ material_href }}"
+                <a href="#"
                    class="text-decoration-none mb-1 fw-bolder text-muted"
                    target="_detail"
                 >
@@ -68,12 +57,6 @@
                     {# Значение торгового предложения #}
                     {{ item.material_offer_value|call_twig_func(item.material_offer_reference~'_render') }}
 
-                    {# Постфикс торгового предложения #}
-                    {{ item.material_offer_postfix }}
-                    {# Постфикс множественного варианта #}
-                    {{ item.material_variation_postfix }}
-                    {# Постфикс модификации #}
-                    {{ item.material_modification_postfix }}
 
                     {# Свойства, учавствующие в названии #}
                     {# {% for name_property in arr_property | filter(props => props.field_name == true) %}

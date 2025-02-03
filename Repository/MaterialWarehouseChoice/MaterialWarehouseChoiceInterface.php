@@ -34,7 +34,7 @@ interface MaterialWarehouseChoiceInterface
 {
     public function user(UserUid|string $user): self;
 
-    public function material(ProductUid|string $material): self;
+    public function material(MaterialUid|string $material): self;
 
     public function offerConst(MaterialOfferConst|string $offer): self;
 

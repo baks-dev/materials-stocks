@@ -29,7 +29,7 @@ use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Repository\CurrentMaterialStocks\CurrentMaterialStocksInterface;
 use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\MaterialStockStatusCollection;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\MaterialStockStatusCollection;
 use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\Tests\PurchaseMaterialStockTest;
 use BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\WarehouseMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\WarehouseMaterialStockHandler;
@@ -72,8 +72,9 @@ final class WarehouseMaterialStockTest extends KernelTestCase
         self::assertEquals('Comment', $WarehouseMaterialStockDTO->getComment());
         $WarehouseMaterialStockDTO->setComment('WarehouseComment');
 
+
         self::assertInstanceOf(MaterialStockStatus::class, $WarehouseMaterialStockDTO->getStatus());
-        self::assertTrue($WarehouseMaterialStockDTO->getStatus()->equals(MaterialStockstatus\MaterialStockStatusWarehouse::class));
+        self::assertTrue($WarehouseMaterialStockDTO->getStatus()->equals(MaterialStockstatus\Collection\MaterialStockStatusWarehouse::class));
 
         /** @var WarehouseMaterialStockHandler $WarehouseMaterialStockHandler */
         $WarehouseMaterialStockHandler = self::getContainer()->get(WarehouseMaterialStockHandler::class);

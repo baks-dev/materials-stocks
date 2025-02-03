@@ -29,7 +29,7 @@ use BaksDev\Core\Deduplicator\DeduplicatorInterface;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Repository\MaterialStocksByOrder\MaterialStocksByOrderInterface;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusCancel;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusCancel;
 use BaksDev\Materials\Stocks\UseCase\Admin\Cancel\CancelMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Cancel\CancelMaterialStockHandler;
 use BaksDev\Orders\Order\Messenger\OrderMessage;
@@ -99,7 +99,7 @@ final readonly class CancelMaterialStocksByCancelOrder
         foreach($stocks as $MaterialStockEvent)
         {
             /** Если статус складской заявки Canceled «Отменен» - пропускаем */
-            if(true === $MaterialStockEvent->equalsMaterialStockstatus(MaterialStockStatusCancel::class))
+            if(true === $MaterialStockEvent->equalsMaterialStockStatus(MaterialStockStatusCancel::class))
             {
                 continue;
             }

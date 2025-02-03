@@ -32,7 +32,7 @@ interface MaterialOfferChoiceWarehouseInterface
 {
     public function user(UserUid|string $user): self;
 
-    public function material(ProductUid|string $material): self;
+    public function material(MaterialUid|string $material): self;
 
     /** Метод возвращает все идентификаторы торговых предложений, имеющиеся в наличии на данном складе */
     public function getMaterialsOfferExistWarehouse(): Generator;

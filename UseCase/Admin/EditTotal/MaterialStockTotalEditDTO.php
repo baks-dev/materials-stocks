@@ -127,7 +127,7 @@ final class MaterialStockTotalEditDTO
     }
 
     /**
-     * Product
+     * Material
      */
     public function getMaterial(): MaterialUid
     {

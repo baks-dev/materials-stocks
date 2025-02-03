@@ -30,7 +30,7 @@ use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Entity\Stock\Move\MaterialStockMove;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusIncoming;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusIncoming;
 use BaksDev\Orders\Order\Type\Id\OrderUid;
 
 final readonly class ExistMaterialStocksMoveOrderRepository implements ExistMaterialStocksMoveOrderInterface
@@ -40,7 +40,7 @@ final readonly class ExistMaterialStocksMoveOrderRepository implements ExistMate
     /**
      * Метод проверяет, имеется ли заявка на перемещение по заказу
      */
-    public function existProductMoveOrder(OrderUid $order): bool
+    public function existMaterialMoveOrder(OrderUid $order): bool
     {
         $dbal = $this->DBALQueryBuilder->createQueryBuilder(self::class);
 

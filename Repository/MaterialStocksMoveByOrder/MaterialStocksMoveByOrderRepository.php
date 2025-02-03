@@ -73,7 +73,7 @@ final class MaterialStocksMoveByOrderRepository implements MaterialStocksMoveByO
         $qb->where('move.ord = :ord');
 
         $qb->setParameter('ord', $order, OrderUid::TYPE);
-        $qb->setParameter('status', new MaterialStockStatus(new MaterialStockstatus\MaterialStockStatusMoving()), MaterialStockStatus::TYPE);
+        $qb->setParameter('status', new MaterialStockStatus(new MaterialStockstatus\Collection\MaterialStockStatusMoving()), MaterialStockStatus::TYPE);
         $qb->setParameter('warehouse', $warehouse, ContactsRegionCallConst::TYPE);
 
         return $qb->getQuery()->getOneOrNullResult();

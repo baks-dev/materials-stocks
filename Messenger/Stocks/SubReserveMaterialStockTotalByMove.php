@@ -32,8 +32,8 @@ use BaksDev\Materials\Stocks\Entity\Stock\Materials\MaterialStockMaterial;
 use BaksDev\Materials\Stocks\Messenger\MaterialStockMessage;
 use BaksDev\Materials\Stocks\Messenger\Stocks\SubMaterialStocksTotal\SubMaterialStocksTotalAndReserveMessage;
 use BaksDev\Materials\Stocks\Repository\MaterialStocksById\MaterialStocksByIdInterface;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusMoving;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusWarehouse;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusMoving;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusWarehouse;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Target;
@@ -61,34 +61,37 @@ final class SubReserveMaterialStockTotalByMove
         }
 
         /** Получаем статус прошлого события заявки */
+        /** @var MaterialStockEvent $MaterialStockEventLast */
+
         $MaterialStockEventLast = $this->entityManager
             ->getRepository(MaterialStockEvent::class)
             ->find($message->getLast());
 
         /** Если статус предыдущего события заявки не является Moving «Перемещение» - завершаем обработчик*/
-        if(!$MaterialStockEventLast || false === $MaterialStockEventLast->getStatus()->equals(MaterialStockStatusMoving::class))
+        if(!$MaterialStockEventLast || false === $MaterialStockEventLast->equalsMaterialStockStatus(MaterialStockStatusMoving::class))
         {
             return;
         }
 
         /** Получаем статус активного события заявки */
+        /** @var MaterialStockEvent $MaterialStockEvent */
         $MaterialStockEvent = $this->entityManager
             ->getRepository(MaterialStockEvent::class)
             ->find($message->getEvent());
 
 
         /** Если статус активного события не является Warehouse «Отправили на склад» */
-        if(!$MaterialStockEvent || false === $MaterialStockEvent->getStatus()->equals(MaterialStockStatusWarehouse::class))
+        if(!$MaterialStockEvent || false === $MaterialStockEvent->equalsMaterialStockStatus(MaterialStockStatusWarehouse::class))
         {
             return;
         }
 
-        // Получаем всю продукцию в заявке которая перемещается со склада
+        // Получаем всю сырьё в заявке которая перемещается со склада
         $materials = $this->materialStocks->getMaterialsWarehouseStocks($message->getId());
 
         if(empty($materials))
         {
-            $this->logger->warning('Заявка не имеет продукции в коллекции', [self::class.':'.__LINE__]);
+            $this->logger->warning('Заявка не имеет сырья в коллекции', [self::class.':'.__LINE__]);
             return;
         }
 
@@ -113,7 +116,7 @@ final class SubReserveMaterialStockTotalByMove
         {
 
             $this->logger->info(
-                'Снимаем резерв и наличие на складе грузоотправителя при перемещении продукции',
+                'Снимаем резерв и наличие на складе грузоотправителя при перемещении сырья',
                 [
                     self::class.':'.__LINE__,
                     'number' => $MaterialStockEvent->getNumber(),
@@ -127,7 +130,7 @@ final class SubReserveMaterialStockTotalByMove
                 ]
             );
 
-            /** Снимаем резерв и остаток на единицу продукции на складе грузоотправителя */
+            /** Снимаем резерв и остаток на единицу сырья на складе грузоотправителя */
             for($i = 1; $i <= $material->getTotal(); $i++)
             {
                 $SubMaterialStocksTotalMessage = new SubMaterialStocksTotalAndReserveMessage(

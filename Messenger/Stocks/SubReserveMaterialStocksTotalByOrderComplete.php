@@ -30,13 +30,8 @@ use BaksDev\Core\Messenger\MessageDispatchInterface;
 use BaksDev\Materials\Stocks\Messenger\Stocks\SubMaterialStocksTotal\SubMaterialStocksTotalAndReserveMessage;
 use BaksDev\Materials\Stocks\Repository\MaterialWarehouseByOrder\MaterialWarehouseByOrderInterface;
 use BaksDev\Orders\Order\Entity\Event\OrderEvent;
-use BaksDev\Orders\Order\Entity\Products\OrderProduct;
 use BaksDev\Orders\Order\Messenger\OrderMessage;
 use BaksDev\Orders\Order\Type\Status\OrderStatus\OrderStatusCompleted;
-use BaksDev\Products\Product\Entity\Event\ProductEvent;
-use BaksDev\Products\Product\Entity\Offers\ProductOffer;
-use BaksDev\Products\Product\Entity\Offers\Variation\Modification\ProductModification;
-use BaksDev\Products\Product\Entity\Offers\Variation\ProductVariation;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -59,6 +54,10 @@ final readonly class SubReserveMaterialStocksTotalByOrderComplete
      */
     public function __invoke(OrderMessage $message): void
     {
+        // TODO:
+        return;
+
+
         $Deduplicator = $this->deduplicator
             ->namespace('materials-stocks')
             ->deduplication([
@@ -115,6 +114,9 @@ final readonly class SubReserveMaterialStocksTotalByOrderComplete
 
     public function changeReserve(OrderMaterial $material, UserProfileUid $profile): void
     {
+        // TODO:
+        return;
+
         /** Получаем продукт */
 
         /** ID продукта */
@@ -138,7 +140,7 @@ final readonly class SubReserveMaterialStocksTotalByOrderComplete
             ->find($material->getModification())?->getConst() : null;
 
         /**
-         * Снимаем резерв и остаток продукции на складе по одной единице продукции
+         * Снимаем резерв и остаток сырья на складе по одной единице сырья
          */
 
         $this->logger->info('Снимаем резерв и остаток на складе при выполненном заказа:');

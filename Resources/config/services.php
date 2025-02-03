@@ -43,7 +43,7 @@ return static function(ContainerConfigurator $configurator): void {
         ]);
 
     $services->load(
-        $NAMESPACE.'Type\Status\MaterialStockStatus\Collection\\',
-        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Status', 'MaterialStockStatus', 'Collection'])
+        $NAMESPACE.'Type\Status\MaterialStockStatus\\',
+        $PATH.implode(DIRECTORY_SEPARATOR, ['Type', 'Status', 'MaterialStockStatus'])
     );
 };

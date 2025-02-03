@@ -61,7 +61,7 @@ final class IndexController extends AbstractController
             ->handleRequest($request);
 
         /**
-         * Фильтр продукции по ТП
+         * Фильтр сырья по ТП
          */
         $filter = new MaterialFilterDTO($request);
         $filter->allVisible();

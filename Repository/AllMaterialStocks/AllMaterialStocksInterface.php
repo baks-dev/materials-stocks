@@ -11,7 +11,7 @@ use BaksDev\Users\User\Type\Id\UserUid;
 
 interface AllMaterialStocksInterface
 {
-    /** Метод возвращает полное состояние складских остатков продукции */
+    /** Метод возвращает полное состояние складских остатков сырья */
     public function findPaginator(
         User|UserUid $user,
         UserProfileUid $profile

@@ -21,7 +21,7 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus;
+namespace BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
 
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 

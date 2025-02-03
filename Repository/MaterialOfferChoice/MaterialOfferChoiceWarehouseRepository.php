@@ -26,13 +26,13 @@ declare(strict_types=1);
 namespace BaksDev\Materials\Stocks\Repository\MaterialOfferChoice;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
+use BaksDev\Materials\Catalog\Entity\Material;
+use BaksDev\Materials\Catalog\Entity\Offers\MaterialOffer;
 use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
+use BaksDev\Materials\Category\Entity\Offers\CategoryMaterialOffers;
+use BaksDev\Materials\Category\Entity\Offers\Trans\CategoryMaterialOffersTrans;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
-use BaksDev\Products\Category\Entity\Offers\CategoryProductOffers;
-use BaksDev\Products\Category\Entity\Offers\Trans\CategoryProductOffersTrans;
-use BaksDev\Products\Product\Entity\Offers\ProductOffer;
-use BaksDev\Products\Product\Entity\Product;
 use BaksDev\Users\User\Type\Id\UserUid;
 use Generator;
 use InvalidArgumentException;
@@ -58,11 +58,11 @@ final class MaterialOfferChoiceWarehouseRepository implements MaterialOfferChoic
     }
 
 
-    public function material(ProductUid|string $material): self
+    public function material(MaterialUid|string $material): self
     {
         if(is_string($material))
         {
-            $material = new ProductUid($material);
+            $material = new MaterialUid($material);
         }
 
         $this->material = $material;
@@ -93,14 +93,14 @@ final class MaterialOfferChoiceWarehouseRepository implements MaterialOfferChoic
 
         $dbal
             ->andWhere('stock.material = :material')
-            ->setParameter('material', $this->material, ProductUid::TYPE);
+            ->setParameter('material', $this->material, MaterialUid::TYPE);
 
         $dbal->andWhere('(stock.total - stock.reserve) > 0');
 
 
         $dbal->join(
             'stock',
-            Product::class,
+            Material::class,
             'material',
             'material.id = stock.material'
         );
@@ -108,7 +108,7 @@ final class MaterialOfferChoiceWarehouseRepository implements MaterialOfferChoic
 
         $dbal->join(
             'material',
-            ProductOffer::class,
+            MaterialOffer::class,
             'offer',
             'offer.const = stock.offer AND offer.event = material.event'
         );
@@ -117,14 +117,14 @@ final class MaterialOfferChoiceWarehouseRepository implements MaterialOfferChoic
 
         $dbal->join(
             'offer',
-            CategoryProductOffers::class,
+            CategoryMaterialOffers::class,
             'category_offer',
             'category_offer.id = offer.category_offer'
         );
 
         $dbal->leftJoin(
             'category_offer',
-            CategoryProductOffersTrans::class,
+            CategoryMaterialOffersTrans::class,
             'category_offer_trans',
             'category_offer_trans.offer = category_offer.id AND category_offer_trans.local = :local'
         );
@@ -135,13 +135,11 @@ final class MaterialOfferChoiceWarehouseRepository implements MaterialOfferChoic
         $dbal->addSelect('category_offer_trans.name AS option');
 
         $dbal->addSelect('(SUM(stock.total) - SUM(stock.reserve)) AS property');
-        $dbal->addSelect('offer.postfix AS characteristic');
         $dbal->addSelect('category_offer.reference AS reference');
 
         $dbal->groupBy('stock.offer');
         $dbal->addGroupBy('category_offer_trans.name');
         $dbal->addGroupBy('offer.value');
-        $dbal->addGroupBy('offer.postfix');
         $dbal->addGroupBy('category_offer.reference');
 
         return $dbal

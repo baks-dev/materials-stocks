@@ -37,7 +37,7 @@ final class MaterialStockDispatch
     public function __invoke(MaterialStockMessage $message): void
     {
         /// cacheClear
-        $cache = $this->cache->init('materials-material');
+        $cache = $this->cache->init('materials-catalog');
         $cache->clear();
     }
 }

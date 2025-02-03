@@ -32,7 +32,7 @@ use BaksDev\Materials\Category\Type\Id\CategoryMaterialUid;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEventInterface;
 use BaksDev\Materials\Stocks\Type\Event\MaterialStockEventUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusPurchase;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusPurchase;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -45,29 +45,27 @@ final class PurchaseMaterialStockDTO implements MaterialStockEventInterface
     #[Assert\IsNull]
     private ?MaterialStockEventUid $id = null;
 
-    /** Ответственное лицо (Профиль пользователя) */
-    #[Assert\NotBlank]
-    #[Assert\Uuid]
-    private readonly UserProfileUid $profile;
 
     /** Статус заявки - ПРИХОД */
     #[Assert\NotBlank]
     private readonly MaterialStockStatus $status;
 
-    /** Номер заявки */
-    #[Assert\NotBlank]
-    #[Assert\Type('string')]
-    #[Assert\Length(max: 36)]
-    private string $number;
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     #[Assert\Valid]
     private ArrayCollection $material;
 
     /** Комментарий */
     private ?string $comment = null;
 
-    // Вспомогательные свойства
+    /** Постоянная величина */
+    #[Assert\Valid]
+    private Invariable\PurchaseMaterialInvariableDTO $invariable;
+
+
+    /**
+     *  ВСПОМОГАТЕЛЬНЫЕ СВОЙСТВА
+     */
 
     /** Категория */
     private ?CategoryMaterialUid $category = null;
@@ -91,6 +89,7 @@ final class PurchaseMaterialStockDTO implements MaterialStockEventInterface
     {
         $this->status = new MaterialStockStatus(MaterialStockStatusPurchase::class);
         $this->material = new ArrayCollection();
+        $this->invariable = new Invariable\PurchaseMaterialInvariableDTO();
     }
 
     public function getEvent(): ?MaterialStockEventUid
@@ -117,7 +116,7 @@ final class PurchaseMaterialStockDTO implements MaterialStockEventInterface
         return $this;
     }
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     public function getMaterial(): ArrayCollection
     {
         return $this->material;
@@ -159,18 +158,6 @@ final class PurchaseMaterialStockDTO implements MaterialStockEventInterface
         $this->comment = $comment;
     }
 
-    /** Ответственное лицо (Профиль пользователя) */
-    public function getProfile(): UserProfileUid
-    {
-        return $this->profile;
-    }
-
-    public function setProfile(UserProfileUid $profile): self
-    {
-        $this->profile = $profile;
-        return $this;
-    }
-
 
     /** Статус заявки - ПРИХОД */
     public function getStatus(): MaterialStockStatus
@@ -178,17 +165,14 @@ final class PurchaseMaterialStockDTO implements MaterialStockEventInterface
         return $this->status;
     }
 
-    /** Номер заявки */
-
-    public function getNumber(): string
+    /**
+     * Invariable
+     */
+    public function getInvariable(): Invariable\PurchaseMaterialInvariableDTO
     {
-        return $this->number;
+        return $this->invariable;
     }
 
-    public function setNumber(string $number): void
-    {
-        $this->number = $number;
-    }
 
 
     /** ВСПОМОГАТЕЛЬНЫЕ СВОЙСТВА */

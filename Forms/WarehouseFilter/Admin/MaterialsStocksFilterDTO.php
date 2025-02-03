@@ -19,11 +19,11 @@
 namespace BaksDev\Materials\Stocks\Forms\WarehouseFilter\Admin;
 
 use BaksDev\Contacts\Region\Type\Call\Const\ContactsRegionCallConst;
-use BaksDev\Materials\Stocks\Forms\WarehouseFilter\ProductsStocksFilterInterface;
+use BaksDev\Materials\Stocks\Forms\WarehouseFilter\MaterialsStocksFilterInterface;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Symfony\Component\HttpFoundation\Request;
 
-final class MaterialsStocksFilterDTO implements ProductsStocksFilterInterface
+final class MaterialsStocksFilterDTO implements MaterialsStocksFilterInterface
 {
     public const string warehouse = 'nQnbEasXVp';
 

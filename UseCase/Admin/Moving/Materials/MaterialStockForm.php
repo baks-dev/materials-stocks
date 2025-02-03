@@ -40,10 +40,10 @@ final class MaterialStockForm extends AbstractType
         $builder->get('material')->addModelTransformer(
             new CallbackTransformer(
                 function($material) {
-                    return $material instanceof ProductUid ? $material->getValue() : $material;
+                    return $material instanceof MaterialUid ? $material->getValue() : $material;
                 },
                 function($material) {
-                    return new ProductUid($material);
+                    return new MaterialUid($material);
                 }
             )
         );

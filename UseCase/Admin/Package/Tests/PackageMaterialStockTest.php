@@ -34,12 +34,11 @@ use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
 use BaksDev\Materials\Stocks\Repository\MaterialWarehouseTotal\MaterialWarehouseTotalInterface;
 use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\MaterialStockStatusCollection;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\MaterialStockStatusCollection;
 use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\Tests\IncomingMaterialStockTest;
+use BaksDev\Materials\Stocks\UseCase\Admin\Package\Materials\MaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Package\PackageMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Package\PackageMaterialStockHandler;
-use BaksDev\Materials\Stocks\UseCase\Admin\Package\Products\MaterialStockDTO;
-use BaksDev\Materials\Stocks\UseCase\Admin\Package\Products\Price\PackageOrderPriceDTO;
 use BaksDev\Orders\Order\Type\Id\OrderUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\User\Type\Id\UserUid;
@@ -114,7 +113,7 @@ final class PackageMaterialStockTest extends KernelTestCase
 
         $MaterialStockDTO = new MaterialStockDTO();
 
-        $MaterialUid = new ProductUid();
+        $MaterialUid = new MaterialUid();
         $MaterialStockDTO->setMaterial($MaterialUid);
         self::assertSame($MaterialUid, $MaterialStockDTO->getMaterial());
 

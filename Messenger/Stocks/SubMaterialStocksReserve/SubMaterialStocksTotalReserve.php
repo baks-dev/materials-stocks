@@ -44,13 +44,13 @@ final readonly class SubMaterialStocksTotalReserve
     ) {}
 
     /**
-     * Снимает резерв на единицу продукции с указанного склада с мест, начиная с максимального резерва
+     * Снимает резерв на единицу сырья с указанного склада с мест, начиная с максимального резерва
      */
     public function __invoke(SubMaterialStocksTotalReserveMessage $message): void
     {
         $this->entityManager->clear();
 
-        /* Получаем одно место складирования с максимальным количеством продукции и резервом > 0 */
+        /* Получаем одно место складирования с максимальным количеством сырья и резервом > 0 */
         $MaterialStockTotal = $this->materialStockMinQuantity
             ->profile($message->getProfile())
             ->material($message->getMaterial())
@@ -62,7 +62,7 @@ final readonly class SubMaterialStocksTotalReserve
         if(!$MaterialStockTotal)
         {
             $this->logger->critical(
-                'Не найдено продукции на складе для списания, либо нет резерва на указанную продукцию',
+                'Не найдено сырья на складе для списания, либо нет резерва на указанную сырьё',
                 [
                     self::class.':'.__LINE__,
                     'profile' => (string) $message->getProfile(),
@@ -90,7 +90,7 @@ final readonly class SubMaterialStocksTotalReserve
         if(empty($rows))
         {
             $this->logger->critical(
-                'Невозможно снять резерв единицы продукции, которой заранее не зарезервирована',
+                'Невозможно снять резерв единицы сырья, которой заранее не зарезервирована',
                 [
                     self::class.':'.__LINE__,
                     'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()
@@ -101,7 +101,7 @@ final readonly class SubMaterialStocksTotalReserve
         }
 
         $this->logger->info(
-            sprintf('Место %s: Сняли резерв продукции на складе на одну единицу', $MaterialStockTotal->getStorage()),
+            sprintf('Место %s: Сняли резерв сырья на складе на одну единицу', $MaterialStockTotal->getStorage()),
             [
                 self::class.':'.__LINE__,
                 'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()

@@ -68,7 +68,7 @@
                        data-bs-toggle="tooltip"
                        data-bs-placement="bottom"
                        data-bs-delay='{"show":600,"hide":100}'
-                       title="Список закупок продукции"
+                       title="Список закупок сырья"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                              class="bi bi-journal-plus" viewBox="0 0 16 16">
@@ -88,7 +88,7 @@
                        data-bs-toggle="tooltip"
                        data-bs-placement="bottom"
                        data-bs-delay='{"show":600,"hide":100}'
-                       title="Поступления на склад"
+                       title="Поступления на склад сырья"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                              class="bi bi-box-arrow-in-down-right" viewBox="0 0 16 16">
@@ -168,15 +168,15 @@
                 {# Форма поиска по разделу #}
                 {% include Template('/_includes/'~baks_settings.device~'/search.html.twig') %}
 
-                {# Фильтр по продукции #}
+                {# Фильтр по сырья #}
                 <div class="w-100">
-                    {% include Template('@materials-material/filter/'~baks_settings.device~'/filter.html.twig') %}
+                    {% include Template('@materials-catalog/filter/'~baks_settings.device~'/filter.html.twig') %}
                 </div>
 
             </div>
 
             {# Текстовый результат фильтра #}
-            {% include Template('@materials-material/filter/'~baks_settings.device~'/filter_text.html.twig') %}
+            {% include Template('@materials-catalog/filter/'~baks_settings.device~'/filter_text.html.twig') %}
 
 
             {# Контент > #}
@@ -244,18 +244,16 @@
 
                             {% if app.user.profile == item.user_profile_id %}
 
-                                <small>Склад: &nbsp;</small>
-                                <div
-                                        class="fw-bolder mb- text-decoration-none text-dark">
-                                    {{ item.users_profile_username }}
-                                </div>
+                                <small>Склад: &nbsp;</small> <strong
+                                    class="text-dark">{{ item.user_profile_username }}</strong>
+
 
                             {% else %}
 
                                 <small>Склад назначения: &nbsp;</small>
                                 <div
                                         class="fw-bolder mb- text-decoration-none text-dark">
-                                    {{ item.users_profile_username }}
+                                    {{ item.user_profile_username }}
                                 </div>
 
                             {% endif %}

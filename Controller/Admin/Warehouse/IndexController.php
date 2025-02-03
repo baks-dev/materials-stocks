@@ -64,9 +64,11 @@ final class IndexController extends AbstractController
             ->handleRequest($request);
 
         /**
-         * Фильтр продукции по ТП
+         * Фильтр сырья по ТП
          */
-        $filter = new MaterialFilterDTO($request);
+
+        $filter = new MaterialFilterDTO();
+
         $filterForm = $this
             ->createForm(
                 type: MaterialFilterForm::class,
@@ -75,11 +77,17 @@ final class IndexController extends AbstractController
             )
             ->handleRequest($request);
 
-        /* Получаем список поступлений на склад */
+
+        /**
+         * Получаем список поступлений на склад
+         */
+
+        $this->isAdmin() ?: $allPurchase->profile($this->getProfileUid());
+
         $query = $allPurchase
             ->search($search)
             ->filter($filter)
-            ->fetchAllMaterialStocksAssociative($this->getProfileUid());
+            ->findPaginator();
 
         return $this->render(
             [

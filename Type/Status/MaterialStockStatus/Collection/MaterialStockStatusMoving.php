@@ -23,9 +23,9 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection;
+namespace BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection;
 
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\MaterialStockStatusInterface;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\MaterialStockStatusInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 /**

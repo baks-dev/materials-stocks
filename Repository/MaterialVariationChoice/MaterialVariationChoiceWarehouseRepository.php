@@ -26,15 +26,15 @@ declare(strict_types=1);
 namespace BaksDev\Materials\Stocks\Repository\MaterialVariationChoice;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
+use BaksDev\Materials\Catalog\Entity\Material;
+use BaksDev\Materials\Catalog\Entity\Offers\MaterialOffer;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\MaterialVariation;
 use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
+use BaksDev\Materials\Category\Entity\Offers\Variation\CategoryMaterialVariation;
+use BaksDev\Materials\Category\Entity\Offers\Variation\Trans\CategoryMaterialVariationTrans;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
-use BaksDev\Products\Category\Entity\Offers\Variation\CategoryProductVariation;
-use BaksDev\Products\Category\Entity\Offers\Variation\Trans\CategoryProductVariationTrans;
-use BaksDev\Products\Product\Entity\Offers\ProductOffer;
-use BaksDev\Products\Product\Entity\Offers\Variation\ProductVariation;
-use BaksDev\Products\Product\Entity\Product;
 use BaksDev\Users\User\Type\Id\UserUid;
 use Generator;
 use InvalidArgumentException;
@@ -62,11 +62,11 @@ final class MaterialVariationChoiceWarehouseRepository implements MaterialVariat
     }
 
 
-    public function material(ProductUid|string $material): self
+    public function material(MaterialUid|string $material): self
     {
         if(is_string($material))
         {
-            $material = new ProductUid($material);
+            $material = new MaterialUid($material);
         }
 
         $this->material = $material;
@@ -110,7 +110,7 @@ final class MaterialVariationChoiceWarehouseRepository implements MaterialVariat
 
         $dbal
             ->andWhere('stock.material = :material')
-            ->setParameter('material', $this->material, ProductUid::TYPE);
+            ->setParameter('material', $this->material, MaterialUid::TYPE);
 
         $dbal
             ->andWhere('stock.offer = :offer')
@@ -125,21 +125,21 @@ final class MaterialVariationChoiceWarehouseRepository implements MaterialVariat
 
         $dbal->join(
             'stock',
-            Product::class,
+            Material::class,
             'material',
             'material.id = stock.material'
         );
 
         $dbal->join(
             'stock',
-            ProductOffer::class,
+            MaterialOffer::class,
             'offer',
             'offer.const = stock.offer AND offer.event = material.event'
         );
 
         $dbal->join(
             'stock',
-            ProductVariation::class,
+            MaterialVariation::class,
             'variation',
             'variation.const = stock.variation AND variation.offer = offer.id'
         );
@@ -149,7 +149,7 @@ final class MaterialVariationChoiceWarehouseRepository implements MaterialVariat
         $dbal
             ->join(
                 'variation',
-                CategoryProductVariation::class,
+                CategoryMaterialVariation::class,
                 'category_variation',
                 'category_variation.id = variation.category_variation'
             );
@@ -157,7 +157,7 @@ final class MaterialVariationChoiceWarehouseRepository implements MaterialVariat
         $dbal
             ->leftJoin(
                 'category_variation',
-                CategoryProductVariationTrans::class,
+                CategoryMaterialVariationTrans::class,
                 'category_variation_trans',
                 'category_variation_trans.variation = category_variation.id AND category_variation_trans.local = :local'
             );
@@ -168,7 +168,6 @@ final class MaterialVariationChoiceWarehouseRepository implements MaterialVariat
         $dbal->addSelect('category_variation_trans.name AS option')->addGroupBy('category_variation_trans.name');
 
         $dbal->addSelect('(SUM(stock.total) - SUM(stock.reserve)) AS property');
-        $dbal->addSelect('variation.postfix AS characteristic')->addGroupBy('variation.postfix');
         $dbal->addSelect('category_variation.reference AS reference')->addGroupBy('category_variation.reference');
 
 

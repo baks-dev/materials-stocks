@@ -40,7 +40,7 @@ final class MovingMaterialStockDTO
 
 
     /** Продукт */
-    private ?ProductUid $preMaterial = null;
+    private ?MaterialUid $preMaterial = null;
 
     /** Торговое предложение */
     private ?MaterialOfferConst $preOffer = null;
@@ -96,9 +96,9 @@ final class MovingMaterialStockDTO
 
     // MATERIAL
 
-    public function getPreMaterial(): ?ProductUid
+    public function getPreMaterial(): ?MaterialUid
     {
-        return $this->preProduct;
+        return $this->preMaterial;
     }
 
     public function setPreMaterial(MaterialUid $material): void
@@ -167,7 +167,7 @@ final class MovingMaterialStockDTO
     }
 
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     public function getMove(): ArrayCollection
     {
         return $this->move;

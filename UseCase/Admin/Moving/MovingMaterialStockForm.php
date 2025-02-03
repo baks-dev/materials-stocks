@@ -128,11 +128,11 @@ final class MovingMaterialStockForm extends AbstractType
 
 
         /**
-         * Подукция
+         * Сырье
          *
          * @var MaterialUid $material
          */
-        $builder->add('preProduct', TextType::class, ['attr' => ['disabled' => true]]);
+        $builder->add('preMaterial', TextType::class, ['attr' => ['disabled' => true]]);
 
 
         $materialChoiceWarehouse = $this->materialChoiceWarehouse->getMaterialsExistWarehouse($this->user);
@@ -140,7 +140,7 @@ final class MovingMaterialStockForm extends AbstractType
         if($materialChoiceWarehouse->valid())
         {
             $builder->add(
-                'preProduct',
+                'preMaterial',
                 ChoiceType::class,
                 [
                     'choices' => $materialChoiceWarehouse,
@@ -264,7 +264,7 @@ final class MovingMaterialStockForm extends AbstractType
                     return;
                 }
 
-                $material = $parent->get('preProduct')->getData();
+                $material = $parent->get('preMaterial')->getData();
                 $offer = $parent->get('preOffer')->getData();
                 $variation = $parent->get('preVariation')->getData();
                 $modification = $parent->get('preModification')->getData();

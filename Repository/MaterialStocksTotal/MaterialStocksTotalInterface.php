@@ -31,7 +31,7 @@ use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
 interface MaterialStocksTotalInterface
 {
-    public function material(ProductUid|string $material): self;
+    public function material(MaterialUid|string $material): self;
 
     public function offer(MaterialOfferConst|string|null $offer): self;
 
@@ -39,7 +39,7 @@ interface MaterialStocksTotalInterface
 
     public function modification(MaterialModificationConst|string|null $modification): self;
 
-    /** Метод возвращает общее количество продукции на всех складах (без учета резерва) */
+    /** Метод возвращает общее количество сырья на всех складах (без учета резерва) */
     public function get(): int;
 
 }

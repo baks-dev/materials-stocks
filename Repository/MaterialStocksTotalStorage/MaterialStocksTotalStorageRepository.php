@@ -38,7 +38,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
 {
     private UserProfileUid|string $profile;
 
-    private ProductUid|string $material;
+    private MaterialUid|string $material;
 
     private MaterialOfferConst|string|null $offer = null;
 
@@ -62,11 +62,11 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
         return $this;
     }
 
-    public function material(ProductUid|string $material): self
+    public function material(MaterialUid|string $material): self
     {
         if(is_string($material))
         {
-            $material = new ProductUid($material);
+            $material = new MaterialUid($material);
         }
 
         $this->material = $material;
@@ -146,7 +146,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
     }
 
 
-    /** Метод возвращает складской остаток (место для хранения указанной продукции) указанного профиля */
+    /** Метод возвращает складской остаток (место для хранения указанной сырья) указанного профиля */
     public function find(): ?MaterialStockTotal
     {
         if(empty($this->profile))
@@ -171,7 +171,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
 
         $orm
             ->andWhere('stock.material = :material')
-            ->setParameter('material', $this->material, ProductUid::TYPE);
+            ->setParameter('material', $this->material, MaterialUid::TYPE);
 
 
         if($this->storage)

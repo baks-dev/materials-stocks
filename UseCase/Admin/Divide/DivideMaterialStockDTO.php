@@ -27,7 +27,7 @@ use BaksDev\Core\Type\UidType\Uid;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEventInterface;
 use BaksDev\Materials\Stocks\Type\Event\MaterialStockEventUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusDivide;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusDivide;
 use BaksDev\Orders\Order\Entity\Event\OrderEventInterface;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -39,12 +39,6 @@ final class DivideMaterialStockDTO implements MaterialStockEventInterface, Order
     /** Идентификатор */
     private ?MaterialStockEventUid $id = null;
 
-    /**
-     * Ответственное лицо (Профиль пользователя)
-     * @deprecated Переносится в Invariable
-     */
-    #[Assert\Uuid]
-    private ?UserProfileUid $profile = null;
 
     /** Постоянная величина */
     #[Assert\Valid]
@@ -64,7 +58,7 @@ final class DivideMaterialStockDTO implements MaterialStockEventInterface, Order
     /** Идентификатор заказа на сборку */
     private Orders\DivideMaterialStockOrderDTO $ord;
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     #[Assert\Valid]
     private ArrayCollection $material;
 
@@ -99,7 +93,7 @@ final class DivideMaterialStockDTO implements MaterialStockEventInterface, Order
         $this->id = null;
     }
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     public function getMaterial(): ArrayCollection
     {
         return $this->material;
@@ -110,12 +104,12 @@ final class DivideMaterialStockDTO implements MaterialStockEventInterface, Order
         $this->material = $material;
     }
 
-    public function addMaterial(Products\DivideMaterialStockMaterialDTO $material): void
+    public function addMaterial(Materials\DivideMaterialStockMaterialDTO $material): void
     {
         $this->material->add($material);
     }
 
-    public function removeMaterial(Products\DivideMaterialStockMaterialDTO $material): void
+    public function removeMaterial(Materials\DivideMaterialStockMaterialDTO $material): void
     {
         $this->material->removeElement($material);
     }
@@ -129,25 +123,6 @@ final class DivideMaterialStockDTO implements MaterialStockEventInterface, Order
     public function setComment(?string $comment): void
     {
         $this->comment = $comment;
-    }
-
-    /**
-     * Ответственное лицо (Профиль пользователя)
-     * @deprecated Переносится в Invariable
-     */
-    public function getProfile(): ?UserProfileUid
-    {
-        return $this->profile;
-    }
-
-    /** @deprecated Переносится в Invariable */
-    public function setProfile(?UserProfileUid $profile): void
-    {
-        /** Присваиваем постоянную величину  */
-        $PackageOrderInvariable = $this->getInvariable();
-        $PackageOrderInvariable->setProfile($profile);
-
-        $this->profile = $profile;
     }
 
     /** Статус заявки - ПРИХОД */

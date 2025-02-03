@@ -32,7 +32,7 @@ use BaksDev\Materials\Stocks\Entity\Stock\Materials\MaterialStockMaterial;
 use BaksDev\Materials\Stocks\Messenger\MaterialStockMessage;
 use BaksDev\Materials\Stocks\Messenger\Stocks\AddMaterialStocksReserve\AddMaterialStocksReserveMessage;
 use BaksDev\Materials\Stocks\Repository\MaterialStocksById\MaterialStocksByIdInterface;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusMoving;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusMoving;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Target;
@@ -50,7 +50,7 @@ final readonly class AddReserveMaterialStocksTotalByMove
     ) {}
 
     /**
-     * Резервирование на складе продукции при перемещении
+     * Резервирование на складе сырья при перемещении
      */
     public function __invoke(MaterialStockMessage $message): void
     {
@@ -66,17 +66,17 @@ final readonly class AddReserveMaterialStocksTotalByMove
         }
 
         // Если Статус не является Статус Moving «Перемещение»
-        if(false === $MaterialStockEvent->getStatus()->equals(MaterialStockStatusMoving::class))
+        if(false === $MaterialStockEvent->equalsMaterialStockStatus(MaterialStockStatusMoving::class))
         {
             return;
         }
 
-        // Получаем всю продукцию в ордере со статусом Moving (перемещение)
+        // Получаем всю сырьё в ордере со статусом Moving (перемещение)
         $materials = $this->materialStocks->getMaterialsMovingStocks($message->getId());
 
         if(empty($materials))
         {
-            $this->logger->warning('Заявка не имеет продукции в коллекции', [self::class.':'.__LINE__]);
+            $this->logger->warning('Заявка не имеет сырья в коллекции', [self::class.':'.__LINE__]);
             return;
         }
 
@@ -100,7 +100,7 @@ final readonly class AddReserveMaterialStocksTotalByMove
         foreach($materials as $material)
         {
             $this->logger->info(
-                'Добавляем резерв продукции на складе при создании заявки на перемещение',
+                'Добавляем резерв сырья на складе при создании заявки на перемещение',
                 [
                     self::class.':'.__LINE__,
                     'total' => $material->getTotal(),
@@ -109,7 +109,7 @@ final readonly class AddReserveMaterialStocksTotalByMove
             );
 
             /**
-             * Добавляем резерв на единицу продукции (добавляем по одной для резерва от меньшего к большему)
+             * Добавляем резерв на единицу сырья (добавляем по одной для резерва от меньшего к большему)
              */
             for($i = 1; $i <= $material->getTotal(); $i++)
             {

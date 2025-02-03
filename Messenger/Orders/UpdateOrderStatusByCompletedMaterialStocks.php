@@ -29,7 +29,7 @@ use BaksDev\Centrifugo\Server\Publish\CentrifugoPublishInterface;
 use BaksDev\Core\Deduplicator\DeduplicatorInterface;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Messenger\MaterialStockMessage;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusCompleted;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusCompleted;
 use BaksDev\Orders\Order\Repository\CurrentOrderEvent\CurrentOrderEventInterface;
 use BaksDev\Orders\Order\Type\Status\OrderStatus\OrderStatusCompleted;
 use BaksDev\Orders\Order\UseCase\Admin\Status\OrderStatusDTO;
@@ -69,7 +69,7 @@ final readonly class UpdateOrderStatusByCompletedMaterialStocks
         }
 
         /** Если складская заявка не является статусом Completed «Выдан по месту назначения» */
-        if(false === $MaterialStockEvent->equalsMaterialStockstatus(MaterialStockStatusCompleted::class))
+        if(false === $MaterialStockEvent->equalsMaterialStockStatus(MaterialStockStatusCompleted::class))
         {
             return;
         }

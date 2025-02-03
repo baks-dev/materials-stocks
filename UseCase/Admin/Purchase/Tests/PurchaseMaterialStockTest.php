@@ -32,7 +32,7 @@ use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
 use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusPurchase;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusPurchase;
 use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\Materials\MaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\PurchaseMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\PurchaseMaterialStockHandler;
@@ -103,7 +103,7 @@ final class PurchaseMaterialStockTest extends KernelTestCase
 
         $MaterialStockDTO = new MaterialStockDTO();
 
-        $MaterialUid = new ProductUid();
+        $MaterialUid = new MaterialUid();
         $MaterialStockDTO->setMaterial($MaterialUid);
         self::assertSame($MaterialUid, $MaterialStockDTO->getMaterial());
 

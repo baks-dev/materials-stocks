@@ -25,12 +25,9 @@ namespace BaksDev\Materials\Stocks\UseCase\Admin\Delete\Modify;
 
 
 use BaksDev\Core\Type\Modify\Modify\ModifyActionDelete;
-use BaksDev\Core\Type\Modify\Modify\ModifyActionNew;
-use BaksDev\Core\Type\Modify\Modify\ModifyActionUpdate;
 use BaksDev\Core\Type\Modify\ModifyAction;
 use BaksDev\Materials\Stocks\Entity\Stock\Modify\MaterialStockModify;
 use BaksDev\Materials\Stocks\Entity\Stock\Modify\MaterialStockModifyInterface;
-use BaksDev\Wildberries\Products\Entity\Barcode\Modify\WbBarcodeModifyInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @see MaterialStockModify */

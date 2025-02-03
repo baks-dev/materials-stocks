@@ -52,7 +52,7 @@ final readonly class SubMaterialStocksTotalReserveMessage
     }
 
     /**
-     * Product
+     * Material
      */
     public function getMaterial(): MaterialUid
     {

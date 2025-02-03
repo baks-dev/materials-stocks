@@ -63,7 +63,7 @@ final class IndexController extends AbstractController
             ->handleRequest($request);
 
         /**
-         * Фильтр продукции по ТП
+         * Фильтр сырья по ТП
          */
         $filter = new MaterialFilterDTO();
         $filterForm = $this
@@ -74,13 +74,16 @@ final class IndexController extends AbstractController
             )
             ->handleRequest($request);
 
-        !$filterForm->isSubmitted() ?: $this->redirectToReferer();
+        //!$filterForm->isSubmitted() ?: $this->redirectToReferer();
+
+        $this->isAdmin() ?: $allIncoming->user($this->getUsr());
+        $this->isAdmin() ?: $allIncoming->profile($this->getProfileUid());
 
         // Получаем список приходов ответственного лица
         $query = $allIncoming
             ->search($search)
             ->filter($filter)
-            ->fetchAllMaterialStocksAssociative($this->getProfileUid());
+            ->findPaginator();
 
         return $this->render(
             [

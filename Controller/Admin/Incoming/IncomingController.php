@@ -32,7 +32,7 @@ use BaksDev\Materials\Stocks\Repository\MaterialStockMinQuantity\MaterialStockQu
 use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\IncomingMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\IncomingMaterialStockForm;
 use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\IncomingMaterialStockHandler;
-use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\Products\MaterialStockDTO;
+use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\Materials\MaterialStockDTO;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,8 +57,8 @@ final class IncomingController extends AbstractController
     {
         /** Скрываем идентификатор у остальных пользователей */
         $publish
-            ->addData(['profile' => (string) $this->getCurrentProfileUid()])
             ->addData(['identifier' => (string) $MaterialStockEvent->getMain()])
+            ->addData(['profile' => (string) $this->getCurrentProfileUid()])
             ->send('remove');
 
         $IncomingMaterialStockDTO = new IncomingMaterialStockDTO();
@@ -81,8 +81,8 @@ final class IncomingController extends AbstractController
 
             /** Скрываем идентификатор у всех пользователей */
             $remove = $publish
-                ->addData(['profile' => false]) // Скрывает у всех
                 ->addData(['identifier' => (string) $handle->getId()])
+                ->addData(['profile' => false]) // Скрывает у всех
                 ->send('remove');
 
             $flash = $this->addFlash(
@@ -97,14 +97,14 @@ final class IncomingController extends AbstractController
         }
 
 
-        /** Рекомендуемое место складирвоания */
+        /** Рекомендуемое место складирования */
 
         /** @var MaterialStockDTO $MaterialStockDTO */
 
         $MaterialStockDTO = $IncomingMaterialStockDTO->getMaterial()->current();
 
         $materialStorage = $materialStockQuantity
-            ->profile($IncomingMaterialStockDTO->getProfile())
+            ->profile($this->getProfileUid())
             ->material($MaterialStockDTO->getMaterial())
             ->offerConst($MaterialStockDTO->getOffer())
             ->variationConst($MaterialStockDTO->getVariation())
@@ -117,7 +117,6 @@ final class IncomingController extends AbstractController
             'name' => $MaterialStockEvent->getNumber(),
             'order' => $MaterialStockEvent->getOrder() !== null,
             'recommender' => $materialStorage
-            //'materials' => $materialDetail->fetchAllProductsByMaterialStocksAssociative($MaterialStockEvent->getMain())
         ]);
     }
 }

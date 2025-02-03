@@ -29,7 +29,7 @@ use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationCon
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
 
 /**
- * Возвращает общее количество резерва продукции на всех складах
+ * Возвращает общее количество резерва сырья на всех складах
  *
  * <code>
  *    $reserve = $this
@@ -42,7 +42,7 @@ use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\Materia
  */
 interface MaterialStocksTotalByReserveInterface
 {
-    public function material(ProductUid|string $material): self;
+    public function material(MaterialUid|string $material): self;
 
     public function offer(MaterialOfferConst|string|null $offer): self;
 
@@ -50,6 +50,6 @@ interface MaterialStocksTotalByReserveInterface
 
     public function modification(MaterialModificationConst|string|null $modification): self;
 
-    /** Метод возвращает общее количество резерва продукции на всех складах */
+    /** Метод возвращает общее количество резерва сырья на всех складах */
     public function get(): int;
 }

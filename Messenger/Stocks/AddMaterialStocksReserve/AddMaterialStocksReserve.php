@@ -46,7 +46,7 @@ final readonly class AddMaterialStocksReserve
     ) {}
 
     /**
-     * Создает резерв на единицу продукции на указанный склад начиная с минимального наличия
+     * Создает резерв на единицу сырья на указанный склад начиная с минимального наличия
      */
     public function __invoke(AddMaterialStocksReserveMessage $message): void
     {
@@ -63,7 +63,7 @@ final readonly class AddMaterialStocksReserve
         if(!$MaterialStockTotal)
         {
             $this->logger->critical(
-                'Не найдено продукции на складе для резервирования',
+                'Не найдено сырья на складе для резервирования',
                 [
                     self::class.':'.__LINE__,
                     'profile' => (string) $message->getProfile(),
@@ -74,7 +74,7 @@ final readonly class AddMaterialStocksReserve
                 ]
             );
 
-            throw new DomainException('Невозможно добавить резерв на продукцию');
+            throw new DomainException('Невозможно добавить резерв на сырьё');
 
         }
 
@@ -83,7 +83,7 @@ final readonly class AddMaterialStocksReserve
 
     public function handle(MaterialStockTotal $MaterialStockTotal): void
     {
-        /** Добавляем в резерв единицу продукции */
+        /** Добавляем в резерв единицу сырья */
         $rows = $this->addMaterialStock
             ->total(null)
             ->reserve(1)
@@ -92,7 +92,7 @@ final readonly class AddMaterialStocksReserve
         if(empty($rows))
         {
             $this->logger->critical(
-                'Не найдено продукции на складе для резервирования. Возможно остатки были изменены в указанном месте',
+                'Не найдено сырья на складе для резервирования. Возможно остатки были изменены в указанном месте',
                 [
                     self::class.':'.__LINE__,
                     'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()
@@ -103,7 +103,7 @@ final readonly class AddMaterialStocksReserve
         }
 
         $this->logger->info(
-            sprintf('%s : Добавили резерв на склад единицы продукции', $MaterialStockTotal->getStorage()),
+            sprintf('%s : Добавили резерв на склад единицы сырья', $MaterialStockTotal->getStorage()),
             [
                 self::class.':'.__LINE__,
                 'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()

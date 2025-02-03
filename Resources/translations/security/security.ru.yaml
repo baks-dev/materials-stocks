@@ -22,7 +22,7 @@ ROLE_MATERIAL_STOCK_EDIT:
 
 ROLE_MATERIAL_STOCK_STORAGE:
   name: 'Изменить место складирования'
-  desc: 'Изменить место складирования продукции'
+  desc: 'Изменить место складирования сырья'
 
 
 ROLE_MATERIAL_STOCK_CANCEL:
@@ -58,8 +58,8 @@ ROLE_MATERIAL_STOCK_PURCHASE:
   desc: 'Закупки товаров'
 
 ROLE_MATERIAL_STOCK_PURCHASE_NEW:
-  name: 'Добавить закупку'
-  desc: 'Добавить закупку товара на склад'
+  name: 'Добавить закупку сырья'
+  desc: 'Добавить закупку сырья на склад'
 
 ROLE_MATERIAL_STOCK_PURCHASE_DELETE:
   name: 'Удалить закупку'
@@ -68,7 +68,7 @@ ROLE_MATERIAL_STOCK_PURCHASE_DELETE:
 
 
 ROLE_MATERIAL_STOCK_WAREHOUSE:
-  name: 'Поступления на склад'
+  name: 'Поступления на склад сырья'
   desc: 'Список поступлений на склад'
 
 ROLE_MATERIAL_STOCK_WAREHOUSE_SEND:

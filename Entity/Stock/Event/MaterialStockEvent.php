@@ -63,19 +63,13 @@ class MaterialStockEvent extends EntityEvent
     #[ORM\Column(type: MaterialStockUid::TYPE, nullable: false)]
     private ?MaterialStockUid $main = null;
 
-    /** Номер заявки */
-    #[Assert\NotBlank]
-    #[Assert\Type('string')]
-    #[Assert\Length(max: 36)]
-    #[ORM\Column(type: Types::STRING)]
-    private string $number;
 
     /** Статус заявки */
     #[Assert\NotBlank]
     #[ORM\Column(type: MaterialStockStatus::TYPE)]
     protected MaterialStockStatus $status;
 
-    /** Коллекция продукции в заявке */
+    /** Коллекция сырья в заявке */
     #[Assert\Valid]
     #[Assert\Count(min: 1)]
     #[ORM\OneToMany(targetEntity: MaterialStockMaterial::class, mappedBy: 'event', cascade: ['all'])]
@@ -91,20 +85,10 @@ class MaterialStockEvent extends EntityEvent
     private ?UserProfileUid $fixed = null;
 
     /**
-     * Профиль пользователя
-     * @deprecated переносится в Invariable
-     */
-    #[Assert\NotBlank]
-    #[Assert\Uuid]
-    #[ORM\Column(type: UserProfileUid::TYPE)]
-    private UserProfileUid $profile;
-
-    /**
      * Постоянная величина
      */
     #[ORM\OneToOne(targetEntity: MaterialStocksInvariable::class, mappedBy: 'event', cascade: ['all'])]
     private ?MaterialStocksInvariable $invariable = null;
-
 
     /** Профиль назначения (при перемещении) */
     #[ORM\OneToOne(targetEntity: MaterialStockMove::class, mappedBy: 'event', cascade: ['all'])]
@@ -152,20 +136,15 @@ class MaterialStockEvent extends EntityEvent
 
     public function getNumber(): string
     {
-        return $this->number;
+        return $this->invariable->getNumber();
     }
 
-    /**
-     * @deprecated Используйте метод equalsMaterialStockstatus
-     * @see equalsMaterialStockstatus
-     */
-    public function getStatus(): MaterialStockStatus
+    public function getProfile(): ?UserProfileUid
     {
-        return $this->status;
+        return $this->invariable->getProfile();
     }
 
-
-    public function equalsMaterialStockstatus(mixed $status): bool
+    public function equalsMaterialStockStatus(mixed $status): bool
     {
         return $this->status->equals($status);
     }
@@ -180,13 +159,7 @@ class MaterialStockEvent extends EntityEvent
 
 
 
-    //    /**
-    //     * Идентификатор склада.
-    //     */
-    //    public function getWarehouse(): ?ContactsRegionCallConst
-    //    {
-    //        return $this->warehouse;
-    //    }
+
 
     /**
      * Идентификатор заказа.
@@ -218,18 +191,6 @@ class MaterialStockEvent extends EntityEvent
         return $this->move;
     }
 
-
-    /**
-     * Идентификатор ответственного.
-     * @deprecated использовать метод getStocksProfile
-     * @see getStocksProfile
-     */
-    public function getProfile(): UserProfileUid
-    {
-        return $this->profile;
-    }
-
-
     /**
      * Идентификатор ответственного.
      */
@@ -239,7 +200,7 @@ class MaterialStockEvent extends EntityEvent
     }
 
     /**
-     * Product.
+     * Material
      */
     public function getMaterial(): Collection
     {

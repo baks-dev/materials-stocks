@@ -65,11 +65,11 @@ final class MaterialWarehouseChoiceRepository implements MaterialWarehouseChoice
     }
 
 
-    public function material(ProductUid|string $material): self
+    public function material(MaterialUid|string $material): self
     {
         if(is_string($material))
         {
-            $material = new ProductUid($material);
+            $material = new MaterialUid($material);
         }
 
         $this->material = $material;
@@ -138,7 +138,7 @@ final class MaterialWarehouseChoiceRepository implements MaterialWarehouseChoice
 
         $dbal
             ->andWhere('stock.material = :material')
-            ->setParameter('material', $this->material, ProductUid::TYPE);
+            ->setParameter('material', $this->material, MaterialUid::TYPE);
 
 
         $dbal->andWhere('(stock.total - stock.reserve) > 0');

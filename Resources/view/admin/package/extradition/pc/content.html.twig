@@ -17,7 +17,7 @@
             <div class="modal-body">
 
                 <div class="d-flex justify-content-between align-items-center gap-3 text-uppercase text-muted opacity-50">
-                    <div class="w-100">Продукция</div>
+                    <div class="w-100">сырьё</div>
                     <div class="w-25 text-center">Количество</div>
                     <div class="w-25 text-center">Место</div>
                 </div>
@@ -40,15 +40,6 @@
                                 {% set image_path = img_host ~ img_dir ~ img_file %}
                             {% endif %}
 
-                            {% set material_href = path('materials-material:user.detail', {
-                                category: material.category_url,
-                                url: material.material_url,
-                                offer : material.material_offer_value,
-                                variation : material.material_variation_value,
-                                modification : material.material_modification_value,
-                                postfix:  (material.material_modification_postfix ?: material.material_variation_postfix ?: material.material_offer_postfix ?: null )|replace({ '/': '-' })
-                            }) %}
-
 
                             <div class="rounded-circle bg-contain lazy p-1" style="width: 50px; height: 50px;"
                                  data-bg="{{ image_path }}">
@@ -56,7 +47,7 @@
 
                             <div>
 
-                                <a class="text-decoration-none" href="{{ material_href }}" target="_detail">
+                                <a class="text-decoration-none" href="#" target="_detail">
 
                                     {{ material.material_name }}
 
@@ -67,12 +58,6 @@
                                     {# Значение торгового предложения #}
                                     {{ material.material_offer_value|call_twig_func(material.material_offer_reference~'_render') }}
 
-                                    {# Постфикс торгового предложения #}
-                                    {{ material.material_offer_postfix }}
-                                    {# Постфикс множественного варианта #}
-                                    {{ material.material_variation_postfix }}
-                                    {# Постфикс модификации #}
-                                    {{ material.material_modification_postfix }}
 
                                 </a>
 

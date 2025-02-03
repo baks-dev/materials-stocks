@@ -23,7 +23,7 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus;
+namespace BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
 
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
 use InvalidArgumentException;

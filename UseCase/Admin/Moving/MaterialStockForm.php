@@ -53,12 +53,12 @@ final class MaterialStockForm extends AbstractType
         /** Склад назначения при перемещении */
         $builder->add('move', Move\MaterialStockMoveForm::class);
 
-        /* Коллекция продукции  */
+        /* Коллекция сырья  */
         $builder->add(
             'material',
             CollectionType::class,
             [
-                'entry_type' => Products\MaterialStockForm::class,
+                'entry_type' => Materials\MaterialStockForm::class,
                 'entry_options' => ['label' => false],
                 'label' => false,
                 'by_reference' => false,

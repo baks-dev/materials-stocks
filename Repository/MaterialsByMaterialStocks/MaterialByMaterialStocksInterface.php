@@ -31,7 +31,7 @@ interface MaterialByMaterialStocksInterface
     public function stock(MaterialStock|MaterialStockUid|string $stock): self;
 
     /**
-     * Метод возвращает информацию о продукции в складской заявке
+     * Метод возвращает информацию о сырья в складской заявке
      */
     public function find(): array|bool;
 }

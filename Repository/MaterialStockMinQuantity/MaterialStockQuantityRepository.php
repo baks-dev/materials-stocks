@@ -106,7 +106,7 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
 
         $orm
             ->andWhere('stock.material = :material')
-            ->setParameter('material', $this->material, ProductUid::TYPE);
+            ->setParameter('material', $this->material, MaterialUid::TYPE);
 
 
         if($this->offer)
@@ -149,7 +149,7 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
     }
 
     /**
-     * Метод возвращает место складирования продукции с минимальным количеством в наличии без учета резерва
+     * Метод возвращает место складирования сырья с минимальным количеством в наличии без учета резерва
      */
     public function findOneByTotalMin(): ?MaterialStockTotal
     {
@@ -168,7 +168,7 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
     }
 
     /**
-     * Метод возвращает место складирования продукции с максимальным количеством в наличии без учета резерва
+     * Метод возвращает место складирования сырья с максимальным количеством в наличии без учета резерва
      */
     public function findOneByTotalMax(): ?MaterialStockTotal
     {
@@ -185,7 +185,7 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
 
 
     /**
-     * Метод возвращает место складирования продукции с максимальным количеством в наличии и резервом > 0
+     * Метод возвращает место складирования сырья с максимальным количеством в наличии и резервом > 0
      */
     public function findOneByReserveMax(): ?MaterialStockTotal
     {
@@ -201,7 +201,7 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
 
 
     /**
-     * Метод возвращает место складирования продукции с минимальным количеством в наличии с учетом резерва
+     * Метод возвращает место складирования сырья с минимальным количеством в наличии с учетом резерва
      */
     public function findOneBySubReserve(): ?MaterialStockTotal
     {

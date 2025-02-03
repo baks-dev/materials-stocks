@@ -28,51 +28,55 @@ namespace BaksDev\Materials\Stocks\Repository\AllMaterialStocksIncoming;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Form\Search\SearchDTO;
 use BaksDev\Core\Services\Paginator\PaginatorInterface;
+use BaksDev\Materials\Catalog\Entity\Category\MaterialCategory;
+use BaksDev\Materials\Catalog\Entity\Event\MaterialEvent;
+use BaksDev\Materials\Catalog\Entity\Info\MaterialInfo;
+use BaksDev\Materials\Catalog\Entity\Material;
+use BaksDev\Materials\Catalog\Entity\Offers\Image\MaterialOfferImage;
+use BaksDev\Materials\Catalog\Entity\Offers\MaterialOffer;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Image\MaterialVariationImage;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\MaterialVariation;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Modification\Image\MaterialModificationImage;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Modification\MaterialModification;
+use BaksDev\Materials\Catalog\Entity\Photo\MaterialPhoto;
+use BaksDev\Materials\Catalog\Entity\Trans\MaterialTrans;
 use BaksDev\Materials\Catalog\Forms\MaterialFilter\Admin\MaterialFilterDTO;
-use BaksDev\Materials\Catalog\Forms\MaterialFilter\Admin\Property\MaterialFilterPropertyDTO;
+use BaksDev\Materials\Category\Entity\CategoryMaterial;
+use BaksDev\Materials\Category\Entity\Offers\CategoryMaterialOffers;
+use BaksDev\Materials\Category\Entity\Offers\Variation\CategoryMaterialVariation;
+use BaksDev\Materials\Category\Entity\Offers\Variation\Modification\CategoryMaterialModification;
+use BaksDev\Materials\Category\Entity\Trans\CategoryMaterialTrans;
+use BaksDev\Materials\Category\Type\Id\CategoryMaterialUid;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
+use BaksDev\Materials\Stocks\Entity\Stock\Invariable\MaterialStocksInvariable;
 use BaksDev\Materials\Stocks\Entity\Stock\Materials\MaterialStockMaterial;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Entity\Stock\Modify\MaterialStockModify;
 use BaksDev\Materials\Stocks\Entity\Stock\Move\MaterialStockMove;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Products\Category\Entity\CategoryProduct;
-use BaksDev\Products\Category\Entity\Info\CategoryProductInfo;
-use BaksDev\Products\Category\Entity\Offers\CategoryProductOffers;
-use BaksDev\Products\Category\Entity\Offers\Variation\CategoryProductVariation;
-use BaksDev\Products\Category\Entity\Offers\Variation\Modification\CategoryProductModification;
-use BaksDev\Products\Category\Entity\Trans\CategoryProductTrans;
-use BaksDev\Products\Category\Type\Id\CategoryMaterialUid;
-use BaksDev\Products\Product\Entity\Category\ProductCategory;
-use BaksDev\Products\Product\Entity\Event\ProductEvent;
-use BaksDev\Products\Product\Entity\Info\ProductInfo;
-use BaksDev\Products\Product\Entity\Offers\Image\ProductOfferImage;
-use BaksDev\Products\Product\Entity\Offers\ProductOffer;
-use BaksDev\Products\Product\Entity\Offers\Variation\Image\ProductVariationImage;
-use BaksDev\Products\Product\Entity\Offers\Variation\Modification\Image\ProductModificationImage;
-use BaksDev\Products\Product\Entity\Offers\Variation\Modification\ProductModification;
-use BaksDev\Products\Product\Entity\Offers\Variation\ProductVariation;
-use BaksDev\Products\Product\Entity\Photo\ProductPhoto;
-use BaksDev\Products\Product\Entity\Product;
-use BaksDev\Products\Product\Entity\Property\ProductProperty;
-use BaksDev\Products\Product\Entity\Trans\ProductTrans;
 use BaksDev\Users\Profile\UserProfile\Entity\Avatar\UserProfileAvatar;
 use BaksDev\Users\Profile\UserProfile\Entity\Event\UserProfileEvent;
 use BaksDev\Users\Profile\UserProfile\Entity\Info\UserProfileInfo;
 use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use BaksDev\Users\User\Entity\User;
+use BaksDev\Users\User\Type\Id\UserUid;
 
 final class AllMaterialStocksIncomingRepository implements AllMaterialStocksIncomingInterface
 {
-    public function __construct(
-        private readonly DBALQueryBuilder $DBALQueryBuilder,
-        private readonly PaginatorInterface $paginator,
-    ) {}
+    private UserProfileUid|false $profile = false;
+
+    private UserUid|false $usr = false;
 
     private ?MaterialFilterDTO $filter = null;
 
     private ?SearchDTO $search = null;
+
+    public function __construct(
+        private readonly DBALQueryBuilder $DBALQueryBuilder,
+        private readonly PaginatorInterface $paginator,
+    ) {}
 
     public function search(SearchDTO $search): static
     {
@@ -86,32 +90,98 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
         return $this;
     }
 
-
-    /** Возвращает список всех принятых на склад продуктов */
-    public function fetchAllMaterialStocksAssociative(UserProfileUid $profile): PaginatorInterface
+    public function user(User|UserUid|string $user): self
     {
-        $dbal = $this->DBALQueryBuilder->createQueryBuilder(self::class)->bindLocal();
+        if($user instanceof User)
+        {
+            $user = $user->getId();
+        }
+
+        if(is_string($user))
+        {
+            $user = new UserUid($user);
+        }
+
+        $this->usr = $user;
+
+        return $this;
+    }
+
+    public function profile(UserProfile|UserProfileUid|string $profile): self
+    {
+        if(is_string($profile))
+        {
+            $profile = new UserProfileUid($profile);
+        }
+
+        if($profile instanceof UserProfile)
+        {
+            $profile = $profile->getId();
+        }
+
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * Возвращает список всех принятых на склад продуктов
+     */
+    public function findPaginator(): PaginatorInterface
+    {
+        $dbal = $this->DBALQueryBuilder
+            ->createQueryBuilder(self::class)
+            ->bindLocal();
 
         $dbal
-            ->addSelect('event.main AS id')
-            ->addSelect('event.id AS event')
-            ->addSelect('event.number')
-            ->addSelect('event.comment')
-            ->addSelect('event.status')
-            ->addSelect('event.profile AS user_profile_id')
-            ->from(MaterialStockEvent::class, 'event')
-            ->andWhere('event.status = :status ')
-            ->setParameter('status', new MaterialStockStatus(new MaterialStockstatus\MaterialStockStatusIncoming()), MaterialStockStatus::TYPE)
-            ->andWhere('(event.profile = :profile OR move.destination = :profile)')
-            ->setParameter('profile', $profile, UserProfileUid::TYPE);
+            ->addSelect('invariable.number')
+            ->addSelect('invariable.profile AS user_profile_id')
+            ->from(MaterialStocksInvariable::class, 'invariable');
+
+
+        if($this->usr instanceof UserUid)
+        {
+            $dbal
+                ->where('invariable.usr = :usr')
+                ->setParameter('usr', $this->usr, UserUid::TYPE);
+        }
+
+        if($this->profile instanceof UserProfileUid)
+        {
+            $dbal
+                ->andWhere('invariable.profile = :profile')
+                ->setParameter('profile', $this->profile, UserProfileUid::TYPE);
+        }
 
 
         $dbal
+            ->addSelect('stock.id AS id')
+            ->addSelect('stock.event AS event')
             ->join(
-                'event',
+                'invariable',
                 MaterialStock::class,
                 'stock',
-                'stock.event = event.id'
+                'stock.id = invariable.main'
+            );
+
+
+        $dbal
+            ->addSelect('event.comment')
+            ->addSelect('event.status')
+            ->join(
+                'stock',
+                MaterialStockEvent::class,
+                'event',
+                'event.id = stock.event AND event.status = :status'
+            );
+
+
+        $dbal
+            ->andWhere('event.status = :status ')
+            ->setParameter(
+                'status',
+                MaterialStockStatus\Collection\MaterialStockStatusIncoming::class,
+                MaterialStockStatus::TYPE
             );
 
 
@@ -146,14 +216,12 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
                 'stock_material.event = stock.event'
             );
 
-
-        // Product
         $dbal
             ->addSelect('material.id as material_id')
             ->addSelect('material.event as material_event')
             ->join(
                 'stock_material',
-                Product::class,
+                Material::class,
                 'material',
                 'material.id = stock_material.material'
             );
@@ -161,16 +229,15 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
         // Material Event
         $dbal->join(
             'material',
-            ProductEvent::class,
+            MaterialEvent::class,
             'material_event',
             'material_event.id = material.event'
         );
 
         $dbal
-            ->addSelect('material_info.url AS material_url')
             ->leftJoin(
                 'material_event',
-                ProductInfo::class,
+                MaterialInfo::class,
                 'material_info',
                 'material_info.material = material.id'
             );
@@ -180,7 +247,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
             ->addSelect('material_trans.name as material_name')
             ->join(
                 'material_event',
-                ProductTrans::class,
+                MaterialTrans::class,
                 'material_trans',
                 'material_trans.event = material_event.id AND material_trans.local = :local'
             );
@@ -190,10 +257,9 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
         $dbal
             ->addSelect('material_offer.id as material_offer_uid')
             ->addSelect('material_offer.value as material_offer_value')
-            ->addSelect('material_offer.postfix as material_offer_postfix')
             ->leftJoin(
                 'material_event',
-                ProductOffer::class,
+                MaterialOffer::class,
                 'material_offer',
                 'material_offer.event = material_event.id AND material_offer.const = stock_material.offer'
             );
@@ -209,7 +275,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
             ->addSelect('category_offer.reference as material_offer_reference')
             ->leftJoin(
                 'material_offer',
-                CategoryProductOffers::class,
+                CategoryMaterialOffers::class,
                 'category_offer',
                 'category_offer.id = material_offer.category_offer'
             );
@@ -220,10 +286,9 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
         $dbal
             ->addSelect('material_variation.id as material_variation_uid')
             ->addSelect('material_variation.value as material_variation_value')
-            ->addSelect('material_variation.postfix as material_variation_postfix')
             ->leftJoin(
                 'material_offer',
-                ProductVariation::class,
+                MaterialVariation::class,
                 'material_variation',
                 'material_variation.offer = material_offer.id AND material_variation.const = stock_material.variation'
             );
@@ -240,7 +305,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
             ->addSelect('category_offer_variation.reference as material_variation_reference')
             ->leftJoin(
                 'material_variation',
-                CategoryProductVariation::class,
+                CategoryMaterialVariation::class,
                 'category_offer_variation',
                 'category_offer_variation.id = material_variation.category_variation'
             );
@@ -251,10 +316,9 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
         $dbal
             ->addSelect('material_modification.id as material_modification_uid')
             ->addSelect('material_modification.value as material_modification_value')
-            ->addSelect('material_modification.postfix as material_modification_postfix')
             ->leftJoin(
                 'material_variation',
-                ProductModification::class,
+                MaterialModification::class,
                 'material_modification',
                 'material_modification.variation = material_variation.id AND material_modification.const = stock_material.modification'
             );
@@ -271,7 +335,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
             ->addSelect('category_offer_modification.reference as material_modification_reference')
             ->leftJoin(
                 'material_modification',
-                CategoryProductModification::class,
+                CategoryMaterialModification::class,
                 'category_offer_modification',
                 'category_offer_modification.id = material_modification.category_modification'
             );
@@ -292,7 +356,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
 
         $dbal->leftJoin(
             'material_modification',
-            ProductModificationImage::class,
+            MaterialModificationImage::class,
             'material_modification_image',
             '
 			material_modification_image.modification = material_modification.id AND
@@ -302,7 +366,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
 
         $dbal->leftJoin(
             'material_offer',
-            ProductVariationImage::class,
+            MaterialVariationImage::class,
             'material_variation_image',
             '
 			material_variation_image.variation = material_variation.id AND
@@ -312,7 +376,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
 
         $dbal->leftJoin(
             'material_offer',
-            ProductOfferImage::class,
+            MaterialOfferImage::class,
             'material_offer_images',
             '
 			material_variation_image.name IS NULL AND
@@ -323,7 +387,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
 
         $dbal->leftJoin(
             'material_offer',
-            ProductPhoto::class,
+            MaterialPhoto::class,
             'material_photo',
             '
 			material_offer_images.name IS NULL AND
@@ -337,13 +401,13 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
 			CASE
 			 
 			 WHEN material_modification_image.name IS NOT NULL THEN
-					CONCAT ( '/upload/".$dbal->table(ProductModificationImage::class)."' , '/', material_modification_image.name)
+					CONCAT ( '/upload/".$dbal->table(MaterialModificationImage::class)."' , '/', material_modification_image.name)
 			   WHEN material_variation_image.name IS NOT NULL THEN
-					CONCAT ( '/upload/".$dbal->table(ProductVariationImage::class)."' , '/', material_variation_image.name)
+					CONCAT ( '/upload/".$dbal->table(MaterialVariationImage::class)."' , '/', material_variation_image.name)
 			   WHEN material_offer_images.name IS NOT NULL THEN
-					CONCAT ( '/upload/".$dbal->table(ProductOfferImage::class)."' , '/', material_offer_images.name)
+					CONCAT ( '/upload/".$dbal->table(MaterialOfferImage::class)."' , '/', material_offer_images.name)
 			   WHEN material_photo.name IS NOT NULL THEN
-					CONCAT ( '/upload/".$dbal->table(ProductPhoto::class)."' , '/', material_photo.name)
+					CONCAT ( '/upload/".$dbal->table(MaterialPhoto::class)."' , '/', material_photo.name)
 			   ELSE NULL
 			END AS material_image
 		"
@@ -384,7 +448,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
         // Категория
         $dbal->leftJoin(
             'material_event',
-            ProductCategory::class,
+            MaterialCategory::class,
             'material_event_category',
             'material_event_category.event = material_event.id AND material_event_category.root = true'
         );
@@ -397,7 +461,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
 
         $dbal->leftJoin(
             'material_event_category',
-            CategoryProduct::class,
+            CategoryMaterial::class,
             'category',
             'category.id = material_event_category.category'
         );
@@ -406,18 +470,9 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
             ->addSelect('category_trans.name AS category_name')
             ->leftJoin(
                 'category',
-                CategoryProductTrans::class,
+                CategoryMaterialTrans::class,
                 'category_trans',
                 'category_trans.event = category.event AND category_trans.local = :local'
-            );
-
-        $dbal
-            ->addSelect('category_info.url AS category_url')
-            ->leftJoin(
-                'category',
-                CategoryProductInfo::class,
-                'category_info',
-                'category_info.event = category.event'
             );
 
 
@@ -425,12 +480,12 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
 
         // UserProfile
         $dbal
-            ->addSelect('users_profile.event as users_profile_event')
+            ->addSelect('users_profile.event as user_profile_event')
             ->join(
                 'event',
                 UserProfile::class,
                 'users_profile',
-                'users_profile.id = event.profile'
+                'users_profile.id = invariable.profile'
             );
 
         // Info
@@ -438,7 +493,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
             'event',
             UserProfileInfo::class,
             'users_profile_info',
-            'users_profile_info.profile = event.profile'
+            'users_profile_info.profile = invariable.profile'
         );
 
         // Event
@@ -451,7 +506,7 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
 
         // Personal
         $dbal
-            ->addSelect('users_profile_personal.username AS users_profile_username')
+            ->addSelect('users_profile_personal.username AS user_profile_username')
             ->join(
                 'users_profile_event',
                 UserProfilePersonal::class,
@@ -462,9 +517,9 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
         // Avatar
 
         $dbal
-            ->addSelect("CONCAT ( '/upload/".$dbal->table(UserProfileAvatar::class)."' , '/', users_profile_avatar.name) AS users_profile_avatar")
-            ->addSelect("CASE WHEN users_profile_avatar.cdn THEN  CONCAT ( 'small.', users_profile_avatar.ext) ELSE users_profile_avatar.ext END AS users_profile_avatar_ext")
-            ->addSelect('users_profile_avatar.cdn AS users_profile_avatar_cdn')
+            ->addSelect("CONCAT ( '/upload/".$dbal->table(UserProfileAvatar::class)."' , '/', users_profile_avatar.name) AS user_profile_avatar")
+            ->addSelect("CASE WHEN users_profile_avatar.cdn THEN  CONCAT ( 'small.', users_profile_avatar.ext) ELSE users_profile_avatar.ext END AS user_profile_avatar_ext")
+            ->addSelect('users_profile_avatar.cdn AS user_profile_avatar_cdn')
             ->leftJoin(
                 'users_profile_event',
                 UserProfileAvatar::class,
@@ -475,37 +530,13 @@ final class AllMaterialStocksIncomingRepository implements AllMaterialStocksInco
 
         $dbal->addSelect('null AS group_name'); // Название группы
 
-        /**
-         * Фильтр по свойства продукта
-         */
-        if($this->filter->getProperty())
-        {
-            /** @var MaterialFilterPropertyDTO $property */
-            foreach($this->filter->getProperty() as $property)
-            {
-                if($property->getValue())
-                {
-                    $dbal->join(
-                        'material',
-                        ProductProperty::class,
-                        'material_property_'.$property->getType(),
-                        'material_property_'.$property->getType().'.event = material.event AND 
-                        material_property_'.$property->getType().'.field = :'.$property->getType().'_const AND 
-                        material_property_'.$property->getType().'.value = :'.$property->getType().'_value'
-                    );
-
-                    $dbal->setParameter($property->getType().'_const', $property->getConst());
-                    $dbal->setParameter($property->getType().'_value', $property->getValue());
-                }
-            }
-        }
 
         // Поиск
         if($this->search?->getQuery())
         {
             $dbal
                 ->createSearchQueryBuilder($this->search)
-                ->addSearchLike('event.number')
+                ->addSearchLike('invariable.number')
                 ->addSearchLike('material_trans.name');
         }
 

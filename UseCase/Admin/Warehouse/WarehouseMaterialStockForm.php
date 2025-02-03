@@ -23,62 +23,22 @@
 
 namespace BaksDev\Materials\Stocks\UseCase\Admin\Warehouse;
 
-use BaksDev\Contacts\Region\Repository\WarehouseChoice\WarehouseChoiceInterface;
-use BaksDev\Contacts\Region\Type\Call\Const\ContactsRegionCallConst;
-use BaksDev\Users\Profile\UserProfile\Repository\UserProfileChoice\UserProfileChoiceInterface;
-use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class WarehouseMaterialStockForm extends AbstractType
 {
-    public function __construct(private readonly UserProfileChoiceInterface $userProfileChoice) {}
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Склад
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function(FormEvent $event): void {
-                /** @var WarehouseMaterialStockDTO $data */
-                $data = $event->getData();
-                $form = $event->getForm();
-
-                /** Все профили пользователя */
-                $profiles = $this->userProfileChoice->getActiveUserProfile($data->getUsr());
-
-                if(count($profiles) === 1)
-                {
-                    $data->setProfile(current($profiles));
-                }
-
-                // Склад
-                $form
-                    ->add('profile', ChoiceType::class, [
-                        'choices' => $profiles,
-                        'choice_value' => function(?UserProfileUid $profile) {
-                            return $profile?->getValue();
-                        },
-                        'choice_label' => function(UserProfileUid $profile) {
-                            return $profile->getAttr();
-                        },
-
-                        'label' => false,
-                        'required' => true,
-                    ]);
-            }
-        );
+        $builder->add('invariable', Invariable\WarehouseMaterialInvariableForm::class, ['label' => false]);
 
         // Section Collection
         $builder->add('material', CollectionType::class, [
-            'entry_type' => Products\MaterialStockForm::class,
+            'entry_type' => Materials\MaterialStockForm::class,
             'entry_options' => ['label' => false],
             'label' => false,
             'by_reference' => false,

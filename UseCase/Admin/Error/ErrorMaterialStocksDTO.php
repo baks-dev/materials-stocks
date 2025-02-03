@@ -28,7 +28,7 @@ namespace BaksDev\Materials\Stocks\UseCase\Admin\Error;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEventInterface;
 use BaksDev\Materials\Stocks\Type\Event\MaterialStockEventUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusError;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusError;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @see MaterialStockEventInterface */

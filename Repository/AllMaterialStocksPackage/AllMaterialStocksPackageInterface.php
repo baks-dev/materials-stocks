@@ -39,7 +39,7 @@ interface AllMaterialStocksPackageInterface
     public function findPaginator(UserProfileUid $profile): PaginatorInterface;
 
     /**
-     * Метод возвращает всю продукцию требующая сборки
+     * Метод возвращает всю сырьё требующая сборки
      */
     public function findAll(UserProfileUid $profile): ?array;
 }

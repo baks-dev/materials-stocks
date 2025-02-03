@@ -28,10 +28,10 @@ use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Materials\Catalog\Repository\MaterialDetail\MaterialDetailByConstInterface;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Repository\MaterialWarehouseTotal\MaterialWarehouseTotalInterface;
+use BaksDev\Materials\Stocks\UseCase\Admin\Moving\Materials\MaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Moving\MovingMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Moving\MovingMaterialStockForm;
 use BaksDev\Materials\Stocks\UseCase\Admin\Moving\MovingMaterialStockHandler;
-use BaksDev\Materials\Stocks\UseCase\Admin\Moving\Products\MaterialStockDTO;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -120,7 +120,7 @@ final class MovingController extends AbstractController
                         $msg .= '<br>Доступно: <b>'.$MaterialStockTotal.'</b>';
 
 
-                        $this->addFlash('Недостаточное количество продукции', $msg, 'materials-stocks.admin');
+                        $this->addFlash('Недостаточное количество сырья', $msg, 'materials-stocks.admin');
                         continue 2;
                     }
                 }

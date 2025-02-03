@@ -26,7 +26,7 @@ namespace BaksDev\Materials\Stocks\UseCase\Admin\Incoming;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEventInterface;
 use BaksDev\Materials\Stocks\Type\Event\MaterialStockEventUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusIncoming;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusIncoming;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -38,27 +38,20 @@ final class IncomingMaterialStockDTO implements MaterialStockEventInterface
     #[Assert\Uuid]
     private readonly MaterialStockEventUid $id;
 
-    /** Ответственное лицо (Профиль пользователя) */
-    #[Assert\NotBlank]
-    #[Assert\Uuid]
-    private readonly UserProfileUid $profile;
 
     /** Статус заявки - ПРИХОД */
     #[Assert\NotBlank]
     private readonly MaterialStockStatus $status;
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     #[Assert\Valid]
     private ArrayCollection $material;
 
     /** Комментарий */
     private ?string $comment = null;
 
-
-    //public function __construct(UserProfileUid $profile)
     public function __construct()
     {
-        //$this->profile = $profile;
         $this->status = new MaterialStockStatus(MaterialStockStatusIncoming::class);
         $this->material = new ArrayCollection();
     }
@@ -86,12 +79,6 @@ final class IncomingMaterialStockDTO implements MaterialStockEventInterface
         $this->comment = $comment;
     }
 
-    /** Ответственное лицо (Профиль пользователя) */
-
-    public function getProfile(): UserProfileUid
-    {
-        return $this->profile;
-    }
 
     /** Статус заявки - ПРИХОД */
 
@@ -100,7 +87,7 @@ final class IncomingMaterialStockDTO implements MaterialStockEventInterface
         return $this->status;
     }
 
-    /** Коллекция продукции  */
+    /** Коллекция сырья  */
     public function getMaterial(): ArrayCollection
     {
         return $this->material;
@@ -111,9 +98,8 @@ final class IncomingMaterialStockDTO implements MaterialStockEventInterface
         $this->material = $material;
     }
 
-    public function addMaterial(Products\MaterialStockDTO $material): void
+    public function addMaterial(Materials\MaterialStockDTO $material): void
     {
         $this->material->add($material);
     }
-
 }

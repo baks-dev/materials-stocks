@@ -28,10 +28,10 @@ namespace BaksDev\Materials\Stocks\Repository\MaterialChoice;
 use BaksDev\Contacts\Region\Type\Call\ContactsRegionCallUid;
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Doctrine\ORMQueryBuilder;
+use BaksDev\Materials\Catalog\Entity\Material;
+use BaksDev\Materials\Catalog\Entity\Trans\MaterialTrans;
 use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
-use BaksDev\Products\Product\Entity\Product;
-use BaksDev\Products\Product\Entity\Trans\ProductTrans;
 use BaksDev\Users\User\Type\Id\UserUid;
 use Generator;
 
@@ -67,22 +67,17 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
 
         $dbal->join(
             'stock',
-            Product::class,
+            Material::class,
             'material',
             'material.id = stock.material'
         );
 
         $dbal->leftJoin(
             'material',
-            ProductTrans::class,
+            MaterialTrans::class,
             'trans',
             'trans.event = material.event AND trans.local = :local'
         );
-
-
-        //        $select = sprintf('new %s(stock.material, trans.name, (SUM(stock.total) - SUM(stock.reserve)) )', ProductUid::class);
-        //
-        //        $qb->select($select);
 
 
         $dbal->addSelect('stock.material AS value');
@@ -90,8 +85,8 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
         $dbal->addSelect('(SUM(stock.total) - SUM(stock.reserve)) AS option');
 
         return $dbal
-            ->enableCache('materials-material', 86400)
-            ->fetchAllHydrate(ProductUid::class);
+            ->enableCache('materials-catalog', 86400)
+            ->fetchAllHydrate(MaterialUid::class);
 
 
     }
@@ -105,7 +100,7 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
             ->createQueryBuilder(self::class)
             ->bindLocal();
 
-        $select = sprintf('new %s(stock.material, trans.name, SUM(stock.total))', ProductUid::class);
+        $select = sprintf('new %s(stock.material, trans.name, SUM(stock.total))', MaterialUid::class);
 
         $qb->select($select);
 
@@ -119,7 +114,7 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
         $qb->addGroupBy('trans.name');
 
         $qb->join(
-            Product::class,
+            Material::class,
             'material',
             'WITH',
             'material.id = stock.material'
@@ -127,7 +122,7 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
 
 
         $qb->leftJoin(
-            ProductTrans::class,
+            MaterialTrans::class,
             'trans',
             'WITH',
             'trans.event = material.event AND trans.local = :local'

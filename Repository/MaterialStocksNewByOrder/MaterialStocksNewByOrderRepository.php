@@ -74,7 +74,7 @@ final class MaterialStocksNewByOrderRepository implements MaterialStocksNewByOrd
         $qb->where('orders.ord = :ord');
 
         $qb->setParameter('ord', $order, OrderUid::TYPE);
-        $qb->setParameter('status', new MaterialStockStatus(new MaterialStockstatus\MaterialStockStatusPackage()), MaterialStockStatus::TYPE);
+        $qb->setParameter('status', new MaterialStockStatus(new MaterialStockstatus\Collection\MaterialStockStatusPackage()), MaterialStockStatus::TYPE);
         $qb->setParameter('profile', $profile, UserProfileUid::TYPE);
 
         return $qb->getQuery()->getOneOrNullResult();

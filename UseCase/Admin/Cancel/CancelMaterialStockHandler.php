@@ -63,7 +63,7 @@ final class CancelMaterialStockHandler extends AbstractHandler
 
         /* Отправляем сообщение в шину */
         $this->messageDispatch
-            ->addClearCacheOther('materials-material')
+            ->addClearCacheOther('materials-catalog')
             ->dispatch(
                 message: new MaterialStockMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
                 transport: 'material-stock'

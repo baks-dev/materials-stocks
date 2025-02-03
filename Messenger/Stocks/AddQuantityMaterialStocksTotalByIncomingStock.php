@@ -33,7 +33,7 @@ use BaksDev\Materials\Stocks\Messenger\MaterialStockMessage;
 use BaksDev\Materials\Stocks\Repository\MaterialStocksById\MaterialStocksByIdInterface;
 use BaksDev\Materials\Stocks\Repository\MaterialStocksTotalStorage\MaterialStocksTotalStorageInterface;
 use BaksDev\Materials\Stocks\Repository\UpdateMaterialStock\AddMaterialStockInterface;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusIncoming;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusIncoming;
 use BaksDev\Users\Profile\UserProfile\Repository\UserByUserProfile\UserByUserProfileInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
@@ -75,18 +75,18 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
         /**
          * Если Статус заявки не является Incoming «Приход на склад»
          */
-        if(false === $MaterialStockEvent->getStatus()->equals(MaterialStockStatusIncoming::class))
+        if(false === $MaterialStockEvent->equalsMaterialStockStatus(MaterialStockStatusIncoming::class))
         {
             return;
         }
 
-        // Получаем всю продукцию в ордере со статусом Incoming
+        // Получаем всю сырьё в ордере со статусом Incoming
         $materials = $this->materialStocks->getMaterialsIncomingStocks($message->getId());
 
 
         if(empty($materials))
         {
-            $this->logger->warning('Заявка не имеет продукции в коллекции', [self::class.':'.__LINE__]);
+            $this->logger->warning('Заявка не имеет сырья в коллекции', [self::class.':'.__LINE__]);
             return;
         }
 
@@ -111,7 +111,7 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
         foreach($materials as $material)
         {
 
-            /** Получаем место для хранения указанной продукции данного профиля */
+            /** Получаем место для хранения указанной сырья данного профиля */
             $MaterialStockTotal = $this->materialStocksTotalStorage
                 ->profile($UserProfileUid)
                 ->material($material->getMaterial())
@@ -126,7 +126,7 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
                 /* получаем пользователя профиля, для присвоения новому месту складирования */
                 $User = $this->userByUserProfile
                     ->forProfile($UserProfileUid)
-                    ->findUser();
+                    ->find();
 
                 if(!$User)
                 {
@@ -156,7 +156,7 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
                 $this->entityManager->flush();
 
                 $this->logger->info(
-                    'Место складирования не найдено! Создали новое место для указанной продукции',
+                    'Место складирования не найдено! Создали новое место для указанной сырья',
                     [
                         self::class.':'.__LINE__,
                         'storage' => $material->getStorage(),
@@ -170,7 +170,7 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
             }
 
             $this->logger->info(
-                sprintf('Добавляем приход продукции по заявке %s', $MaterialStockEvent->getNumber()),
+                sprintf('Добавляем приход сырья по заявке %s', $MaterialStockEvent->getNumber()),
                 [self::class.':'.__LINE__]
             );
 
@@ -206,7 +206,7 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
         }
 
         $this->logger->info(
-            'Добавили приход продукции на склад',
+            'Добавили приход сырья на склад',
             [
                 self::class.':'.__LINE__,
                 'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()

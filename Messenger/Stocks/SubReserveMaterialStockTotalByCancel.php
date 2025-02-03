@@ -32,7 +32,7 @@ use BaksDev\Materials\Stocks\Entity\Stock\Materials\MaterialStockMaterial;
 use BaksDev\Materials\Stocks\Messenger\MaterialStockMessage;
 use BaksDev\Materials\Stocks\Messenger\Stocks\SubMaterialStocksReserve\SubMaterialStocksTotalReserveMessage;
 use BaksDev\Materials\Stocks\Repository\MaterialStocksById\MaterialStocksByIdInterface;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusCancel;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusCancel;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Target;
@@ -69,17 +69,17 @@ final readonly class SubReserveMaterialStockTotalByCancel
         }
 
         // Если статус события заявки не является Cancel «Отменен».
-        if(false === $MaterialStockEvent->getStatus()->equals(MaterialStockStatusCancel::class))
+        if(false === $MaterialStockEvent->equalsMaterialStockStatus(MaterialStockStatusCancel::class))
         {
             return;
         }
 
-        // Получаем всю продукцию в заявке со статусом Cancel «Отменен»
+        // Получаем всю сырьё в заявке со статусом Cancel «Отменен»
         $materials = $this->materialStocks->getMaterialsCancelStocks($message->getId());
 
         if(empty($materials))
         {
-            $this->logger->warning('Заявка не имеет продукции в коллекции', [self::class.':'.__LINE__]);
+            $this->logger->warning('Заявка не имеет сырья в коллекции', [self::class.':'.__LINE__]);
             return;
         }
 
@@ -97,7 +97,7 @@ final readonly class SubReserveMaterialStockTotalByCancel
         }
 
         /** Идентификатор профиля склада отгрузки, где производится отмена заявки */
-        $UserProfileUid = $MaterialStockEvent->getProfile();
+        $UserProfileUid = $MaterialStockEvent->getStocksProfile();
 
         /** @var MaterialStockMaterial $material */
         foreach($materials as $material)
@@ -110,14 +110,14 @@ final readonly class SubReserveMaterialStockTotalByCancel
                     'total' => $material->getTotal(),
                     'MaterialStockEventUid' => (string) $message->getEvent(),
                     'UserProfileUid' => (string) $UserProfileUid,
-                    'ProductUid' => (string) $material->getMaterial(),
+                    'MaterialUid' => (string) $material->getMaterial(),
                     'MaterialOfferConst' => (string) $material->getOffer(),
                     'MaterialVariationConst' => (string) $material->getVariation(),
                     'MaterialModificationConst' => (string) $material->getModification(),
                 ]
             );
 
-            /** Снимаем ТОЛЬКО резерв продукции на складе */
+            /** Снимаем ТОЛЬКО резерв сырья на складе */
             for($i = 1; $i <= $material->getTotal(); $i++)
             {
                 $SubMaterialStocksTotalCancelMessage = new SubMaterialStocksTotalReserveMessage(

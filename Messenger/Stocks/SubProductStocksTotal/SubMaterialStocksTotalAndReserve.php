@@ -44,14 +44,14 @@ final readonly class SubMaterialStocksTotalAndReserve
     ) {}
 
     /**
-     * Снимает наличие продукции и резерв с указанного склада с мест, начиная с минимального наличия
+     * Снимает наличие сырья и резерв с указанного склада с мест, начиная с минимального наличия
      */
     public function __invoke(SubMaterialStocksTotalAndReserveMessage $message): void
     {
         $this->entityManager->clear();
 
-        // Получаем одно место складирования продукции с минимальным количеством в наличии без учета резерва, но чтобы был резерв
-        // списываем единицу продукции с минимальным числом остатка, затем с другого места где больше
+        // Получаем одно место складирования сырья с минимальным количеством в наличии без учета резерва, но чтобы был резерв
+        // списываем единицу сырья с минимальным числом остатка, затем с другого места где больше
         $MaterialStockTotal = $this->materialStockMinQuantity
             ->profile($message->getProfile())
             ->material($message->getMaterial())
@@ -63,7 +63,7 @@ final readonly class SubMaterialStocksTotalAndReserve
         if(!$MaterialStockTotal)
         {
             $this->logger->critical(
-                'Не найдено продукции на складе для списания',
+                'Не найдено сырья на складе для списания',
                 [
                     self::class.':'.__LINE__,
                     'profile' => (string) $message->getProfile(),
@@ -90,7 +90,7 @@ final readonly class SubMaterialStocksTotalAndReserve
         if(empty($rows))
         {
             $this->logger->critical(
-                'Невозможно снять резерв и остаток продукции, которой нет в наличии или заранее не зарезервирована',
+                'Невозможно снять резерв и остаток сырья, которой нет в наличии или заранее не зарезервирована',
                 [
                     self::class.':'.__LINE__,
                     'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()
@@ -101,7 +101,7 @@ final readonly class SubMaterialStocksTotalAndReserve
         }
 
         $this->logger->info(
-            sprintf('место: %s : Сняли резерв и уменьшили количество на единицу продукции', $MaterialStockTotal->getStorage()),
+            sprintf('место: %s : Сняли резерв и уменьшили количество на единицу сырья', $MaterialStockTotal->getStorage()),
             [
                 self::class.':'.__LINE__,
                 'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()

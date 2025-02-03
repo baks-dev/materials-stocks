@@ -27,7 +27,7 @@ namespace BaksDev\Materials\Stocks\UseCase\Admin\Extradition\Tests;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Repository\CurrentMaterialStocks\CurrentMaterialStocksInterface;
 use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;
-use BaksDev\Materials\Stocks\Type\Status\MaterialStockstatus\Collection\MaterialStockStatusExtradition;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusExtradition;
 use BaksDev\Materials\Stocks\UseCase\Admin\Extradition\ExtraditionMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Extradition\ExtraditionMaterialStockHandler;
 use BaksDev\Materials\Stocks\UseCase\Admin\Package\Tests\PackageMaterialStockTest;

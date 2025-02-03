@@ -26,7 +26,6 @@ namespace BaksDev\Materials\Stocks\Controller\Admin\Purchase;
 use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
-use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\Products\MaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\PurchaseMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\PurchaseMaterialStockForm;
 use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\PurchaseMaterialStockHandler;
@@ -35,7 +34,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 #[AsController]
 #[RoleSecurity('ROLE_MATERIAL_STOCK_PURCHASE_NEW')]
@@ -50,11 +48,6 @@ final class PurchaseController extends AbstractController
         PurchaseMaterialStockHandler $PurchaseMaterialStockHandler
     ): Response
     {
-
-        if(!$this->getProfileUid())
-        {
-            throw new UserNotFoundException('User Profile not found');
-        }
 
         $purchaseDTO = new PurchaseMaterialStockDTO();
 
@@ -73,7 +66,6 @@ final class PurchaseController extends AbstractController
 
             $purchase = clone $purchaseDTO;
 
-            /** @var MaterialStockDTO $material */
             foreach($purchase->getMaterial() as $material)
             {
                 $purchaseDTO->setMaterial(new ArrayCollection());

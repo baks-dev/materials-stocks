@@ -27,5 +27,5 @@ use BaksDev\Orders\Order\Type\Id\OrderUid;
 
 interface ExistMaterialStocksMoveOrderInterface
 {
-    public function existProductMoveOrder(OrderUid $order): bool;
+    public function existMaterialMoveOrder(OrderUid $order): bool;
 }

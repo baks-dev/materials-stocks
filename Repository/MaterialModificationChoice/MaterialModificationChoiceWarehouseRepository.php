@@ -26,17 +26,17 @@ declare(strict_types=1);
 namespace BaksDev\Materials\Stocks\Repository\MaterialModificationChoice;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
+use BaksDev\Materials\Catalog\Entity\Material;
+use BaksDev\Materials\Catalog\Entity\Offers\MaterialOffer;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\MaterialVariation;
+use BaksDev\Materials\Catalog\Entity\Offers\Variation\Modification\MaterialModification;
 use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
+use BaksDev\Materials\Category\Entity\Offers\Variation\Modification\CategoryMaterialModification;
+use BaksDev\Materials\Category\Entity\Offers\Variation\Modification\Trans\CategoryMaterialModificationTrans;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
-use BaksDev\Products\Category\Entity\Offers\Variation\Modification\CategoryProductModification;
-use BaksDev\Products\Category\Entity\Offers\Variation\Modification\Trans\CategoryProductModificationTrans;
-use BaksDev\Products\Product\Entity\Offers\ProductOffer;
-use BaksDev\Products\Product\Entity\Offers\Variation\Modification\ProductModification;
-use BaksDev\Products\Product\Entity\Offers\Variation\ProductVariation;
-use BaksDev\Products\Product\Entity\Product;
 use BaksDev\Users\User\Type\Id\UserUid;
 use Generator;
 use InvalidArgumentException;
@@ -65,11 +65,11 @@ final class MaterialModificationChoiceWarehouseRepository implements MaterialMod
     }
 
 
-    public function material(ProductUid|string $material): self
+    public function material(MaterialUid|string $material): self
     {
         if(is_string($material))
         {
-            $material = new ProductUid($material);
+            $material = new MaterialUid($material);
         }
 
         $this->material = $material;
@@ -125,7 +125,7 @@ final class MaterialModificationChoiceWarehouseRepository implements MaterialMod
             ->setParameter('usr', $this->user, UserUid::TYPE);
 
         $dbal->andWhere('stock.material = :material')
-            ->setParameter('material', $this->material, ProductUid::TYPE);
+            ->setParameter('material', $this->material, MaterialUid::TYPE);
 
 
         $dbal->andWhere('stock.offer = :offer')
@@ -140,7 +140,7 @@ final class MaterialModificationChoiceWarehouseRepository implements MaterialMod
 
         $dbal->join(
             'stock',
-            Product::class,
+            Material::class,
             'material',
             'material.id = stock.material',
         );
@@ -148,7 +148,7 @@ final class MaterialModificationChoiceWarehouseRepository implements MaterialMod
 
         $dbal->join(
             'stock',
-            ProductOffer::class,
+            MaterialOffer::class,
             'offer',
             'offer.const = stock.offer AND offer.event = material.event',
         );
@@ -156,7 +156,7 @@ final class MaterialModificationChoiceWarehouseRepository implements MaterialMod
 
         $dbal->join(
             'stock',
-            ProductVariation::class,
+            MaterialVariation::class,
             'variation',
             'variation.const = stock.variation AND variation.offer = offer.id',
         );
@@ -164,7 +164,7 @@ final class MaterialModificationChoiceWarehouseRepository implements MaterialMod
 
         $dbal->join(
             'stock',
-            ProductModification::class,
+            MaterialModification::class,
             'modification',
             'modification.const = stock.modification AND modification.variation = variation.id'
         );
@@ -174,14 +174,14 @@ final class MaterialModificationChoiceWarehouseRepository implements MaterialMod
 
         $dbal->join(
             'modification',
-            CategoryProductModification::class,
+            CategoryMaterialModification::class,
             'category_modification',
             'category_modification.id = modification.category_modification'
         );
 
         $dbal->leftJoin(
             'category_modification',
-            CategoryProductModificationTrans::class,
+            CategoryMaterialModificationTrans::class,
             'category_modification_trans',
             'category_modification_trans.modification = category_modification.id AND category_modification_trans.local = :local'
         );
@@ -192,7 +192,6 @@ final class MaterialModificationChoiceWarehouseRepository implements MaterialMod
         $dbal->addSelect('category_modification_trans.name AS option')->addGroupBy('category_modification_trans.name');
 
         $dbal->addSelect('(SUM(stock.total) - SUM(stock.reserve)) AS property');
-        $dbal->addSelect('modification.postfix AS characteristic')->addGroupBy('modification.postfix');
         $dbal->addSelect('category_modification.reference AS reference')->addGroupBy('category_modification.reference');
 
 

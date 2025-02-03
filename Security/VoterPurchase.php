@@ -26,6 +26,7 @@ namespace BaksDev\Materials\Stocks\Security;
 
 use BaksDev\Menu\Admin\Command\Upgrade\MenuAdminInterface;
 use BaksDev\Menu\Admin\Type\SectionGroup\Group\Collection\MenuAdminSectionGroupCollectionInterface;
+use BaksDev\Products\Stocks\Security\MenuGroupStocks;
 use BaksDev\Users\Profile\Group\Security\RoleInterface;
 use BaksDev\Users\Profile\Group\Security\VoterInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
@@ -34,7 +35,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 final class VoterPurchase implements VoterInterface, MenuAdminInterface
 {
 
-    /** Закупки продукции */
+    /** Закупки сырья */
     public const string VOTER = 'PURCHASE';
 
     public static function getVoter(): string
@@ -68,7 +69,7 @@ final class VoterPurchase implements VoterInterface, MenuAdminInterface
     /** Метод возвращает позицию, в которую располагается ссылка в секции меню */
     public function getSortMenu(): int
     {
-        return 110;
+        return 262;
     }
 
     /** Метод возвращает флаг "Показать в выпадающем меню"  */

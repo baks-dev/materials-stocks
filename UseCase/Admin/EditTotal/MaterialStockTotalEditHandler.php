@@ -29,7 +29,6 @@ use BaksDev\Core\Messenger\MessageDispatchInterface;
 use BaksDev\Core\Validator\ValidatorCollectionInterface;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
-use BaksDev\Materials\Stocks\Messenger\Products\Recalculate\RecalculateProductMessage;
 use BaksDev\Materials\Stocks\UseCase\Admin\Storage\MaterialStockStorageEditDTO;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -73,16 +72,6 @@ final readonly class MaterialStockTotalEditHandler
 
         $this->entityManager->flush();
 
-        if($command instanceof MaterialStockTotalEditDTO && $command->isRecalculate())
-        {
-            /** Отправляем сообщение в шину для пересчета продукции */
-            $this->messageDispatch->dispatch(new RecalculateProductMessage(
-                $command->getMaterial(),
-                $command->getOffer(),
-                $command->getVariation(),
-                $command->getModification(),
-            ), transport: 'materials-stocks');
-        }
 
         $this->messageDispatch->addClearCacheOther('materials-stocks');
 

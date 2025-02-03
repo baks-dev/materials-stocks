@@ -81,7 +81,7 @@ class MaterialStockTotal extends EntityState
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $comment = null;
 
-    /** Стоимость продукции на указанном складе */
+    /** Стоимость сырья на указанном складе */
     #[ORM\Column(type: Types::INTEGER, options: ['default' => 0])]
     private int $price = 0;
 
