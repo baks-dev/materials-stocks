@@ -24,10 +24,10 @@
 namespace BaksDev\Materials\Stocks\Repository\MaterialWarehouseTotal;
 
 use BaksDev\Contacts\Region\Type\Call\Const\ContactsRegionCallConst;
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
+use BaksDev\Products\Product\Type\Material\MaterialUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 
 interface MaterialWarehouseTotalInterface

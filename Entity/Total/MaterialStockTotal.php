@@ -26,13 +26,13 @@ declare(strict_types=1);
 namespace BaksDev\Materials\Stocks\Entity\Total;
 
 use BaksDev\Core\Entity\EntityState;
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
 use BaksDev\Materials\Stocks\Type\Total\MaterialStockTotalUid;
 use BaksDev\Materials\Stocks\UseCase\Admin\EditTotal\MaterialStockTotalEditDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Storage\MaterialStockStorageEditDTO;
+use BaksDev\Products\Product\Type\Material\MaterialUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\User\Type\Id\UserUid;
 use Doctrine\DBAL\Types\Types;

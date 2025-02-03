@@ -24,7 +24,6 @@
 
 namespace BaksDev\Materials\Stocks\UseCase\Admin\Incoming\Tests;
 
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
@@ -38,6 +37,7 @@ use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\MaterialStockStatus
 use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\IncomingMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\IncomingMaterialStockHandler;
 use BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\Tests\WarehouseMaterialStockTest;
+use BaksDev\Products\Product\Type\Material\MaterialUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

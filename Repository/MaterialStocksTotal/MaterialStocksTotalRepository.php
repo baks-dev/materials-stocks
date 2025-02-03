@@ -26,11 +26,11 @@ declare(strict_types=1);
 namespace BaksDev\Materials\Stocks\Repository\MaterialStocksTotal;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
+use BaksDev\Products\Product\Type\Material\MaterialUid;
 use InvalidArgumentException;
 
 final class MaterialStocksTotalRepository implements MaterialStocksTotalInterface

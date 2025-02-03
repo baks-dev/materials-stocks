@@ -26,7 +26,6 @@ namespace BaksDev\Materials\Stocks\UseCase\Admin\Moving;
 use BaksDev\Contacts\Region\Repository\WarehouseChoice\WarehouseChoiceInterface;
 use BaksDev\Contacts\Region\Type\Call\Const\ContactsRegionCallConst;
 use BaksDev\Contacts\Region\Type\Call\ContactsRegionCallUid;
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
@@ -35,6 +34,7 @@ use BaksDev\Materials\Stocks\Repository\MaterialModificationChoice\MaterialModif
 use BaksDev\Materials\Stocks\Repository\MaterialOfferChoice\MaterialOfferChoiceWarehouseInterface;
 use BaksDev\Materials\Stocks\Repository\MaterialVariationChoice\MaterialVariationChoiceWarehouseInterface;
 use BaksDev\Materials\Stocks\Repository\MaterialWarehouseChoice\MaterialWarehouseChoiceInterface;
+use BaksDev\Products\Product\Type\Material\MaterialUid;
 use BaksDev\Users\Profile\UserProfile\Repository\UserProfileChoice\UserProfileChoiceInterface;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\User\Entity\User;

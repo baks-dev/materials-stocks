@@ -26,12 +26,12 @@ declare(strict_types=1);
 namespace BaksDev\Materials\Stocks\Entity\Stock\Materials;
 
 use BaksDev\Core\Entity\EntityEvent;
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Type\Material\MaterialStockCollectionUid;
+use BaksDev\Products\Product\Type\Material\MaterialUid;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;

@@ -25,12 +25,12 @@ declare(strict_types=1);
 
 namespace BaksDev\Materials\Stocks\UseCase\Admin\EditTotal;
 
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
 use BaksDev\Materials\Stocks\Type\Total\MaterialStockTotalUid;
+use BaksDev\Products\Product\Type\Material\MaterialUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Symfony\Component\Validator\Constraints as Assert;
 

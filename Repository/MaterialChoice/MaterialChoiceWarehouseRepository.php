@@ -30,8 +30,8 @@ use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Core\Doctrine\ORMQueryBuilder;
 use BaksDev\Materials\Catalog\Entity\Material;
 use BaksDev\Materials\Catalog\Entity\Trans\MaterialTrans;
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
+use BaksDev\Products\Product\Type\Material\MaterialUid;
 use BaksDev\Users\User\Type\Id\UserUid;
 use Generator;
 

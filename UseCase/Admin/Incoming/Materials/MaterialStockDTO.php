@@ -24,11 +24,11 @@
 namespace BaksDev\Materials\Stocks\UseCase\Admin\Incoming\Materials;
 
 use BaksDev\Contacts\Region\Type\Call\ContactsRegionCallUid;
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
 use BaksDev\Materials\Stocks\Entity\Stock\Materials\MaterialStockMaterialInterface;
+use BaksDev\Products\Product\Type\Material\MaterialUid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /** @see MaterialStockMaterial */

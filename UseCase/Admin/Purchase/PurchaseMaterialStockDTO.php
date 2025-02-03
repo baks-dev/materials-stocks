@@ -24,7 +24,6 @@
 namespace BaksDev\Materials\Stocks\UseCase\Admin\Purchase;
 
 use BaksDev\Contacts\Region\Type\Call\ContactsRegionCallUid;
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
@@ -33,6 +32,7 @@ use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEventInterface;
 use BaksDev\Materials\Stocks\Type\Event\MaterialStockEventUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusPurchase;
+use BaksDev\Products\Product\Type\Material\MaterialUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;

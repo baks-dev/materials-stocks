@@ -24,9 +24,9 @@
 namespace BaksDev\Materials\Stocks\Repository\MaterialVariationChoice;
 
 use BaksDev\Contacts\Region\Type\Call\ContactsRegionCallUid;
-use BaksDev\Materials\Catalog\Type\Id\MaterialUid;
 use BaksDev\Materials\Catalog\Type\Offers\ConstId\MaterialOfferConst;
 use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationConst;
+use BaksDev\Products\Product\Type\Material\MaterialUid;
 use BaksDev\Users\User\Type\Id\UserUid;
 use Generator;
 
