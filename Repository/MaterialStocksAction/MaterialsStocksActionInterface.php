@@ -21,7 +21,7 @@
  *  THE SOFTWARE.
  */
 
-namespace BaksDev\Materials\Stocks\Repository\MaterialsStocksAction;
+namespace BaksDev\Materials\Stocks\Repository\MaterialStocksAction;
 
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;

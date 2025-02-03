@@ -23,7 +23,7 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Materials\Stocks\Repository\MaterialsStocksAction;
+namespace BaksDev\Materials\Stocks\Repository\MaterialStocksAction;
 
 use BaksDev\Core\Doctrine\DBALQueryBuilder;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
