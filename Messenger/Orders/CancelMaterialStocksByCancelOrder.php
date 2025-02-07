@@ -74,7 +74,7 @@ final readonly class CancelMaterialStocksByCancelOrder
         /** Получаем активное состояние заказа */
         $OrderEvent = $this->currentOrderEvent
             ->forOrder($message->getId())
-            ->execute();
+            ->find();
 
         if(!$OrderEvent)
         {

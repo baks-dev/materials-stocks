@@ -83,7 +83,7 @@ final readonly class UpdateOrderStatusByExtraditionMaterialStocks
          */
         $OrderEvent = $this->currentOrderEvent
             ->forOrder($MaterialStockEvent->getOrder())
-            ->execute();
+            ->find();
 
         if(!$OrderEvent)
         {
