@@ -122,8 +122,8 @@ final readonly class UpdateOrderStatusByCompletedMaterialStocks
         $OrderStatusDTO = new OrderStatusDTO(
             OrderStatusCompleted::class,
             $OrderEvent->getId(),
-            $MaterialStockEvent->getStocksProfile()
-        );
+        )
+            ->setProfile($MaterialStockEvent->getStocksProfile());
 
         $ModifyDTO = $OrderStatusDTO->getModify();
         $ModifyDTO->setUsr($MaterialStockEvent->getModifyUser());

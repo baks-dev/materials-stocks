@@ -108,8 +108,9 @@ final readonly class UpdateOrderStatusByExtraditionMaterialStocks
         $OrderStatusDTO = new OrderStatusDTO(
             OrderStatusExtradition::class,
             $OrderEvent->getId(),
-            $MaterialStockEvent->getStocksProfile()
-        );
+
+        )
+            ->setProfile($MaterialStockEvent->getStocksProfile());
 
         $ModifyDTO = $OrderStatusDTO->getModify();
         $ModifyDTO->setUsr($MaterialStockEvent->getModifyUser());
