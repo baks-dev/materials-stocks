@@ -68,7 +68,7 @@ final class VoterPurchaseNew implements VoterInterface, MenuAdminInterface
     }
 
     /** Метод возвращает позицию, в которую располагается ссылка в секции меню */
-    public function getSortMenu(): int
+    public static function getSortMenu(): int
     {
         return 1;
     }
