@@ -31,7 +31,7 @@ use BaksDev\Materials\Stocks\Messenger\Stocks\SubMaterialStocksTotal\SubMaterial
 use BaksDev\Materials\Stocks\Repository\MaterialWarehouseByOrder\MaterialWarehouseByOrderInterface;
 use BaksDev\Orders\Order\Entity\Event\OrderEvent;
 use BaksDev\Orders\Order\Messenger\OrderMessage;
-use BaksDev\Orders\Order\Type\Status\OrderStatus\OrderStatusCompleted;
+use BaksDev\Orders\Order\Type\Status\OrderStatus\Collection\OrderStatusCompleted;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;

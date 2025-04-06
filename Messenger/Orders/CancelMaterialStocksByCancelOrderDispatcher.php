@@ -34,7 +34,7 @@ use BaksDev\Materials\Stocks\UseCase\Admin\Cancel\CancelMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Cancel\CancelMaterialStockHandler;
 use BaksDev\Orders\Order\Messenger\OrderMessage;
 use BaksDev\Orders\Order\Repository\CurrentOrderEvent\CurrentOrderEventInterface;
-use BaksDev\Orders\Order\Type\Status\OrderStatus\OrderStatusCanceled;
+use BaksDev\Orders\Order\Type\Status\OrderStatus\Collection\OrderStatusCanceled;
 use BaksDev\Orders\Order\UseCase\Admin\Canceled\CanceledOrderDTO;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Target;

@@ -31,7 +31,7 @@ use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Messenger\MaterialStockMessage;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusCompleted;
 use BaksDev\Orders\Order\Repository\CurrentOrderEvent\CurrentOrderEventInterface;
-use BaksDev\Orders\Order\Type\Status\OrderStatus\OrderStatusCompleted;
+use BaksDev\Orders\Order\Type\Status\OrderStatus\Collection\OrderStatusCompleted;
 use BaksDev\Orders\Order\UseCase\Admin\Status\OrderStatusDTO;
 use BaksDev\Orders\Order\UseCase\Admin\Status\OrderStatusHandler;
 use Doctrine\ORM\EntityManagerInterface;
