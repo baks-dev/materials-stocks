@@ -30,7 +30,9 @@ use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Messenger\MaterialStockMessage;
 use DomainException;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
+#[Autoconfigure(public: true)]
 final class PackageMaterialStockHandler extends AbstractHandler
 {
     public function handle(PackageMaterialStockDTO $command): string|MaterialStock

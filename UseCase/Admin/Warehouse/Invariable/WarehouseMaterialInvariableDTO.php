@@ -96,7 +96,7 @@ final class WarehouseMaterialInvariableDTO implements MaterialStocksInvariableIn
     /**
      * Profile
      */
-    public function getProfile(): UserProfileUid
+    public function getProfile(): ?UserProfileUid
     {
         return $this->profile;
     }

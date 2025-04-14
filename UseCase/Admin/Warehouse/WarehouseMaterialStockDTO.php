@@ -115,14 +115,14 @@ final class WarehouseMaterialStockDTO implements MaterialStockEventInterface
     }
 
     /** Профиль назначения */
-    public function getProfile(): UserProfileUid
+    public function getProfile(): ?UserProfileUid
     {
-        return $this->profile;
+        return $this->invariable->getProfile();
     }
 
     public function setProfile(UserProfileUid $profile): self
     {
-        $this->profile = $profile;
+        $this->invariable->setProfile($profile);
         return $this;
     }
 
@@ -138,7 +138,7 @@ final class WarehouseMaterialStockDTO implements MaterialStockEventInterface
      */
     public function getUsr(): UserUid
     {
-        return $this->usr;
+        return $this->invariable->getUsr();
     }
 
     /**
