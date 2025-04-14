@@ -44,7 +44,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @group materials-stocks
  * @group materials-stocks-extradition
  *
- * @depends \BaksDev\Materials\Stocks\UseCase\Admin\Package\Tests\PackageMaterialStockTest::class
+ * @depends BaksDev\Materials\Stocks\UseCase\Admin\Package\Tests\PackageMaterialStockTest::class
  * @see     PackageMaterialStockTest
  */
 #[When(env: 'test')]
