@@ -47,7 +47,7 @@ use Symfony\Component\DependencyInjection\Attribute\When;
  * @group materials-stocks
  * @group materials-stocks-incoming
  *
- * @depends BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\Tests\WarehouseMaterialStockTest::class
+ * @depends \BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\Tests\WarehouseMaterialStockTest::class
  * @see     WarehouseMaterialStockTest
  */
 #[When(env: 'test')]

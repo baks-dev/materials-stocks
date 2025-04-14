@@ -70,7 +70,7 @@ final class IndexController extends AbstractController
             ->createForm(
                 type: MaterialStockPackageFilterForm::class,
                 data: $filter,
-                options: ['action' => $this->generateUrl('materials-stock:admin.package.index')]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.package.index')]
             )
             ->handleRequest($request);
 

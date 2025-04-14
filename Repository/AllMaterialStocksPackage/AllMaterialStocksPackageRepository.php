@@ -55,6 +55,7 @@ use BaksDev\Materials\Category\Entity\Offers\Variation\Modification\Trans\Catego
 use BaksDev\Materials\Category\Entity\Offers\Variation\Trans\CategoryMaterialVariationTrans;
 use BaksDev\Materials\Category\Entity\Trans\CategoryMaterialTrans;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
+use BaksDev\Materials\Stocks\Entity\Stock\Invariable\MaterialStocksInvariable;
 use BaksDev\Materials\Stocks\Entity\Stock\Materials\MaterialStockMaterial;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Entity\Stock\Modify\MaterialStockModify;
@@ -65,6 +66,7 @@ use BaksDev\Materials\Stocks\Forms\PackageFilter\MaterialStockPackageFilterInter
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusDivide;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusError;
+use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusIncoming;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusMoving;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusPackage;
 use BaksDev\Orders\Order\Entity\Event\OrderEvent;
@@ -129,7 +131,7 @@ final class AllMaterialStocksPackageRepository implements AllMaterialStocksPacka
         $dbal->from(MaterialStock::class, 'stock');
 
         // MaterialStockEvent
-        $dbal->addSelect('event.number');
+
         $dbal->addSelect('event.comment');
         $dbal->addSelect('event.status');
 
@@ -139,11 +141,10 @@ final class AllMaterialStocksPackageRepository implements AllMaterialStocksPacka
             'event',
             '
             event.id = stock.event AND 
-            event.profile = :profile AND  
             event.status IN (:status)
             ')
             ->setParameter(
-                'delivery',
+                'status',
                 [
                     MaterialStockStatusPackage::STATUS,
                     MaterialStockStatusMoving::STATUS,
@@ -153,13 +154,28 @@ final class AllMaterialStocksPackageRepository implements AllMaterialStocksPacka
                 ArrayParameterType::STRING
             );
 
+        $dbal
+            ->addSelect('invariable.number')
+            ->join(
+                'stock',
+                MaterialStocksInvariable::class,
+                'invariable',
+                '
+                invariable.main = stock.id AND 
+                invariable.profile = :profile
+            ')
+            ->setParameter(
+                'profile',
+                $profile,
+                UserProfileUid::TYPE
+            );
+
         //        $dbal->setParameter('package', MaterialStockStatusPackage::class, MaterialStockStatus::TYPE);
         //        $dbal->setParameter('move', MaterialStockStatusMoving::class, MaterialStockStatus::TYPE);
         //        $dbal->setParameter('error', MaterialStockStatusError::class, MaterialStockStatus::TYPE);
         //        $dbal->setParameter('divide', MaterialStockStatusDivide::class, MaterialStockStatus::TYPE);
 
 
-        $dbal->setParameter('profile', $profile, UserProfileUid::TYPE);
 
 
         /** Погрузка на доставку */
@@ -238,7 +254,7 @@ final class AllMaterialStocksPackageRepository implements AllMaterialStocksPacka
                 MaterialStockTotal::class,
                 'total',
                 '
-                total.profile = event.profile AND
+                total.profile = invariable.profile AND
                 total.material = stock_material.material AND 
                 (total.offer IS NULL OR total.offer = stock_material.offer) AND 
                 (total.variation IS NULL OR total.variation = stock_material.variation) AND 
@@ -610,7 +626,7 @@ final class AllMaterialStocksPackageRepository implements AllMaterialStocksPacka
             'event',
             UserProfile::class,
             'users_profile',
-            'users_profile.id = event.profile'
+            'users_profile.id = invariable.profile'
         );
 
         // Info
@@ -618,7 +634,7 @@ final class AllMaterialStocksPackageRepository implements AllMaterialStocksPacka
             'event',
             UserProfileInfo::class,
             'users_profile_info',
-            'users_profile_info.profile = event.profile'
+            'users_profile_info.profile = invariable.profile'
         );
 
         // Event
@@ -675,7 +691,11 @@ final class AllMaterialStocksPackageRepository implements AllMaterialStocksPacka
 
 
         $dbal->addSelect(sprintf('EXISTS(%s) AS materials_move', $dbalExist->getSQL()));
-        $dbal->setParameter('incoming', new MaterialStockStatus(MaterialStockstatus\Collection\MaterialStockStatusIncoming::class), MaterialStockStatus::TYPE);
+        $dbal->setParameter(
+            'incoming',
+            MaterialStockStatusIncoming::class,
+            MaterialStockStatus::TYPE
+        );
 
 
         /** Пункт назначения при перемещении */
@@ -728,7 +748,7 @@ final class AllMaterialStocksPackageRepository implements AllMaterialStocksPacka
             'destination_stock',
             UserProfile::class,
             'users_profile_destination',
-            'users_profile_destination.id = destination_event.profile'
+            'users_profile_destination.id = invariable.profile'
         );
 
         $dbal

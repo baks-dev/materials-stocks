@@ -95,6 +95,8 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             throw new InvalidArgumentException('Invalid Argument MaterialStock');
         }
 
+        return false;
+
 
         $dbal = $this->DBALQueryBuilder
             ->createQueryBuilder(self::class)

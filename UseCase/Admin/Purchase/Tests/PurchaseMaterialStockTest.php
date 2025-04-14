@@ -37,6 +37,7 @@ use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\PurchaseMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\PurchaseMaterialStockHandler;
 use BaksDev\Products\Product\Type\Material\MaterialUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
+use BaksDev\Users\User\Type\Id\UserUid;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
@@ -93,13 +94,14 @@ final class PurchaseMaterialStockTest extends KernelTestCase
     public function testUseCase(): void
     {
         $PurchaseMaterialStockDTO = new PurchaseMaterialStockDTO();
-        $PurchaseMaterialStockDTO->setProfile(clone new UserProfileUid());
+
+        $PurchaseMaterialInvariableDTO = $PurchaseMaterialStockDTO->getInvariable();
+        $PurchaseMaterialInvariableDTO->setUsr(clone new UserUid());
+        $PurchaseMaterialInvariableDTO->setNumber('Number');
+
 
         $PurchaseMaterialStockDTO->setComment('Comment');
         self::assertEquals('Comment', $PurchaseMaterialStockDTO->getComment());
-
-        $PurchaseMaterialStockDTO->setNumber('Number');
-        self::assertEquals('Number', $PurchaseMaterialStockDTO->getNumber());
 
         $MaterialStockDTO = new MaterialStockDTO();
 
