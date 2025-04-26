@@ -45,7 +45,10 @@ final readonly class MaterialStockByNumberRepository implements MaterialStockByN
         $qb
             ->from(MaterialStocksInvariable::class, 'invariable')
             ->where('invariable.number = :number')
-            ->setParameter('number', $number);
+            ->setParameter(
+                key: 'number',
+                value: $number
+            );
 
         $qb->join(
             MaterialStock::class,

@@ -45,7 +45,7 @@ class MaterialStockMove extends EntityEvent
     /** ID события */
     #[Assert\NotBlank]
     #[ORM\Id]
-    #[ORM\OneToOne(inversedBy: 'move', targetEntity: MaterialStockEvent::class)]
+    #[ORM\OneToOne(targetEntity: MaterialStockEvent::class, inversedBy: 'move')]
     #[ORM\JoinColumn(name: 'event', referencedColumnName: 'id')]
     private MaterialStockEvent $event;
 

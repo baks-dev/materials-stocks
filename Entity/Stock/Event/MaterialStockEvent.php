@@ -72,11 +72,11 @@ class MaterialStockEvent extends EntityEvent
     /** Коллекция сырья в заявке */
     #[Assert\Valid]
     #[Assert\Count(min: 1)]
-    #[ORM\OneToMany(targetEntity: MaterialStockMaterial::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToMany(targetEntity: MaterialStockMaterial::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     protected Collection $material;
 
     /** Модификатор */
-    #[ORM\OneToOne(targetEntity: MaterialStockModify::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToOne(targetEntity: MaterialStockModify::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private MaterialStockModify $modify;
 
     /** Фиксация заявки пользователем  */
@@ -87,15 +87,15 @@ class MaterialStockEvent extends EntityEvent
     /**
      * Постоянная величина
      */
-    #[ORM\OneToOne(targetEntity: MaterialStocksInvariable::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToOne(targetEntity: MaterialStocksInvariable::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private ?MaterialStocksInvariable $invariable = null;
 
     /** Профиль назначения (при перемещении) */
-    #[ORM\OneToOne(targetEntity: MaterialStockMove::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToOne(targetEntity: MaterialStockMove::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private ?MaterialStockMove $move = null;
 
     /** ID Заказа на сборку */
-    #[ORM\OneToOne(targetEntity: MaterialStockOrder::class, mappedBy: 'event', cascade: ['all'])]
+    #[ORM\OneToOne(targetEntity: MaterialStockOrder::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private ?MaterialStockOrder $ord = null;
 
     /** Комментарий */

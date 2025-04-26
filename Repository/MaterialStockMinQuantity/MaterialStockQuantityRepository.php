@@ -93,7 +93,6 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
             throw new InvalidArgumentException('material not found : ->material(MaterialUid $material) ');
         }
 
-
         $orm = $this->ORMQueryBuilder->createQueryBuilder(self::class);
 
         $orm->select('stock');
@@ -102,18 +101,30 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
 
         $orm
             ->andWhere('stock.profile = :profile')
-            ->setParameter('profile', $this->profile, UserProfileUid::TYPE);
+            ->setParameter(
+                key: 'profile',
+                value: $this->profile,
+                type: UserProfileUid::TYPE
+            );
 
         $orm
             ->andWhere('stock.material = :material')
-            ->setParameter('material', $this->material, MaterialUid::TYPE);
+            ->setParameter(
+                key: 'material',
+                value: $this->material,
+                type: MaterialUid::TYPE
+            );
 
 
         if($this->offer)
         {
             $orm
                 ->andWhere('stock.offer = :offer')
-                ->setParameter('offer', $this->offer, MaterialOfferConst::TYPE);
+                ->setParameter(
+                    key: 'offer',
+                    value: $this->offer,
+                    type: MaterialOfferConst::TYPE
+                );
         }
         else
         {
@@ -124,7 +135,11 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
         {
             $orm
                 ->andWhere('stock.variation = :variation')
-                ->setParameter('variation', $this->variation, MaterialVariationConst::TYPE);
+                ->setParameter(
+                    key: 'variation',
+                    value: $this->variation,
+                    type: MaterialVariationConst::TYPE
+                );
         }
         else
         {
@@ -135,7 +150,11 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
         {
             $orm
                 ->andWhere('stock.modification = :modification')
-                ->setParameter('modification', $this->modification, MaterialModificationConst::TYPE);
+                ->setParameter(
+                    key: 'modification',
+                    value: $this->modification,
+                    type: MaterialModificationConst::TYPE
+                );
         }
         else
         {

@@ -45,10 +45,15 @@ final class MaterialStocksEventRepository implements MaterialStocksEventInterfac
 
         $qb = $this->ORMQueryBuilder->createQueryBuilder(self::class);
 
-        $qb->select('event')
+        $qb
+            ->select('event')
             ->from(MaterialStockEvent::class, 'event')
             ->where('event.id = :event')
-            ->setParameter('event', $event, MaterialStockEventUid::TYPE);
+            ->setParameter(
+                key: 'event',
+                value: $event,
+                type: MaterialStockEventUid::TYPE
+            );
 
         return $qb->getQuery()->getOneOrNullResult() ?: false;
     }

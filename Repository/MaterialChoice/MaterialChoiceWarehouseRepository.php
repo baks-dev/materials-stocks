@@ -56,7 +56,11 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
         $dbal
             ->from(MaterialStockTotal::class, 'stock')
             ->andWhere('stock.usr = :usr')
-            ->setParameter('usr', $usr, UserUid::TYPE);
+            ->setParameter(
+                key: 'usr',
+                value: $usr,
+                type: UserUid::TYPE
+            );
 
 
         $dbal->andWhere('(stock.total - stock.reserve)  > 0');
@@ -85,7 +89,6 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
         $dbal->addSelect('(SUM(stock.total) - SUM(stock.reserve)) AS option');
 
         return $dbal
-            ->enableCache('materials-catalog', 86400)
             ->fetchAllHydrate(MaterialUid::class);
 
 
@@ -130,6 +133,6 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
 
 
         /* Кешируем результат ORM */
-        return $qb->enableCache('materials-stocks', 86400)->getResult();
+        return $qb->getResult();
     }
 }

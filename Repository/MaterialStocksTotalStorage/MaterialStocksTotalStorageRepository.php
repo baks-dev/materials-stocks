@@ -161,24 +161,35 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
 
         $orm = $this->ORMQueryBuilder->createQueryBuilder(self::class);
 
-        $orm->select('stock');
-
-        $orm->from(MaterialStockTotal::class, 'stock');
+        $orm
+            ->select('stock')
+            ->from(MaterialStockTotal::class, 'stock');
 
         $orm
             ->andWhere('stock.profile = :profile')
-            ->setParameter('profile', $this->profile, UserProfileUid::TYPE);
+            ->setParameter(
+                key: 'profile',
+                value: $this->profile,
+                type: UserProfileUid::TYPE
+            );
 
         $orm
             ->andWhere('stock.material = :material')
-            ->setParameter('material', $this->material, MaterialUid::TYPE);
+            ->setParameter(
+                key: 'material',
+                value: $this->material,
+                type: MaterialUid::TYPE
+            );
 
 
         if($this->storage)
         {
             $orm
                 ->andWhere('LOWER(stock.storage) = :storage')
-                ->setParameter('storage', $this->storage);
+                ->setParameter(
+                    key: 'storage',
+                    value: $this->storage
+                );
         }
         else
         {
@@ -189,7 +200,11 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
         {
             $orm
                 ->andWhere('stock.offer = :offer')
-                ->setParameter('offer', $this->offer, MaterialOfferConst::TYPE);
+                ->setParameter(
+                    key: 'offer',
+                    value: $this->offer,
+                    type: MaterialOfferConst::TYPE
+                );
         }
         else
         {
@@ -200,7 +215,11 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
         {
             $orm
                 ->andWhere('stock.variation = :variation')
-                ->setParameter('variation', $this->variation, MaterialVariationConst::TYPE);
+                ->setParameter(
+                    key: 'variation',
+                    value: $this->variation,
+                    type: MaterialVariationConst::TYPE
+                );
         }
         else
         {
@@ -211,7 +230,11 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
         {
             $orm
                 ->andWhere('stock.modification = :modification')
-                ->setParameter('modification', $this->modification, MaterialModificationConst::TYPE);
+                ->setParameter(
+                    key: 'modification',
+                    value: $this->modification,
+                    type: MaterialModificationConst::TYPE
+                );
         }
         else
         {

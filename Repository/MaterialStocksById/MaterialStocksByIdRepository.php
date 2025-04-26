@@ -83,8 +83,16 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
 
         $orm = $this->builder();
 
-        $orm->setParameter('id', $id, MaterialStockUid::TYPE);
-        $orm->setParameter('status', new MaterialStockStatus($status), MaterialStockStatus::TYPE);
+        $orm->setParameter(
+            key: 'id',
+            value: $id,
+            type: MaterialStockUid::TYPE
+        );
+
+        $orm->setParameter(
+            key: 'status',
+            value: new MaterialStockStatus($status),
+            type: MaterialStockStatus::TYPE);
 
 
         return $orm->getResult();
@@ -97,8 +105,17 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
 
         $orm = $this->builder();
 
-        $orm->setParameter('id', $id, MaterialStockUid::TYPE);
-        $orm->setParameter('status', new MaterialStockStatus(MaterialStockStatusIncoming::class), MaterialStockStatus::TYPE);
+        $orm->setParameter(
+            key: 'id',
+            value: $id,
+            type: MaterialStockUid::TYPE
+        );
+
+        $orm->setParameter(
+            key: 'status',
+            value: new MaterialStockStatus(MaterialStockStatusIncoming::class),
+            type: MaterialStockStatus::TYPE
+        );
 
         return $orm->getResult();
     }
@@ -111,8 +128,17 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
     {
         $orm = $this->builder();
 
-        $orm->setParameter('id', $id, MaterialStockUid::TYPE);
-        $orm->setParameter('status', new MaterialStockStatus(MaterialStockStatusPackage::class), MaterialStockStatus::TYPE);
+        $orm->setParameter(
+            key: 'id',
+            value: $id,
+            type: MaterialStockUid::TYPE
+        );
+
+        $orm->setParameter(
+            key: 'status',
+            value: new MaterialStockStatus(MaterialStockStatusPackage::class),
+            type: MaterialStockStatus::TYPE
+        );
 
         return $orm->getResult();
     }
@@ -124,8 +150,17 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
     {
         $orm = $this->builder();
 
-        $orm->setParameter('id', $id, MaterialStockUid::TYPE);
-        $orm->setParameter('status', new MaterialStockStatus(MaterialStockStatusMoving::class), MaterialStockStatus::TYPE);
+        $orm->setParameter(
+            key: 'id',
+            value: $id,
+            type: MaterialStockUid::TYPE
+        );
+
+        $orm->setParameter(
+            key: 'status',
+            value: new MaterialStockStatus(MaterialStockStatusMoving::class),
+            type: MaterialStockStatus::TYPE
+        );
 
         return $orm->getResult();
     }
@@ -138,8 +173,17 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
     {
         $orm = $this->builder();
 
-        $orm->setParameter('id', $id, MaterialStockUid::TYPE);
-        $orm->setParameter('status', new MaterialStockStatus(MaterialStockStatusWarehouse::class), MaterialStockStatus::TYPE);
+        $orm->setParameter(
+            key: 'id',
+            value: $id,
+            type: MaterialStockUid::TYPE
+        );
+
+        $orm->setParameter(
+            key: 'status',
+            value: new MaterialStockStatus(MaterialStockStatusWarehouse::class),
+            type: MaterialStockStatus::TYPE
+        );
 
         return $orm->getResult();
     }
@@ -152,8 +196,17 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
     {
         $orm = $this->builder();
 
-        $orm->setParameter('id', $id, MaterialStockUid::TYPE);
-        $orm->setParameter('status', new MaterialStockStatus(MaterialStockStatusCancel::class), MaterialStockStatus::TYPE);
+        $orm->setParameter(
+            key: 'id',
+            value: $id,
+            type: MaterialStockUid::TYPE
+        );
+
+        $orm->setParameter(
+            key: 'status',
+            value: new MaterialStockStatus(MaterialStockStatusCancel::class),
+            type: MaterialStockStatus::TYPE
+        );
 
         return $orm->getResult();
     }

@@ -53,9 +53,14 @@ final class MaterialStocksByOrderRepository implements MaterialStocksByOrderInte
 
         $orm = $this->ORMQueryBuilder->createQueryBuilder(self::class);
 
-        $orm->select('event');
-
-        $orm->from(MaterialStockOrder::class, 'ord');
+        $orm
+            ->from(MaterialStockOrder::class, 'ord')
+            ->where('ord.ord = :ord')
+            ->setParameter(
+                key: 'ord',
+                value: $order,
+                type: OrderUid::TYPE
+            );
 
         $orm->join(
             MaterialStock::class,
@@ -64,16 +69,15 @@ final class MaterialStocksByOrderRepository implements MaterialStocksByOrderInte
             'stock.event = ord.event'
         );
 
-        $orm->join(
-            MaterialStockEvent::class,
-            'event',
-            'WITH',
-            'event.id = stock.event'
-        );
+        $orm
+            ->select('event')
+            ->join(
+                MaterialStockEvent::class,
+                'event',
+                'WITH',
+                'event.id = stock.event'
+            );
 
-        $orm->where('ord.ord = :ord');
-
-        $orm->setParameter('ord', $order, OrderUid::TYPE);
 
         return $orm->getResult();
     }

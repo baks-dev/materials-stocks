@@ -44,7 +44,11 @@ final class CurrentMaterialStocksRepository implements CurrentMaterialStocksInte
         $qb
             ->from(MaterialStock::class, 'main')
             ->where('main.id = :stock')
-            ->setParameter('stock', $stock, MaterialStockUid::TYPE);
+            ->setParameter(
+                key: 'stock',
+                value: $stock,
+                type: MaterialStockUid::TYPE
+            );
 
         $qb
             ->select('event')
@@ -55,6 +59,6 @@ final class CurrentMaterialStocksRepository implements CurrentMaterialStocksInte
                 'event.id = main.event'
             );
 
-        return $qb->getQuery()->getOneOrNullResult();
+        return $qb->getOneOrNullResult();
     }
 }
