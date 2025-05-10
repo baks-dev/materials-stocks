@@ -36,7 +36,7 @@ use Symfony\Component\DependencyInjection\Attribute\When;
  * @see     WarehouseMaterialStockTest
  */
 #[When(env: 'test')]
-final class WarehouseControllerTest extends WebTestCase
+final class WarehouseAdminControllerTest extends WebTestCase
 {
     private const string URL = '/admin/material/stock/warehouse/%s';
 

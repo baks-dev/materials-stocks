@@ -16,7 +16,7 @@
  *
  */
 
-namespace BaksDev\Materials\Stocks\Controller\Admin\Total\Tests;
+namespace BaksDev\Materials\Stocks\Controller\Admin\Purchase\Tests;
 
 use BaksDev\Users\User\Tests\TestUserAccount;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -24,14 +24,13 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 
 /** @group materials-stocks */
 #[When(env: 'test')]
-final class IndexControllerTest extends WebTestCase
+final class PurchaseAdminControllerTest extends WebTestCase
 {
+    private const string URL = '/admin/material/stock/purchase';
 
-    private const string URL = '/admin/material/stocks';
+    private const string ROLE = 'ROLE_MATERIAL_STOCK_PURCHASE_NEW';
 
-    private const string ROLE = 'ROLE_MATERIAL_STOCK_INDEX';
-
-    /** Доступ по роли */
+    /** Доступ по роли  */
     public function testRoleSuccessful(): void
     {
         self::ensureKernelShutdown();
@@ -40,8 +39,8 @@ final class IndexControllerTest extends WebTestCase
         foreach(TestUserAccount::getDevice() as $device)
         {
             $client->setServerParameter('HTTP_USER_AGENT', $device);
-
             $usr = TestUserAccount::getModer(self::ROLE);
+
             $client->loginUser($usr, 'user');
             $client->request('GET', self::URL);
 
@@ -59,9 +58,9 @@ final class IndexControllerTest extends WebTestCase
 
         foreach(TestUserAccount::getDevice() as $device)
         {
+            $client->setServerParameter('HTTP_USER_AGENT', $device);
             $usr = TestUserAccount::getAdmin();
 
-            $client->setServerParameter('HTTP_USER_AGENT', $device);
             $client->loginUser($usr, 'user');
             $client->request('GET', self::URL);
 
@@ -69,10 +68,9 @@ final class IndexControllerTest extends WebTestCase
         }
 
         self::assertTrue(true);
-
     }
 
-    /** Доступ по роли ROLE_USER */
+    /** Закрытый доступ по роли ROLE_USER */
     public function testRoleUserFiled(): void
     {
         self::ensureKernelShutdown();
@@ -80,32 +78,26 @@ final class IndexControllerTest extends WebTestCase
 
         foreach(TestUserAccount::getDevice() as $device)
         {
-            $usr = TestUserAccount::getUsr();
-
             $client->setServerParameter('HTTP_USER_AGENT', $device);
+
+            $usr = TestUserAccount::getUsr();
             $client->loginUser($usr, 'user');
             $client->request('GET', self::URL);
+
+            self::assertResponseStatusCodeSame(403);
         }
 
-
-        self::assertResponseStatusCodeSame(403);
+        self::assertTrue(true);
     }
 
-    /** Доступ по без роли */
+    /** Закрытый доступ без роли */
     public function testGuestFiled(): void
     {
         self::ensureKernelShutdown();
         $client = static::createClient();
+        $client->request('GET', self::URL);
 
-        foreach(TestUserAccount::getDevice() as $device)
-        {
-            $client->setServerParameter('HTTP_USER_AGENT', $device);
-            $client->request('GET', self::URL);
-
-            self::assertResponseStatusCodeSame(401);
-        }
-
-        self::assertTrue(true);
-
+        // Full authentication is required to access this resource
+        self::assertResponseStatusCodeSame(401);
     }
 }

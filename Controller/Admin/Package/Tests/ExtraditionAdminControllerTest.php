@@ -34,7 +34,7 @@ use Symfony\Component\DependencyInjection\Attribute\When;
  * @group materials-stocks
  */
 #[When(env: 'test')]
-final class ExtraditionControllerTest extends WebTestCase
+final class ExtraditionAdminControllerTest extends WebTestCase
 {
     private const string URL = '/admin/material/stock/package/extradition/%s';
 
