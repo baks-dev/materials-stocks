@@ -63,7 +63,15 @@ final class VoterPackage implements VoterInterface, MenuAdminInterface
     public function getPath(): string|false
     {
         return false;
-        return 'materials-stocks:admin.package.index';
+        //return 'materials-stocks:admin.package.index';
+    }
+
+    /**
+     * Метод возвращает ключ раздела (для меню телеграм)
+     */
+    public function getPathKey(): false
+    {
+        return false;
     }
 
     /** Метод возвращает секцию, в которую помещается ссылка на раздел */

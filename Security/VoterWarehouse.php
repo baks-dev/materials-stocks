@@ -37,6 +37,7 @@ final class VoterWarehouse implements VoterInterface, MenuAdminInterface
     /** Список поступлений на склад */
     public const string VOTER = 'WAREHOUSE';
 
+
     public static function getVoter(): string
     {
         return Role::ROLE.'_'.self::VOTER;
@@ -61,18 +62,25 @@ final class VoterWarehouse implements VoterInterface, MenuAdminInterface
     }
 
     /** Метод возвращает PATH раздела */
-    public function getPath(): string|false
+    public function getPath(): false
     {
         return false;
-        return 'materials-stocks:admin.warehouse.index';
+        //return 'materials-stocks:admin.warehouse.index';
     }
 
+    /**
+     * Метод возвращает ключ раздела (для меню телеграм)
+     */
+    public function getPathKey(): false
+    {
+        return false;
+    }
 
     /** Метод возвращает секцию, в которую помещается ссылка на раздел */
     public function getGroupMenu(): MenuAdminSectionGroupCollectionInterface|bool
     {
         return false;
-        return new MenuGroupStocks();
+        //return new MenuGroupStocks();
     }
 
     /** Метод возвращает позицию, в которую располагается ссылка в секции меню */

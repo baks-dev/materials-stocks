@@ -37,6 +37,7 @@ final class VoterPickup implements VoterInterface, MenuAdminInterface
 {
     public const string VOTER = 'PICKUP';
 
+
     public static function getVoter(): string
     {
         return Role::ROLE.'_'.self::VOTER;
@@ -63,7 +64,15 @@ final class VoterPickup implements VoterInterface, MenuAdminInterface
     public function getPath(): string|false
     {
         return false;
-        return 'materials-stocks:admin.pickup.index';
+        //return 'materials-stocks:admin.pickup.index';
+    }
+
+    /**
+     * Метод возвращает ключ раздела (для меню телеграм)
+     */
+    public function getPathKey(): false
+    {
+        return false;
     }
 
     /** Метод возвращает секцию, в которую помещается ссылка на раздел */
@@ -71,7 +80,7 @@ final class VoterPickup implements VoterInterface, MenuAdminInterface
     {
         return false;
 
-        return new MenuGroupStocks();
+        //return new MenuGroupStocks();
     }
 
     /** Метод возвращает позицию, в которую располагается ссылка в секции меню */

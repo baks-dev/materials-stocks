@@ -37,6 +37,8 @@ final class VoterPurchaseNew implements VoterInterface, MenuAdminInterface
     /** Добавить закупку */
     public const string VOTER = 'PURCHASE_NEW';
 
+    public const string KEY = 'JZaZAUgj';
+
     public static function getVoter(): string
     {
         return Role::ROLE.'_'.self::VOTER;
@@ -59,6 +61,14 @@ final class VoterPurchaseNew implements VoterInterface, MenuAdminInterface
     public function getPath(): string
     {
         return 'materials-stocks:admin.purchase.new';
+    }
+
+    /**
+     * Метод возвращает ключ раздела (для меню телеграм)
+     */
+    public function getPathKey(): string|false
+    {
+        return self::KEY;
     }
 
     /** Метод возвращает секцию, в которую помещается ссылка на раздел */
