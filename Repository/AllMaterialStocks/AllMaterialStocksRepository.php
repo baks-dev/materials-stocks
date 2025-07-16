@@ -52,7 +52,7 @@ use BaksDev\Materials\Category\Entity\Offers\Variation\Modification\CategoryMate
 use BaksDev\Materials\Category\Entity\Trans\CategoryMaterialTrans;
 use BaksDev\Materials\Category\Type\Id\CategoryMaterialUid;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
-use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
+use BaksDev\Users\Profile\UserProfile\Entity\Event\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\User\Entity\User;

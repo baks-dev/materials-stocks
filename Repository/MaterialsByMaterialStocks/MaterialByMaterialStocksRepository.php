@@ -58,7 +58,7 @@ use BaksDev\Orders\Order\Entity\Order;
 use BaksDev\Orders\Order\Entity\User\Delivery\Field\OrderDeliveryField;
 use BaksDev\Orders\Order\Entity\User\Delivery\OrderDelivery;
 use BaksDev\Orders\Order\Entity\User\OrderUser;
-use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
+use BaksDev\Users\Profile\UserProfile\Entity\Event\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use InvalidArgumentException;
 

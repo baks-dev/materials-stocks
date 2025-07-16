@@ -31,7 +31,7 @@ use BaksDev\Materials\Catalog\Type\Offers\Variation\ConstId\MaterialVariationCon
 use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\MaterialModificationConst;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
 use BaksDev\Products\Product\Type\Material\MaterialUid;
-use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
+use BaksDev\Users\Profile\UserProfile\Entity\Event\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use BaksDev\Users\User\Type\Id\UserUid;

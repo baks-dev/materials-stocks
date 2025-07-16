@@ -30,8 +30,8 @@ use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Entity\Stock\Modify\MaterialStockModify;
 use BaksDev\Materials\Stocks\Type\Id\MaterialStockUid;
-use BaksDev\Users\Profile\UserProfile\Entity\Info\UserProfileInfo;
-use BaksDev\Users\Profile\UserProfile\Entity\Personal\UserProfilePersonal;
+use BaksDev\Users\Profile\UserProfile\Entity\Event\Info\UserProfileInfo;
+use BaksDev\Users\Profile\UserProfile\Entity\Event\Personal\UserProfilePersonal;
 use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
 use InvalidArgumentException;
 
