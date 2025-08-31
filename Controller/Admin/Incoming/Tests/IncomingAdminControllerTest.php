@@ -27,13 +27,12 @@ use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Type\Event\MaterialStockEventUid;
 use BaksDev\Users\User\Tests\TestUserAccount;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @group materials-stocks
- */
 #[When(env: 'test')]
+#[Group('materials-stocks')]
 final class IncomingAdminControllerTest extends WebTestCase
 {
     private const string URL = '/admin/material/stock/incoming/%s';

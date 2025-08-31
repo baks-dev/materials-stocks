@@ -19,11 +19,12 @@
 namespace BaksDev\Materials\Stocks\Controller\Admin\Incoming\Tests;
 
 use BaksDev\Users\User\Tests\TestUserAccount;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
-/** @group materials-stocks */
 #[When(env: 'test')]
+#[Group('materials-stocks')]
 final class IndexAdminControllerTest extends WebTestCase
 {
     private const string URL = '/admin/material/stocks/incoming';

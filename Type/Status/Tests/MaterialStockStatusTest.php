@@ -30,13 +30,12 @@ use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\MaterialStockStatus
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatusType;
 use BaksDev\Wildberries\Orders\Type\WildberriesStatus\Status\Collection\WildberriesStatusInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
 
-/**
- * @group materials-stocks
- */
 #[When(env: 'test')]
+#[Group('materials-stocks')]
 final class MaterialStockStatusTest extends KernelTestCase
 {
     public function testUseCase(): void

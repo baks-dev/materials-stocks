@@ -26,16 +26,13 @@ namespace BaksDev\Materials\Stocks\Controller\Admin\Warehouse\Tests;
 use BaksDev\Materials\Stocks\Type\Event\MaterialStockEventUid;
 use BaksDev\Users\User\Tests\TestUserAccount;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
+use BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\Tests\WarehouseMaterialStockTest
 
-/**
- * @group materials-stocks
- *
- * @depends BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\Tests\WarehouseMaterialStockTest::class
- * @see     WarehouseMaterialStockTest
- */
 #[When(env: 'test')]
+#[Group('materials-stocks')]
 final class WarehouseAdminControllerTest extends WebTestCase
 {
     private const string URL = '/admin/material/stock/warehouse/%s';

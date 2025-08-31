@@ -36,21 +36,16 @@ use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\MaterialStockStatusCollection;
 use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\IncomingMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Incoming\IncomingMaterialStockHandler;
-use BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\Tests\WarehouseMaterialStockTest;
 use BaksDev\Products\Product\Type\Material\MaterialUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Attribute\When;
+use BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\Tests\WarehouseMaterialStockTest;
 
-/**
- * @group materials-stocks
- * @group materials-stocks-incoming
- *
- * @depends BaksDev\Materials\Stocks\UseCase\Admin\Warehouse\Tests\WarehouseMaterialStockTest::class
- * @see     WarehouseMaterialStockTest
- */
 #[When(env: 'test')]
+#[Group('materials-stocks')]
 final class IncomingMaterialStockTest extends KernelTestCase
 {
     public function testMaterialStockDTO(): void
@@ -93,7 +88,6 @@ final class IncomingMaterialStockTest extends KernelTestCase
 
 
         self::assertEquals(100, $MaterialStockDTO->getTotal());
-        /** TODO: Временно блокируем изменение прихода */
         //$MaterialStockDTO->setTotal(200);
 
 
@@ -121,7 +115,7 @@ final class IncomingMaterialStockTest extends KernelTestCase
         self::assertNotNull($MaterialStockTotal);
 
         /** Общий остаток 200 */
-        /** TODO: Временно блокируем изменение прихода */
+
         //self::assertEquals(200, $MaterialStockTotal->getTotal());
         self::assertEquals(100, $MaterialStockTotal->getTotal());
 
