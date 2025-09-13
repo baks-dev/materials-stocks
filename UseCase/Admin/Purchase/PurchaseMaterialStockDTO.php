@@ -32,6 +32,7 @@ use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEventInterface;
 use BaksDev\Materials\Stocks\Type\Event\MaterialStockEventUid;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus;
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusPurchase;
+use BaksDev\Materials\Stocks\UseCase\Admin\Purchase\Invariable\PurchaseMaterialInvariableDTO;
 use BaksDev\Products\Product\Type\Material\MaterialUid;
 use BaksDev\Users\Profile\UserProfile\Type\Id\UserProfileUid;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -60,7 +61,7 @@ final class PurchaseMaterialStockDTO implements MaterialStockEventInterface
 
     /** Постоянная величина */
     #[Assert\Valid]
-    private Invariable\PurchaseMaterialInvariableDTO $invariable;
+    private PurchaseMaterialInvariableDTO $invariable;
 
 
     /**
@@ -89,7 +90,7 @@ final class PurchaseMaterialStockDTO implements MaterialStockEventInterface
     {
         $this->status = new MaterialStockStatus(MaterialStockStatusPurchase::class);
         $this->material = new ArrayCollection();
-        $this->invariable = new Invariable\PurchaseMaterialInvariableDTO();
+        $this->invariable = new PurchaseMaterialInvariableDTO();
     }
 
     public function getEvent(): ?MaterialStockEventUid
@@ -168,26 +169,11 @@ final class PurchaseMaterialStockDTO implements MaterialStockEventInterface
     /**
      * Invariable
      */
-    public function getInvariable(): Invariable\PurchaseMaterialInvariableDTO
+    public function getInvariable(): PurchaseMaterialInvariableDTO
     {
         return $this->invariable;
     }
 
-
-
-    /** ВСПОМОГАТЕЛЬНЫЕ СВОЙСТВА */
-
-    //    // WAREHOUSE
-    //
-    //    public function getPreWarehouse(): ?ContactsRegionCallUid
-    //    {
-    //        return $this->preWarehouse;
-    //    }
-    //
-    //    public function setPreWarehouse(?ContactsRegionCallUid $warehouse): void
-    //    {
-    //        $this->preWarehouse = $warehouse;
-    //    }
 
     // MATERIAL
 

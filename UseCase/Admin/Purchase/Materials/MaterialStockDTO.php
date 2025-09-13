@@ -74,9 +74,10 @@ final class MaterialStockDTO implements MaterialStockMaterialInterface
         return $this->material;
     }
 
-    public function setMaterial(MaterialUid $material): void
+    public function setMaterial(MaterialUid $material): self
     {
         $this->material = $material;
+        return $this;
     }
 
     /** Торговое предложение */
@@ -85,9 +86,10 @@ final class MaterialStockDTO implements MaterialStockMaterialInterface
         return $this->offer;
     }
 
-    public function setOffer(MaterialOfferConst $offer): void
+    public function setOffer(MaterialOfferConst $offer): self
     {
         $this->offer = $offer;
+        return $this;
     }
 
     /** Множественный вариант */
@@ -96,9 +98,10 @@ final class MaterialStockDTO implements MaterialStockMaterialInterface
         return $this->variation;
     }
 
-    public function setVariation(?MaterialVariationConst $variation): void
+    public function setVariation(?MaterialVariationConst $variation): self
     {
         $this->variation = $variation;
+        return $this;
     }
 
     /** Модификация множественного варианта */
@@ -107,9 +110,10 @@ final class MaterialStockDTO implements MaterialStockMaterialInterface
         return $this->modification;
     }
 
-    public function setModification(?MaterialModificationConst $modification): void
+    public function setModification(?MaterialModificationConst $modification): self
     {
         $this->modification = $modification;
+        return $this;
     }
 
     /** Количество */
@@ -118,8 +122,9 @@ final class MaterialStockDTO implements MaterialStockMaterialInterface
         return $this->total;
     }
 
-    public function setTotal(int $total): void
+    public function setTotal(int $total): self
     {
         $this->total = $total;
+        return $this;
     }
 }

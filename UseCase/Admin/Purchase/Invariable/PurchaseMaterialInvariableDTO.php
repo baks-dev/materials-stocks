@@ -42,6 +42,13 @@ final class PurchaseMaterialInvariableDTO implements MaterialStocksInvariableInt
     #[Assert\Uuid]
     private readonly UserUid $usr;
 
+    /**
+     * ID профиля ответственного
+     */
+    #[Assert\NotBlank]
+    #[Assert\Uuid]
+    private readonly UserProfileUid $profile;
+
     /** Номер заявки */
     #[Assert\NotBlank]
     #[Assert\Type('string')]
@@ -67,6 +74,31 @@ final class PurchaseMaterialInvariableDTO implements MaterialStocksInvariableInt
         if(false === (new ReflectionProperty(self::class, 'usr')->isInitialized($this)))
         {
             $this->usr = $usr;
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Profile
+     */
+    public function getProfile(): ?UserProfileUid
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?UserProfileUid $profile): self
+    {
+
+        if(is_null($profile))
+        {
+            return $this;
+        }
+
+        if(false === (new ReflectionProperty(self::class, 'profile')->isInitialized($this)))
+        {
+            $this->profile = $profile;
         }
 
         return $this;
