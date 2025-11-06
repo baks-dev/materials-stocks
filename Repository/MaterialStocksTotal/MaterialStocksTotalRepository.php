@@ -37,13 +37,13 @@ final class MaterialStocksTotalRepository implements MaterialStocksTotalInterfac
 {
     public function __construct(private readonly DBALQueryBuilder $DBALQueryBuilder) {}
 
-    private MaterialUid $material;
+    private MaterialUid|false $material = false;
 
-    private ?MaterialOfferConst $offer = null;
+    private MaterialOfferConst|false $offer = false;
 
-    private ?MaterialVariationConst $variation = null;
+    private MaterialVariationConst|false $variation = false;
 
-    private ?MaterialModificationConst $modification = null;
+    private MaterialModificationConst|false $modification = false;
 
 
     public function material(MaterialUid|string $material): self
@@ -58,10 +58,11 @@ final class MaterialStocksTotalRepository implements MaterialStocksTotalInterfac
         return $this;
     }
 
-    public function offer(MaterialOfferConst|string|null $offer): self
+    public function offer(MaterialOfferConst|string|null|false $offer): self
     {
         if(empty($offer))
         {
+            $this->offer = false;
             return $this;
         }
 
@@ -75,10 +76,11 @@ final class MaterialStocksTotalRepository implements MaterialStocksTotalInterfac
         return $this;
     }
 
-    public function variation(MaterialVariationConst|string|null $variation): self
+    public function variation(MaterialVariationConst|string|null|false $variation): self
     {
         if(empty($variation))
         {
+            $this->variation = false;
             return $this;
         }
 
@@ -92,10 +94,11 @@ final class MaterialStocksTotalRepository implements MaterialStocksTotalInterfac
         return $this;
     }
 
-    public function modification(MaterialModificationConst|string|null $modification): self
+    public function modification(MaterialModificationConst|string|null|false $modification): self
     {
         if(empty($modification))
         {
+            $this->modification = false;
             return $this;
         }
 
@@ -114,7 +117,7 @@ final class MaterialStocksTotalRepository implements MaterialStocksTotalInterfac
      */
     public function get(): int
     {
-        if(empty($this->material))
+        if(false === ($this->material instanceof MaterialUid))
         {
             throw new InvalidArgumentException('Invalid Argument material');
         }

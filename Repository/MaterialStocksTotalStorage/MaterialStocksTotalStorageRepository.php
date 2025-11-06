@@ -36,15 +36,15 @@ use InvalidArgumentException;
 
 final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalStorageInterface
 {
-    private UserProfileUid|string $profile;
+    private UserProfileUid|false $profile = false;
 
-    private MaterialUid|string $material;
+    private MaterialUid|false $material = false;
 
-    private MaterialOfferConst|string|null $offer = null;
+    private MaterialOfferConst|false $offer = false;
 
-    private MaterialVariationConst|string|null $variation = null;
+    private MaterialVariationConst|false $variation = false;
 
-    private MaterialModificationConst|string|null $modification = null;
+    private MaterialModificationConst|false $modification = false;
 
     private ?string $storage = null;
 
@@ -78,7 +78,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
     {
         if(empty($offer))
         {
-            $this->offer = null;
+            $this->offer = false;
             return $this;
         }
 
@@ -96,7 +96,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
     {
         if(empty($variation))
         {
-            $this->variation = null;
+            $this->variation = false;
             return $this;
         }
 
@@ -114,7 +114,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
     {
         if(empty($modification))
         {
-            $this->modification = null;
+            $this->modification = false;
             return $this;
         }
 
@@ -149,12 +149,12 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
     /** Метод возвращает складской остаток (место для хранения указанной сырья) указанного профиля */
     public function find(): ?MaterialStockTotal
     {
-        if(empty($this->profile))
+        if(false === ($this->profile instanceof UserProfileUid))
         {
             throw new InvalidArgumentException('Invalid Argument profile');
         }
 
-        if(empty($this->material))
+        if(false === ($this->material instanceof MaterialUid))
         {
             throw new InvalidArgumentException('Invalid Argument material');
         }
