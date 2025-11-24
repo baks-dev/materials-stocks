@@ -478,47 +478,6 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
         // Поиск
         if($this->search?->getQuery())
         {
-            //            for ($i = 0; $i <= 2; $i++) {
-            //
-            //                /** Поиск по модификации */
-            //                $result = $this->elasticGetIndex ? $this->elasticGetIndex->handle(MaterialModification::class, $this->search->getQueryFilter(), $i) : false;
-            //
-            //                if($result)
-            //                {
-            //                    $counter = $result['hits']['total']['value'];
-            //
-            //                    if($counter)
-            //                    {
-            //
-            //                        /** Идентификаторы */
-            //                        $data = array_column($result['hits']['hits'], "_source");
-            //
-            //                        $dbal
-            //                            ->createSearchQueryBuilder($this->search)
-            //                            ->addSearchInArray('material_modification.id', array_column($data, "id"));
-            //
-            //                        return $this->paginator->fetchAllAssociative($dbal);
-            //                    }
-            //
-            //                    /** Поиск по сырья */
-            //                    $result = $this->elasticGetIndex->handle(Material::class, $this->search->getQueryFilter(), $i);
-            //
-            //                    $counter = $result['hits']['total']['value'];
-            //
-            //                    if($counter)
-            //                    {
-            //                        /** Идентификаторы */
-            //                        $data = array_column($result['hits']['hits'], "_source");
-            //
-            //                        $dbal
-            //                            ->createSearchQueryBuilder($this->search)
-            //                            ->addSearchInArray('material.id', array_column($data, "id"));
-            //
-            //                        return $this->paginator->fetchAllAssociative($dbal);
-            //                    }
-            //                }
-            //            }
-
 
             $dbal
                 ->createSearchQueryBuilder($this->search)
