@@ -29,7 +29,6 @@ use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Messenger\MaterialStockMessage;
-use DomainException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 #[Autoconfigure(public: true)]
@@ -37,22 +36,10 @@ final class PackageMaterialStockHandler extends AbstractHandler
 {
     public function handle(PackageMaterialStockDTO $command): string|MaterialStock
     {
-
-
         /** Валидация DTO  */
-        $this->validatorCollection->add($command);
-
-        $this->main = new MaterialStock();
-        $this->event = new MaterialStockEvent();
-
-        try
-        {
-            $command->getEvent() ? $this->preUpdate($command, true) : $this->prePersist($command);
-        }
-        catch(DomainException $errorUniqid)
-        {
-            return $errorUniqid->getMessage();
-        }
+        $this
+            ->setCommand($command)
+            ->preEventPersistOrUpdate(MaterialStock::class, MaterialStockEvent::class);
 
         /** Валидация всех объектов */
         if($this->validatorCollection->isInvalid())
@@ -60,12 +47,12 @@ final class PackageMaterialStockHandler extends AbstractHandler
             return $this->validatorCollection->getErrorUniqid();
         }
 
-        $this->entityManager->flush();
+        $this->flush();
 
         /* Отправляем сообщение в шину */
         $this->messageDispatch->dispatch(
             message: new MaterialStockMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-            transport: 'materials-stocks'
+            transport: 'materials-stocks',
         );
 
         return $this->main;

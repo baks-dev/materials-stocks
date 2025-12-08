@@ -25,34 +25,26 @@ declare(strict_types=1);
 
 namespace BaksDev\Materials\Stocks\UseCase\Admin\EditTotal;
 
-use BaksDev\Core\Messenger\MessageDispatchInterface;
-use BaksDev\Core\Validator\ValidatorCollectionInterface;
+use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Entity\Total\MaterialStockTotal;
 use BaksDev\Materials\Stocks\UseCase\Admin\Storage\MaterialStockStorageEditDTO;
-use Doctrine\ORM\EntityManagerInterface;
 
-final readonly class MaterialStockTotalEditHandler
+final class MaterialStockTotalEditHandler extends AbstractHandler
 {
-    public function __construct(
-        private EntityManagerInterface $entityManager,
-        private ValidatorCollectionInterface $validatorCollection,
-        private MessageDispatchInterface $messageDispatch
-    ) {}
-
     /** @see MaterialStock */
     public function handle(MaterialStockTotalEditDTO|MaterialStockStorageEditDTO $command): string|MaterialStockTotal
     {
         /** Валидация DTO  */
-        $this->validatorCollection->add($command);
+        $this->setCommand($command);
 
         /** @var MaterialStockTotal $MaterialStockTotal */
-        $MaterialStockTotal = $this->entityManager
+        $MaterialStockTotal = $this
             ->getRepository(MaterialStockTotal::class)
             ->find($command->getId());
 
         if(
-            !$MaterialStockTotal || false === $this->validatorCollection->add($MaterialStockTotal, context: [
+            false === ($MaterialStockTotal instanceof MaterialStockTotal) || false === $this->validatorCollection->add($MaterialStockTotal, context: [
                 self::class.':'.__LINE__,
                 'class' => MaterialStockTotal::class,
                 'id' => $command->getId(),
@@ -70,8 +62,7 @@ final readonly class MaterialStockTotalEditHandler
             return $this->validatorCollection->getErrorUniqid();
         }
 
-        $this->entityManager->flush();
-
+        $this->flush();
 
         $this->messageDispatch->addClearCacheOther('materials-stocks');
 

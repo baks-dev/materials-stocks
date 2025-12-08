@@ -30,31 +30,17 @@ use BaksDev\Core\Entity\AbstractHandler;
 use BaksDev\Materials\Stocks\Entity\Stock\Event\MaterialStockEvent;
 use BaksDev\Materials\Stocks\Entity\Stock\MaterialStock;
 use BaksDev\Materials\Stocks\Messenger\MaterialStockMessage;
-use DomainException;
 
 final class ErrorMaterialStocksHandler extends AbstractHandler
 {
 
     /** @see MaterialStocks */
-    public function handle(
-        ErrorMaterialStocksDTO $command
-    ): string|MaterialStock
+    public function handle(ErrorMaterialStocksDTO $command): string|MaterialStock
     {
+        $this
+            ->setCommand($command)
+            ->preEventPersistOrUpdate(MaterialStock::class, MaterialStockEvent::class);
 
-        /** Валидация DTO  */
-        $this->validatorCollection->add($command);
-
-        $this->main = new MaterialStock();
-        $this->event = new MaterialStockEvent();
-
-        try
-        {
-            $this->preUpdate($command);
-        }
-        catch(DomainException $errorUniqid)
-        {
-            return $errorUniqid->getMessage();
-        }
 
         /** Валидация всех объектов */
         if($this->validatorCollection->isInvalid())
@@ -62,12 +48,12 @@ final class ErrorMaterialStocksHandler extends AbstractHandler
             return $this->validatorCollection->getErrorUniqid();
         }
 
-        $this->entityManager->flush();
+        $this->flush();
 
         /* Отправляем сообщение в шину */
         $this->messageDispatch->dispatch(
             message: new MaterialStockMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-            transport: 'material-stocks'
+            transport: 'material-stocks',
         );
 
         return $this->main;

@@ -35,12 +35,9 @@ final class ExtraditionMaterialStockHandler extends AbstractHandler
 {
     public function handle(ExtraditionMaterialStockDTO $command): string|MaterialStock
     {
-        $this->setCommand($command);
-
-        /** Валидация DTO  */
-        $this->validatorCollection->add($command);
-
-        $this->preEventPersistOrUpdate(MaterialStock::class, MaterialStockEvent::class);
+        $this
+            ->setCommand($command)
+            ->preEventPersistOrUpdate(MaterialStock::class, MaterialStockEvent::class);
 
         /** Валидация всех объектов */
         if($this->validatorCollection->isInvalid())
