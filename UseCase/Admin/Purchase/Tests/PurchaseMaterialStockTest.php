@@ -95,6 +95,7 @@ final class PurchaseMaterialStockTest extends KernelTestCase
 
         $PurchaseMaterialInvariableDTO = $PurchaseMaterialStockDTO->getInvariable();
         $PurchaseMaterialInvariableDTO->setUsr(clone new UserUid());
+        $PurchaseMaterialInvariableDTO->setProfile(clone new UserProfileUid());
         $PurchaseMaterialInvariableDTO->setNumber('Number');
 
 
@@ -126,12 +127,15 @@ final class PurchaseMaterialStockTest extends KernelTestCase
         self::assertCount(1, $PurchaseMaterialStockDTO->getMaterial());
 
 
-        $MaterialStockDTO = new MaterialStockDTO();
-        $MaterialStockDTO->setMaterial(clone $MaterialUid);
-        $MaterialStockDTO->setOffer(clone $MaterialOfferConst);
-        $MaterialStockDTO->setVariation(clone $MaterialVariationConst);
-        $MaterialStockDTO->setModification(clone $MaterialModificationConst);
-        $MaterialStockDTO->setTotal(200);
+        $MaterialStockDTO = new MaterialStockDTO()
+            ->setMaterial(clone $MaterialUid)
+            ->setOffer(clone $MaterialOfferConst)
+            ->setVariation(clone $MaterialVariationConst)
+            ->setModification(clone $MaterialModificationConst)
+            ->setTotal(200);
+
+
+
 
         $PurchaseMaterialStockDTO->addMaterial($MaterialStockDTO);
         self::assertCount(2, $PurchaseMaterialStockDTO->getMaterial());

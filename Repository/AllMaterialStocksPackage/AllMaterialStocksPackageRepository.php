@@ -1226,10 +1226,6 @@ final class AllMaterialStocksPackageRepository implements AllMaterialStocksPacka
         ///$dbal->addGroupBy('ord.ord');
         //$dbal->allGroupByExclude();
 
-        //        $dbal->setMaxResults(24);
-        //        dd($dbal->fetchAllAssociative());
-        //        dd($this->paginator->fetchAllAssociative($dbal));
-
 
         return $dbal
             //->enableCache('materials-stocks')

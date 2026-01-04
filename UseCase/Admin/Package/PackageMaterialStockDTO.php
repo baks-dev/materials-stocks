@@ -48,11 +48,11 @@ final class PackageMaterialStockDTO implements MaterialStockEventInterface, Orde
     #[Assert\NotBlank]
     private readonly MaterialStockStatus $status;
 
-    /** Номер заявки */
-    #[Assert\NotBlank]
-    #[Assert\Type('string')]
-    #[Assert\Length(max: 36)]
-    private string $number;
+    //    /** Номер заявки */
+    //    #[Assert\NotBlank]
+    //    #[Assert\Type('string')]
+    //    #[Assert\Length(max: 36)]
+    //    private string $number;
 
     /** Постоянная величина */
     #[Assert\Valid]
@@ -156,21 +156,21 @@ final class PackageMaterialStockDTO implements MaterialStockEventInterface, Orde
         $this->comment = $comment;
     }
 
-    /** Ответственное лицо (Профиль пользователя) */
-    public function getProfile(): ?UserProfileUid
-    {
-        return $this->profile;
-    }
-
-    public function setProfile(?UserProfileUid $profile): void
-    {
-
-        /** Присваиваем постоянную величину  */
-        $PackageOrderInvariable = $this->getInvariable();
-        $PackageOrderInvariable->setProfile($profile);
-
-        $this->profile = $profile;
-    }
+    //    /** Ответственное лицо (Профиль пользователя) */
+    //    public function getProfile(): ?UserProfileUid
+    //    {
+    //        return $this->profile;
+    //    }
+    //
+    //    public function setProfile(?UserProfileUid $profile): void
+    //    {
+    //
+    //        /** Присваиваем постоянную величину  */
+    //        $PackageOrderInvariable = $this->getInvariable();
+    //        $PackageOrderInvariable->setProfile($profile);
+    //
+    //        $this->profile = $profile;
+    //    }
 
     /** Статус заявки - ПРИХОД */
     public function getStatus(): MaterialStockStatus
@@ -178,17 +178,17 @@ final class PackageMaterialStockDTO implements MaterialStockEventInterface, Orde
         return $this->status;
     }
 
-    /** Номер заявки */
-    public function getNumber(): string
-    {
-        return $this->number;
-    }
+    //    /** Номер заявки */
+    //    public function getNumber(): string
+    //    {
+    //        return $this->number;
+    //    }
 
-    public function setNumber(string $number): void
-    {
-        $this->invariable->setNumber($number);
-        $this->number = $number;
-    }
+    //    public function setNumber(string $number): void
+    //    {
+    //        $this->invariable->setNumber($number);
+    //        $this->number = $number;
+    //    }
 
     //    /** Константа Целевого склада */
     //    public function getWarehouse(): ?ContactsRegionCallConst
