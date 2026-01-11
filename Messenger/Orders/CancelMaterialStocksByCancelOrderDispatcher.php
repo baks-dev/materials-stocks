@@ -32,6 +32,7 @@ use BaksDev\Materials\Stocks\Repository\MaterialStocksByOrder\MaterialStocksByOr
 use BaksDev\Materials\Stocks\Type\Status\MaterialStockStatus\Collection\MaterialStockStatusCancel;
 use BaksDev\Materials\Stocks\UseCase\Admin\Cancel\CancelMaterialStockDTO;
 use BaksDev\Materials\Stocks\UseCase\Admin\Cancel\CancelMaterialStockHandler;
+use BaksDev\Orders\Order\Entity\Event\OrderEvent;
 use BaksDev\Orders\Order\Messenger\OrderMessage;
 use BaksDev\Orders\Order\Repository\CurrentOrderEvent\CurrentOrderEventInterface;
 use BaksDev\Orders\Order\Type\Status\OrderStatus\Collection\OrderStatusCanceled;
@@ -74,7 +75,7 @@ final readonly class CancelMaterialStocksByCancelOrderDispatcher
             ->forOrder($message->getId())
             ->find();
 
-        if(!$OrderEvent)
+        if(false === $OrderEvent instanceof OrderEvent)
         {
             return;
         }
