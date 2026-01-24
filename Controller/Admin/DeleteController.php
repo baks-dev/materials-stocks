@@ -1,6 +1,6 @@
 <?php
 /*
- *  Copyright 2025.  Baks.dev <admin@baks.dev>
+ *  Copyright 2026.  Baks.dev <admin@baks.dev>
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 
 declare(strict_types=1);
 
-namespace BaksDev\Materials\Stocks\Controller\Admin\Purchase;
+namespace BaksDev\Materials\Stocks\Controller\Admin;
 
 use BaksDev\Core\Controller\AbstractController;
 use BaksDev\Core\Listeners\Event\Security\RoleSecurity;
@@ -42,10 +42,10 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
-#[RoleSecurity('ROLE_MATERIAL_STOCK_PURCHASE_DELETE')]
+#[RoleSecurity('ROLE_MATERIAL_STOCK_DELETE')]
 final class DeleteController extends AbstractController
 {
-    #[Route('/admin/material/stock/purchase/delete/{id}', name: 'admin.purchase.delete', methods: ['GET', 'POST'])]
+    #[Route('/admin/material/stock/delete/{id}', name: 'admin.delete', methods: ['GET', 'POST'])]
     public function delete(
         Request $request,
         #[MapEntity] MaterialStockEvent $MaterialStocksEvent,
@@ -61,7 +61,7 @@ final class DeleteController extends AbstractController
             ->createForm(
                 type: DeleteMaterialStocksForm::class,
                 data: $MaterialStocksDeleteDTO,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.purchase.delete', ['id' => $MaterialStocksDeleteDTO->getEvent()])]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.delete', ['id' => $MaterialStocksDeleteDTO->getEvent()])],
             )
             ->handleRequest($request);
 
@@ -76,7 +76,7 @@ final class DeleteController extends AbstractController
                 'page.purchase',
                 $handle instanceof MaterialStock ? 'success.delete' : 'danger.delete',
                 'materials-stocks.admin',
-                $handle
+                $handle,
             );
 
             return $this->redirectToRoute('materials-stocks:admin.purchase.index');
@@ -85,6 +85,7 @@ final class DeleteController extends AbstractController
         /**
          * Получаем информацию о продукте для отображения в форме.
          * Предполагается что в коллекции закупки должен быть один продукт.
+         *
          * @var MaterialStockMaterial $MaterialStockMaterial
          */
 

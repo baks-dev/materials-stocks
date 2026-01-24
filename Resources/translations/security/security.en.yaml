@@ -52,8 +52,8 @@ ROLE_MATERIAL_STOCK_PURCHASE:
   name: 'Purchases'
   desc: 'Procurement of goods'
 
-ROLE_MATERIAL_STOCK_PURCHASE_DELETE:
-  name: 'Delete purchase'
+ROLE_MATERIAL_STOCK_DELETE:
+  name: 'Delete'
   desc: 'Delete purchase'
 
 

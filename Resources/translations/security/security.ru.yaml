@@ -29,6 +29,10 @@ ROLE_MATERIAL_STOCK_CANCEL:
   name: 'Отмена'
   desc: 'Отменить заявку'
 
+ROLE_MATERIAL_STOCK_DELETE:
+  name: 'Удалить'
+  desc: 'Удалить складскую заявку'
+
 
 # Правила
 
@@ -60,10 +64,6 @@ ROLE_MATERIAL_STOCK_PURCHASE:
 ROLE_MATERIAL_STOCK_PURCHASE_NEW:
   name: 'Добавить закупку сырья'
   desc: 'Добавить закупку сырья на склад'
-
-ROLE_MATERIAL_STOCK_PURCHASE_DELETE:
-  name: 'Удалить закупку'
-  desc: 'Удалить закупку'
 
 
 
