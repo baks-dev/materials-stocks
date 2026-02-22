@@ -2,7 +2,7 @@
 ROLE_MATERIAL_STOCK:
   header: 'Склад'
   name: 'Складской учет'
-  desc: 'Складской учет товаров'
+  desc: 'Складской учет сырья'
 
 
 
@@ -10,7 +10,7 @@ ROLE_MATERIAL_STOCK:
 ROLE_MATERIAL_STOCK_INDEX:
   header: 'Заказы'
   name: 'Просмотр'
-  desc: 'Складской учет товаров'
+  desc: 'Складской учет сырья'
 
 
 
