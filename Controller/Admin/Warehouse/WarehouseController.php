@@ -84,7 +84,7 @@ final class WarehouseController extends AbstractController
             ->createForm(
                 type: WarehouseMaterialStockForm::class,
                 data: $WarehouseMaterialStockDTO,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.warehouse.send', ['id' => $WarehouseMaterialStockDTO->getEvent()]),]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.warehouse.send', ['id' => $WarehouseMaterialStockDTO->getEvent()]),],
             )
             ->handleRequest($request);
 
@@ -105,7 +105,7 @@ final class WarehouseController extends AbstractController
                 $handle instanceof MaterialStock ? 'success.warehouse' : 'danger.warehouse',
                 'materials-stocks.admin',
                 $handle,
-                $remove ? 200 : 302
+                $remove ? 200 : 302,
             );
 
             return $flash ?: $this->redirectToRoute('materials-stocks:admin.purchase.index');

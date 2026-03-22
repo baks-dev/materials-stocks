@@ -135,8 +135,6 @@ final class PurchaseMaterialStockTest extends KernelTestCase
             ->setTotal(200);
 
 
-
-
         $PurchaseMaterialStockDTO->addMaterial($MaterialStockDTO);
         self::assertCount(2, $PurchaseMaterialStockDTO->getMaterial());
 

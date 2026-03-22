@@ -56,7 +56,7 @@ final class PurchaseController extends AbstractController
             ->createForm(
                 type: PurchaseMaterialStockForm::class,
                 data: $purchaseDTO,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.purchase.new'),]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.purchase.new'),],
             )
             ->handleRequest($request);
 
@@ -78,7 +78,7 @@ final class PurchaseController extends AbstractController
                         'page.purchase',
                         'danger.purchase',
                         'materials-stocks.admin',
-                        $handle
+                        $handle,
                     );
                 }
             }
@@ -86,7 +86,7 @@ final class PurchaseController extends AbstractController
             $this->addFlash(
                 'page.purchase',
                 'success.purchase',
-                'materials-stocks.admin'
+                'materials-stocks.admin',
             );
 
             return $this->redirectToRoute('materials-stocks:admin.purchase.index');

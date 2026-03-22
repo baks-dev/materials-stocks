@@ -170,7 +170,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
             ->setParameter(
                 key: 'profile',
                 value: $this->profile,
-                type: UserProfileUid::TYPE
+                type: UserProfileUid::TYPE,
             );
 
         $orm
@@ -178,7 +178,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
             ->setParameter(
                 key: 'material',
                 value: $this->material,
-                type: MaterialUid::TYPE
+                type: MaterialUid::TYPE,
             );
 
 
@@ -188,7 +188,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
                 ->andWhere('LOWER(stock.storage) = :storage')
                 ->setParameter(
                     key: 'storage',
-                    value: $this->storage
+                    value: $this->storage,
                 );
         }
         else
@@ -203,7 +203,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
                 ->setParameter(
                     key: 'offer',
                     value: $this->offer,
-                    type: MaterialOfferConst::TYPE
+                    type: MaterialOfferConst::TYPE,
                 );
         }
         else
@@ -218,7 +218,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
                 ->setParameter(
                     key: 'variation',
                     value: $this->variation,
-                    type: MaterialVariationConst::TYPE
+                    type: MaterialVariationConst::TYPE,
                 );
         }
         else
@@ -233,7 +233,7 @@ final class MaterialStocksTotalStorageRepository implements MaterialStocksTotalS
                 ->setParameter(
                     key: 'modification',
                     value: $this->modification,
-                    type: MaterialModificationConst::TYPE
+                    type: MaterialModificationConst::TYPE,
                 );
         }
         else

@@ -71,7 +71,7 @@ final class ExtraditionController extends AbstractController
             ->createForm(
                 type: ExtraditionMaterialStockForm::class,
                 data: $ExtraditionMaterialStockDTO,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.package.extradition', ['id' => $ExtraditionMaterialStockDTO->getEvent()])]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.package.extradition', ['id' => $ExtraditionMaterialStockDTO->getEvent()])],
             )
             ->handleRequest($request);
 
@@ -93,7 +93,7 @@ final class ExtraditionController extends AbstractController
                 $handle instanceof MaterialStock ? 'success.extradition' : 'danger.extradition',
                 'materials-stocks.admin',
                 $handle,
-                $remove ? 200 : 302
+                $remove ? 200 : 302,
             );
 
             return $flash ?: $this->redirectToRoute('materials-stocks:admin.package.index');
@@ -106,7 +106,7 @@ final class ExtraditionController extends AbstractController
         return $this->render([
             'form' => $form->createView(),
             'name' => $MaterialStockEvent->getNumber(),
-            'materials' => $materials
+            'materials' => $materials,
         ]);
     }
 }

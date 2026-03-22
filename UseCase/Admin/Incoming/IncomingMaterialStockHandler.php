@@ -54,7 +54,7 @@ final class IncomingMaterialStockHandler extends AbstractHandler
             ->addClearCacheOther('materials-catalog') // для обновления остатков
             ->dispatch(
                 message: new MaterialStockMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-                transport: 'materials-stocks'
+                transport: 'materials-stocks',
             );
 
         return $this->main;

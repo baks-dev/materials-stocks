@@ -127,21 +127,21 @@ final class MaterialVariationChoiceWarehouseRepository implements MaterialVariat
             'stock',
             Material::class,
             'material',
-            'material.id = stock.material'
+            'material.id = stock.material',
         );
 
         $dbal->join(
             'stock',
             MaterialOffer::class,
             'offer',
-            'offer.const = stock.offer AND offer.event = material.event'
+            'offer.const = stock.offer AND offer.event = material.event',
         );
 
         $dbal->join(
             'stock',
             MaterialVariation::class,
             'variation',
-            'variation.const = stock.variation AND variation.offer = offer.id'
+            'variation.const = stock.variation AND variation.offer = offer.id',
         );
 
         // Тип торгового предложения
@@ -151,7 +151,7 @@ final class MaterialVariationChoiceWarehouseRepository implements MaterialVariat
                 'variation',
                 CategoryMaterialVariation::class,
                 'category_variation',
-                'category_variation.id = variation.category_variation'
+                'category_variation.id = variation.category_variation',
             );
 
         $dbal
@@ -159,7 +159,7 @@ final class MaterialVariationChoiceWarehouseRepository implements MaterialVariat
                 'category_variation',
                 CategoryMaterialVariationTrans::class,
                 'category_variation_trans',
-                'category_variation_trans.variation = category_variation.id AND category_variation_trans.local = :local'
+                'category_variation_trans.variation = category_variation.id AND category_variation_trans.local = :local',
             );
 
 

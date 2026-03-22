@@ -66,10 +66,10 @@ final class MaterialStockForm extends AbstractType
                 {
                     // Количество
                     $builder->add('total',
-                        IntegerType::class, ['attr' => ['min' => 1, 'max' => $data->getTotal()]]
+                        IntegerType::class, ['attr' => ['min' => 1, 'max' => $data->getTotal()]],
                     );
                 }
-            }
+            },
         );
 
 

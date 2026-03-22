@@ -28,27 +28,27 @@ var limit_nWgkuzbCRs = 1000;
 setTimeout(function init_YFwgubGn()
 {
 
-    var object_material = document.getElementById('moving_material_stock_form_preMaterial');
+    var object_material = document.getElementById("moving_material_stock_form_preMaterial");
 
     if(object_material)
     {
 
-        let focus = document.getElementById('moving_material_stock_form_preMaterial_select2');
+        let focus = document.getElementById("moving_material_stock_form_preMaterial_select2");
         focus ? focus.click() : null;
 
         //object_material.addEventListener('change', changeObjectMaterial, false);
-        object_material.addEventListener('change', function(event)
+        object_material.addEventListener("change", function(event)
         {
-            let forms = this.closest('form');
+            let forms = this.closest("form");
             changeObjectMaterial(forms);
             return false;
         });
 
-        let $addButtonStock = document.getElementById('moving_material_stock_form_addMoving');
+        let $addButtonStock = document.getElementById("moving_material_stock_form_addMoving");
 
         if($addButtonStock)
         {
-            $addButtonStock.addEventListener('click', addMaterialMoving, false);
+            $addButtonStock.addEventListener("click", addMaterialMoving, false);
         }
 
         return;
@@ -70,21 +70,21 @@ async function changeObjectMaterial(forms)
 {
 
     const data = new FormData(forms);
-    data.delete(forms.name + '[_token]');
+    data.delete(forms.name + "[_token]");
 
 
     await fetch(forms.action, {
-        method: forms.method, // *GET, POST, PUT, DELETE, etc.
+        method : forms.method, // *GET, POST, PUT, DELETE, etc.
         //mode: 'same-origin', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
+        cache : "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials : "same-origin", // include, *same-origin, omit
+        headers : {
+            "X-Requested-With" : "XMLHttpRequest",
         },
 
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: data // body data type must match "Content-Type" header
+        redirect : "follow", // manual, *follow, error
+        referrerPolicy : "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body : data, // body data type must match "Content-Type" header
     })
 
         //.then((response) => response)
@@ -98,74 +98,73 @@ async function changeObjectMaterial(forms)
 
             return response.text();
 
-        })
-
-        .then((data) =>
+        }).then((data) =>
         {
 
             if(data)
             {
 
                 var parser = new DOMParser();
-                var result = parser.parseFromString(data, 'text/html');
+                var result = parser.parseFromString(data, "text/html");
 
 
-                let preOffer = result.getElementById('preOffer');
-                preOffer ? document.getElementById('preOffer').replaceWith(preOffer) : preOffer.innerHTML = '';
+                let preOffer = result.getElementById("preOffer");
+                preOffer ? document.getElementById("preOffer").replaceWith(preOffer) : preOffer.innerHTML = "";
 
                 if(preOffer)
                 {
 
                     /** SELECT2 */
 
-                    let replaceOfferId = 'moving_material_stock_form_preOffer';
+                    let replaceOfferId = "moving_material_stock_form_preOffer";
 
                     let replacer = document.getElementById(replaceOfferId);
 
-                    if(replacer.tagName === 'SELECT')
+                    if(replacer.tagName === "SELECT")
                     {
-                        new NiceSelect(replacer, {searchable: true});
+                        new NiceSelect(replacer, {searchable : true});
                     }
 
-                    let focus = document.getElementById('moving_material_stock_form_preOffer_select2');
+                    let focus = document.getElementById("moving_material_stock_form_preOffer_select2");
                     focus ? focus.click() : null;
 
-                } else
+                }
+                else
                 {
-                    let targetWarehouse = result.getElementById('targetWarehouse');
+                    let targetWarehouse = result.getElementById("targetWarehouse");
 
                     if(targetWarehouse)
                     {
 
-                        document.getElementById('targetWarehouse').replaceWith(targetWarehouse);
+                        document.getElementById("targetWarehouse").replaceWith(targetWarehouse);
 
                         /** SELECT2 */
-                        let replacerWarehouse = document.getElementById('moving_material_stock_form_targetWarehouse');
-                        replacer.addEventListener('change', changeObjectWarehause, false);
+                        let replacerWarehouse = document.getElementById("moving_material_stock_form_targetWarehouse");
+                        replacer.addEventListener("change", changeObjectWarehause, false);
 
-                        if(replacerWarehouse && replacerWarehouse.tagName === 'SELECT')
+                        if(replacerWarehouse && replacerWarehouse.tagName === "SELECT")
                         {
-                            new NiceSelect(replacerWarehouse, {searchable: true});
+                            new NiceSelect(replacerWarehouse, {searchable : true});
                         }
                     }
                 }
 
 
                 /** сбрасываем зависимые поля */
-                let preVariation = document.getElementById('preVariation');
-                preVariation ? preVariation.innerHTML = '' : null;
+                let preVariation = document.getElementById("preVariation");
+                preVariation ? preVariation.innerHTML = "" : null;
 
-                let preModification = document.getElementById('preModification');
-                preModification ? preModification.innerHTML = '' : null;
+                let preModification = document.getElementById("preModification");
+                preModification ? preModification.innerHTML = "" : null;
 
 
                 /** Событие на изменение торгового предложения */
-                let offerChange = document.getElementById('moving_material_stock_form_preOffer');
+                let offerChange = document.getElementById("moving_material_stock_form_preOffer");
 
                 if(offerChange)
                 {
 
-                    offerChange.addEventListener('change', function(event)
+                    offerChange.addEventListener("change", function(event)
                     {
                         changeObjectOffer(forms);
                         return false;
@@ -196,7 +195,7 @@ async function changeObjectMaterial(forms)
 function _changeObjectMaterial()
 {
 
-    let replaceId = 'moving_material_stock_form_preOffer';
+    let replaceId = "moving_material_stock_form_preOffer";
 
 
     /* Создаём объект класса XMLHttpRequest */
@@ -211,13 +210,13 @@ function _changeObjectMaterial()
     // const varehouse = document.getElementById('moving_material_stock_form_targetWarehouse');
     // formData.append(varehouse.getAttribute('name'), varehouse.value);
 
-    formData.append(this.getAttribute('name'), this.value);
+    formData.append(this.getAttribute("name"), this.value);
 
 
-    requestModalName.open(MovingForm.getAttribute('method'), MovingForm.getAttribute('action'), true);
+    requestModalName.open(MovingForm.getAttribute("method"), MovingForm.getAttribute("action"), true);
 
     /* Указываем заголовки для сервера */
-    requestModalName.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    requestModalName.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
     /* Получаем ответ от сервера на запрос*/
     requestModalName.addEventListener("readystatechange", function()
@@ -226,34 +225,34 @@ function _changeObjectMaterial()
         if(requestModalName.readyState === 4 && requestModalName.status === 200)
         {
 
-            let result = requestModalName.response.getElementById('preOffer');
+            let result = requestModalName.response.getElementById("preOffer");
 
 
-            document.getElementById('preOffer').replaceWith(result);
+            document.getElementById("preOffer").replaceWith(result);
 
             let replacer = document.getElementById(replaceId);
 
-            if(replacer.tagName === 'SELECT')
+            if(replacer.tagName === "SELECT")
             {
-                new NiceSelect(replacer, {searchable: true, id: 'select2-' + replaceId});
+                new NiceSelect(replacer, {searchable : true, id : "select2-" + replaceId});
 
                 /** Событие на изменение торгового предложения */
-                let offerChange = document.getElementById('moving_material_stock_form_preOffer');
+                let offerChange = document.getElementById("moving_material_stock_form_preOffer");
 
                 if(offerChange)
                 {
-                    offerChange.addEventListener('change', changeObjectOffer, false);
+                    offerChange.addEventListener("change", changeObjectOffer, false);
                 }
             }
 
 
             /** Изменияем список целевых складов */
-            let warehouse = requestModalName.response.getElementById('targetWarehouse');
-            document.getElementById('targetWarehouse').replaceWith(warehouse);
-            document.getElementById('moving_material_stock_form_targetWarehouse').addEventListener('change', changeObjectWarehause, false);
-            new NiceSelect(document.getElementById('moving_material_stock_form_targetWarehouse'), {
-                searchable: true,
-                id: 'select2-' + replaceId
+            let warehouse = requestModalName.response.getElementById("targetWarehouse");
+            document.getElementById("targetWarehouse").replaceWith(warehouse);
+            document.getElementById("moving_material_stock_form_targetWarehouse").addEventListener("change", changeObjectWarehause, false);
+            new NiceSelect(document.getElementById("moving_material_stock_form_targetWarehouse"), {
+                searchable : true,
+                id : "select2-" + replaceId,
             });
 
 
@@ -271,21 +270,21 @@ async function changeObjectOffer(forms)
 
 
     const data = new FormData(forms);
-    data.delete(forms.name + '[_token]');
+    data.delete(forms.name + "[_token]");
 
 
     await fetch(forms.action, {
-        method: forms.method, // *GET, POST, PUT, DELETE, etc.
+        method : forms.method, // *GET, POST, PUT, DELETE, etc.
         //mode: 'same-origin', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
+        cache : "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials : "same-origin", // include, *same-origin, omit
+        headers : {
+            "X-Requested-With" : "XMLHttpRequest",
         },
 
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: data // body data type must match "Content-Type" header
+        redirect : "follow", // manual, *follow, error
+        referrerPolicy : "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body : data, // body data type must match "Content-Type" header
     })
 
         //.then((response) => response)
@@ -299,72 +298,71 @@ async function changeObjectOffer(forms)
 
             return response.text();
 
-        })
-
-        .then((data) =>
+        }).then((data) =>
         {
 
             if(data)
             {
 
                 var parser = new DOMParser();
-                var result = parser.parseFromString(data, 'text/html');
+                var result = parser.parseFromString(data, "text/html");
 
 
-                let preVariation = result.getElementById('preVariation');
+                let preVariation = result.getElementById("preVariation");
 
                 if(preVariation)
                 {
 
-                    document.getElementById('preVariation').replaceWith(preVariation);
+                    document.getElementById("preVariation").replaceWith(preVariation);
 
                     /** SELECT2 */
 
-                    let replacer = document.getElementById('moving_material_stock_form_preVariation');
+                    let replacer = document.getElementById("moving_material_stock_form_preVariation");
 
                     if(replacer)
                     {
 
-                        if(replacer.tagName === 'SELECT')
+                        if(replacer.tagName === "SELECT")
                         {
-                            new NiceSelect(replacer, {searchable: true});
+                            new NiceSelect(replacer, {searchable : true});
                         }
 
-                        replacer.addEventListener('change', function(event)
+                        replacer.addEventListener("change", function(event)
                         {
                             changeObjectVariation(forms);
                             return false;
                         });
 
-                        let focus = document.getElementById('moving_material_stock_form_preVariation_select2');
+                        let focus = document.getElementById("moving_material_stock_form_preVariation_select2");
                         focus ? focus.click() : null;
 
                     }
 
-                } else
+                }
+                else
                 {
 
-                    let targetWarehouse = result.getElementById('targetWarehouse');
+                    let targetWarehouse = result.getElementById("targetWarehouse");
 
                     if(targetWarehouse)
                     {
 
-                        document.getElementById('targetWarehouse').replaceWith(targetWarehouse);
+                        document.getElementById("targetWarehouse").replaceWith(targetWarehouse);
 
                         /** SELECT2 */
-                        let replacerWarehouse = document.getElementById('moving_material_stock_form_targetWarehouse');
-                        replacer.addEventListener('change', changeObjectWarehause, false);
+                        let replacerWarehouse = document.getElementById("moving_material_stock_form_targetWarehouse");
+                        replacer.addEventListener("change", changeObjectWarehause, false);
 
-                        if(replacerWarehouse && replacerWarehouse.tagName === 'SELECT')
+                        if(replacerWarehouse && replacerWarehouse.tagName === "SELECT")
                         {
-                            new NiceSelect(replacerWarehouse, {searchable: true});
+                            new NiceSelect(replacerWarehouse, {searchable : true});
                         }
                     }
                 }
 
 
-                let preModification = document.getElementById('preModification');
-                preModification ? preModification.innerHTML = '' : null;
+                let preModification = document.getElementById("preModification");
+                preModification ? preModification.innerHTML = "" : null;
 
 
             }
@@ -376,7 +374,7 @@ function _changeObjectOffer()
 {
 
 
-    let replaceId = 'moving_material_stock_form_preVariation';
+    let replaceId = "moving_material_stock_form_preVariation";
 
     /* Создаём объект класса XMLHttpRequest */
     const requestModalName = new XMLHttpRequest();
@@ -385,17 +383,17 @@ function _changeObjectOffer()
     /* Имя формы */
     let MovingForm = document.forms.moving_material_stock_form;
     let formData = new FormData();
-    formData.append(this.getAttribute('name'), this.value);
+    formData.append(this.getAttribute("name"), this.value);
 
     /** Продукт */
-    const material = document.getElementById('moving_material_stock_form_preMaterial');
-    formData.append(material.getAttribute('name'), material.value);
+    const material = document.getElementById("moving_material_stock_form_preMaterial");
+    formData.append(material.getAttribute("name"), material.value);
 
     /** Торговое предложенеи */
-    requestModalName.open(MovingForm.getAttribute('method'), MovingForm.getAttribute('action'), true);
+    requestModalName.open(MovingForm.getAttribute("method"), MovingForm.getAttribute("action"), true);
 
     /* Указываем заголовки для сервера */
-    requestModalName.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    requestModalName.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
     /* Получаем ответ от сервера на запрос*/
     requestModalName.addEventListener("readystatechange", function()
@@ -404,33 +402,33 @@ function _changeObjectOffer()
         if(requestModalName.readyState === 4 && requestModalName.status === 200)
         {
 
-            let result = requestModalName.response.getElementById('preVariation');
+            let result = requestModalName.response.getElementById("preVariation");
 
-            document.getElementById('preVariation').replaceWith(result);
+            document.getElementById("preVariation").replaceWith(result);
 
             let replacer = document.getElementById(replaceId);
 
-            if(replacer.tagName === 'SELECT')
+            if(replacer.tagName === "SELECT")
             {
-                new NiceSelect(document.getElementById(replaceId), {searchable: true, id: 'select2-' + replaceId});
+                new NiceSelect(document.getElementById(replaceId), {searchable : true, id : "select2-" + replaceId});
 
                 /** Событие на изменение множественного варианта предложения */
-                let offerVariation = document.getElementById('moving_material_stock_form_preVariation');
+                let offerVariation = document.getElementById("moving_material_stock_form_preVariation");
 
                 if(offerVariation)
                 {
-                    offerVariation.addEventListener('change', changeObjectVariation, false);
+                    offerVariation.addEventListener("change", changeObjectVariation, false);
                 }
             }
 
 
             /** Изменияем список целевых складов */
-            let warehouse = requestModalName.response.getElementById('targetWarehouse');
-            document.getElementById('targetWarehouse').replaceWith(warehouse);
-            document.getElementById('moving_material_stock_form_targetWarehouse').addEventListener('change', changeObjectWarehause, false);
-            new NiceSelect(document.getElementById('moving_material_stock_form_targetWarehouse'), {
-                searchable: true,
-                id: 'select2-' + replaceId
+            let warehouse = requestModalName.response.getElementById("targetWarehouse");
+            document.getElementById("targetWarehouse").replaceWith(warehouse);
+            document.getElementById("moving_material_stock_form_targetWarehouse").addEventListener("change", changeObjectWarehause, false);
+            new NiceSelect(document.getElementById("moving_material_stock_form_targetWarehouse"), {
+                searchable : true,
+                id : "select2-" + replaceId,
             });
 
 
@@ -448,21 +446,21 @@ async function changeObjectVariation(forms)
 
 
     const data = new FormData(forms);
-    data.delete(forms.name + '[_token]');
+    data.delete(forms.name + "[_token]");
 
 
     await fetch(forms.action, {
-        method: forms.method, // *GET, POST, PUT, DELETE, etc.
+        method : forms.method, // *GET, POST, PUT, DELETE, etc.
         //mode: 'same-origin', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
+        cache : "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials : "same-origin", // include, *same-origin, omit
+        headers : {
+            "X-Requested-With" : "XMLHttpRequest",
         },
 
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: data // body data type must match "Content-Type" header
+        redirect : "follow", // manual, *follow, error
+        referrerPolicy : "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body : data, // body data type must match "Content-Type" header
     })
 
         //.then((response) => response)
@@ -476,65 +474,64 @@ async function changeObjectVariation(forms)
 
             return response.text();
 
-        })
-
-        .then((data) =>
+        }).then((data) =>
         {
 
             if(data)
             {
 
                 var parser = new DOMParser();
-                var result = parser.parseFromString(data, 'text/html');
+                var result = parser.parseFromString(data, "text/html");
 
 
-                let preModification = result.getElementById('preModification');
+                let preModification = result.getElementById("preModification");
 
                 if(preModification)
                 {
 
-                    document.getElementById('preModification').replaceWith(preModification);
+                    document.getElementById("preModification").replaceWith(preModification);
 
                     /** SELECT2 */
-                    let replacer = document.getElementById('moving_material_stock_form_preModification');
+                    let replacer = document.getElementById("moving_material_stock_form_preModification");
 
                     /** Событие на изменение модификации */
                     if(replacer)
                     {
 
-                        if(replacer.tagName === 'SELECT')
+                        if(replacer.tagName === "SELECT")
                         {
-                            new NiceSelect(replacer, {searchable: true});
+                            new NiceSelect(replacer, {searchable : true});
                         }
 
-                        replacer.addEventListener('change', function(event)
+                        replacer.addEventListener("change", function(event)
                         {
                             changeObjectModification(forms);
                             return false;
                         });
 
-                        let focus = document.getElementById('moving_material_stock_form_preModification_select2');
+                        let focus = document.getElementById("moving_material_stock_form_preModification_select2");
                         focus ? focus.click() : null;
                     }
 
 
-                } else
+                }
+                else
                 {
 
-                    let targetWarehouse = result.getElementById('targetWarehouse');
+                    let targetWarehouse = result.getElementById("targetWarehouse");
 
                     if(targetWarehouse)
                     {
 
-                        document.getElementById('targetWarehouse').replaceWith(targetWarehouse);
+                        document.getElementById("targetWarehouse").replaceWith(targetWarehouse);
 
                         /** SELECT2 */
-                        let replacerWarehouse = document.getElementById('moving_material_stock_form_targetWarehouse');
-                        replacer.addEventListener('change', changeObjectWarehause, false);
+                        let replacerWarehouse = document.getElementById("moving_material_stock_form_targetWarehouse");
+                        replacer.addEventListener("change", changeObjectWarehause, false);
 
-                        if(replacerWarehouse && replacerWarehouse.tagName === 'SELECT')
+                        if(replacerWarehouse && replacerWarehouse.tagName === "SELECT")
                         {
-                            new NiceSelect(replacerWarehouse, {searchable: true});
+                            new NiceSelect(replacerWarehouse, {searchable : true});
                         }
 
                         // let focus = document.getElementById('moving_material_stock_form_targetWarehouse_select2');
@@ -579,7 +576,7 @@ async function changeObjectVariation(forms)
 function _changeObjectVariation()
 {
 
-    let replaceId = 'moving_material_stock_form_preModification';
+    let replaceId = "moving_material_stock_form_preModification";
 
     /* Создаём объект класса XMLHttpRequest */
     const requestModalName = new XMLHttpRequest();
@@ -588,21 +585,21 @@ function _changeObjectVariation()
     /* Имя формы */
     let MovingForm = document.forms.moving_material_stock_form;
     let formData = new FormData();
-    formData.append(this.getAttribute('name'), this.value);
+    formData.append(this.getAttribute("name"), this.value);
 
     /** Продукт */
-    const material = document.getElementById('moving_material_stock_form_preMaterial');
-    formData.append(material.getAttribute('name'), material.value);
+    const material = document.getElementById("moving_material_stock_form_preMaterial");
+    formData.append(material.getAttribute("name"), material.value);
 
     /** Торговое предложенеи */
-    const offer = document.getElementById('moving_material_stock_form_preOffer');
-    formData.append(offer.getAttribute('name'), offer.value);
+    const offer = document.getElementById("moving_material_stock_form_preOffer");
+    formData.append(offer.getAttribute("name"), offer.value);
 
     /** Множественный вариант */
-    requestModalName.open(MovingForm.getAttribute('method'), MovingForm.getAttribute('action'), true);
+    requestModalName.open(MovingForm.getAttribute("method"), MovingForm.getAttribute("action"), true);
 
     /* Указываем заголовки для сервера */
-    requestModalName.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    requestModalName.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
     /* Получаем ответ от сервера на запрос*/
     requestModalName.addEventListener("readystatechange", function()
@@ -611,33 +608,33 @@ function _changeObjectVariation()
         if(requestModalName.readyState === 4 && requestModalName.status === 200)
         {
 
-            let result = requestModalName.response.getElementById('preModification');
+            let result = requestModalName.response.getElementById("preModification");
 
-            document.getElementById('preModification').replaceWith(result);
+            document.getElementById("preModification").replaceWith(result);
 
             let replacer = document.getElementById(replaceId);
 
-            if(replacer.tagName === 'SELECT')
+            if(replacer.tagName === "SELECT")
             {
-                new NiceSelect(document.getElementById(replaceId), {searchable: true, id: 'select2-' + replaceId});
+                new NiceSelect(document.getElementById(replaceId), {searchable : true, id : "select2-" + replaceId});
 
                 /** Событие на изменение модификации множественного варианта предложения */
-                let offerModification = document.getElementById('moving_material_stock_form_preModification');
+                let offerModification = document.getElementById("moving_material_stock_form_preModification");
 
                 if(offerModification)
                 {
-                    offerModification.addEventListener('change', changeObjectModification, false);
+                    offerModification.addEventListener("change", changeObjectModification, false);
                 }
             }
 
 
             /** Изменияем список целевых складов */
-            let warehouse = requestModalName.response.getElementById('targetWarehouse');
-            document.getElementById('targetWarehouse').replaceWith(warehouse);
-            document.getElementById('moving_material_stock_form_targetWarehouse').addEventListener('change', changeObjectWarehause, false);
-            new NiceSelect(document.getElementById('moving_material_stock_form_targetWarehouse'), {
-                searchable: true,
-                id: 'select2-' + replaceId
+            let warehouse = requestModalName.response.getElementById("targetWarehouse");
+            document.getElementById("targetWarehouse").replaceWith(warehouse);
+            document.getElementById("moving_material_stock_form_targetWarehouse").addEventListener("change", changeObjectWarehause, false);
+            new NiceSelect(document.getElementById("moving_material_stock_form_targetWarehouse"), {
+                searchable : true,
+                id : "select2-" + replaceId,
             });
 
 
@@ -656,21 +653,21 @@ async function changeObjectModification(forms)
 
 
     const data = new FormData(forms);
-    data.delete(forms.name + '[_token]');
+    data.delete(forms.name + "[_token]");
 
 
     await fetch(forms.action, {
-        method: forms.method, // *GET, POST, PUT, DELETE, etc.
+        method : forms.method, // *GET, POST, PUT, DELETE, etc.
         //mode: 'same-origin', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
+        cache : "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials : "same-origin", // include, *same-origin, omit
+        headers : {
+            "X-Requested-With" : "XMLHttpRequest",
         },
 
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: data // body data type must match "Content-Type" header
+        redirect : "follow", // manual, *follow, error
+        referrerPolicy : "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body : data, // body data type must match "Content-Type" header
     })
 
         //.then((response) => response)
@@ -684,37 +681,35 @@ async function changeObjectModification(forms)
 
             return response.text();
 
-        })
-
-        .then((data) =>
+        }).then((data) =>
         {
 
             if(data)
             {
 
                 var parser = new DOMParser();
-                var result = parser.parseFromString(data, 'text/html');
+                var result = parser.parseFromString(data, "text/html");
 
-                let targetWarehouse = result.getElementById('targetWarehouse');
+                let targetWarehouse = result.getElementById("targetWarehouse");
 
-                targetWarehouse.querySelector('#moving_material_stock_form_targetWarehouse').classList.remove('is-invalid');
-                (targetWarehouse.querySelector('.invalid-feedback'))?.remove();
+                targetWarehouse.querySelector("#moving_material_stock_form_targetWarehouse").classList.remove("is-invalid");
+                (targetWarehouse.querySelector(".invalid-feedback"))?.remove();
 
                 if(targetWarehouse)
                 {
 
-                    document.getElementById('targetWarehouse').replaceWith(targetWarehouse);
+                    document.getElementById("targetWarehouse").replaceWith(targetWarehouse);
 
                     /** SELECT2 */
-                    let replacer = document.getElementById('moving_material_stock_form_targetWarehouse');
-                    replacer.addEventListener('change', changeObjectWarehause, false);
+                    let replacer = document.getElementById("moving_material_stock_form_targetWarehouse");
+                    replacer.addEventListener("change", changeObjectWarehause, false);
 
-                    if(replacer && replacer.tagName === 'SELECT')
+                    if(replacer && replacer.tagName === "SELECT")
                     {
-                        new NiceSelect(replacer, {searchable: true});
+                        new NiceSelect(replacer, {searchable : true});
                     }
 
-                    let focus = document.getElementById('moving_material_stock_form_targetWarehouse_select2');
+                    let focus = document.getElementById("moving_material_stock_form_targetWarehouse_select2");
                     focus ? focus.click() : null;
 
                 }
@@ -728,7 +723,7 @@ async function changeObjectModification(forms)
 function _changeObjectModification()
 {
 
-    let replaceId = 'moving_material_stock_form_targetWarehouse';
+    let replaceId = "moving_material_stock_form_targetWarehouse";
 
     /* Создаём объект класса XMLHttpRequest */
     const requestModalName = new XMLHttpRequest();
@@ -737,25 +732,25 @@ function _changeObjectModification()
     /* Имя формы */
     let MovingForm = document.forms.moving_material_stock_form;
     let formData = new FormData();
-    formData.append(this.getAttribute('name'), this.value);
+    formData.append(this.getAttribute("name"), this.value);
 
     /** Продукт */
-    const material = document.getElementById('moving_material_stock_form_preMaterial');
-    formData.append(material.getAttribute('name'), material.value);
+    const material = document.getElementById("moving_material_stock_form_preMaterial");
+    formData.append(material.getAttribute("name"), material.value);
 
     /** Торговое предложенеи */
-    const offer = document.getElementById('moving_material_stock_form_preOffer');
-    formData.append(offer.getAttribute('name'), offer.value);
+    const offer = document.getElementById("moving_material_stock_form_preOffer");
+    formData.append(offer.getAttribute("name"), offer.value);
 
     /** Множественный вариант */
-    const variation = document.getElementById('moving_material_stock_form_preVariation');
-    formData.append(variation.getAttribute('name'), variation.value);
+    const variation = document.getElementById("moving_material_stock_form_preVariation");
+    formData.append(variation.getAttribute("name"), variation.value);
 
     /** Модификация */
-    requestModalName.open(MovingForm.getAttribute('method'), MovingForm.getAttribute('action'), true);
+    requestModalName.open(MovingForm.getAttribute("method"), MovingForm.getAttribute("action"), true);
 
     /* Указываем заголовки для сервера */
-    requestModalName.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    requestModalName.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
     /* Получаем ответ от сервера на запрос*/
     requestModalName.addEventListener("readystatechange", function()
@@ -764,20 +759,20 @@ function _changeObjectModification()
         if(requestModalName.readyState === 4 && requestModalName.status === 200)
         {
 
-            let result = requestModalName.response.getElementById('targetWarehouse');
+            let result = requestModalName.response.getElementById("targetWarehouse");
 
-            document.getElementById('targetWarehouse').replaceWith(result);
+            document.getElementById("targetWarehouse").replaceWith(result);
 
             let replacer = document.getElementById(replaceId);
 
 
             /** Изменить максимально допустимое количество */
 
-            document.getElementById('moving_material_stock_form_targetWarehouse').addEventListener('change', changeObjectWarehause, false);
+            document.getElementById("moving_material_stock_form_targetWarehouse").addEventListener("change", changeObjectWarehause, false);
 
-            if(replacer.tagName === 'SELECT')
+            if(replacer.tagName === "SELECT")
             {
-                new NiceSelect(document.getElementById(replaceId), {searchable: true, id: 'select2-' + replaceId});
+                new NiceSelect(document.getElementById(replaceId), {searchable : true, id : "select2-" + replaceId});
             }
 
 
@@ -793,15 +788,14 @@ function _changeObjectModification()
 function changeObjectWarehause()
 {
     let index = this.selectedIndex;
-    document.getElementById('moving_material_stock_form_preTotal')
-        .setAttribute('max', this.options[index].dataset.max);
+    document.getElementById("moving_material_stock_form_preTotal").setAttribute("max", this.options[index].dataset.max);
 
-    document.getElementById('moving_material_stock_form_destinationWarehouse').addEventListener('change', () =>
+    document.getElementById("moving_material_stock_form_destinationWarehouse").addEventListener("change", () =>
     {
 
         setTimeout(function()
         {
-            let focusTotal = document.getElementById('moving_material_stock_form_preTotal');
+            let focusTotal = document.getElementById("moving_material_stock_form_preTotal");
             focusTotal ? focusTotal.focus() : null;
         }, 100);
 
@@ -810,7 +804,7 @@ function changeObjectWarehause()
 
     setTimeout(function()
     {
-        let focusDestination = document.getElementById('moving_material_stock_form_destinationWarehouse_select2');
+        let focusDestination = document.getElementById("moving_material_stock_form_destinationWarehouse_select2");
         focusDestination ? focusDestination.click() : null;
     }, 100);
 }
@@ -822,131 +816,131 @@ function addMaterialMoving()
 {
 
     /* Блок для новой коллекции КАТЕГОРИИ */
-    let $blockCollectionStock = document.getElementById('collectionStock');
+    let $blockCollectionStock = document.getElementById("collectionStock");
 
     /* Добавляем новую коллекцию */
     //$addButtonStock.addEventListener('click', function () {
 
     let $errorFormHandler = null;
 
-    let header = 'Добавить лист перемещения сырья';
+    let header = "Добавить лист перемещения сырья";
 
 
-    let $preTotal = document.getElementById('moving_material_stock_form_preTotal');
+    let $preTotal = document.getElementById("moving_material_stock_form_preTotal");
     let $TOTAL = $preTotal.value * 1;
 
-    let $totalMax = $preTotal.getAttribute('max');
+    let $totalMax = $preTotal.getAttribute("max");
 
     if($TOTAL === undefined || $TOTAL < 1 || $TOTAL > $totalMax)
     {
 
         if($TOTAL === undefined)
         {
-            $errorFormHandler = '{ "type":"danger" , ' +
-                '"header":"' + header + '"  , ' +
-                '"message" : "Ошибка при заполнение количество" }';
+            $errorFormHandler = "{ \"type\":\"danger\" , " +
+                "\"header\":\"" + header + "\"  , " +
+                "\"message\" : \"Ошибка при заполнение количество\" }";
         }
 
         if($TOTAL > $totalMax)
         {
-            $errorFormHandler = '{ "type":"danger" , ' +
-                '"header":"' + header + '"  , ' +
-                '"message" : "Недостаточное количество на складе" }';
+            $errorFormHandler = "{ \"type\":\"danger\" , " +
+                "\"header\":\"" + header + "\"  , " +
+                "\"message\" : \"Недостаточное количество на складе\" }";
         }
 
         if($TOTAL < 1)
         {
-            $errorFormHandler = '{ "type":"danger" , ' +
-                '"header":"' + header + '"  , ' +
-                '"message" : "Не указано количество для перемещения" }';
+            $errorFormHandler = "{ \"type\":\"danger\" , " +
+                "\"header\":\"" + header + "\"  , " +
+                "\"message\" : \"Не указано количество для перемещения\" }";
         }
 
 
     }
 
 
-    let $targetWarehouse = document.getElementById('moving_material_stock_form_targetWarehouse');
+    let $targetWarehouse = document.getElementById("moving_material_stock_form_targetWarehouse");
     if($targetWarehouse.value.length === 0)
     {
 
-        $errorFormHandler = '{ "type":"danger" , ' +
-            '"header":"Добавить лист закупки сырья"  , ' +
-            '"message" : "' + $targetWarehouse.options[0].textContent + '" }';
+        $errorFormHandler = "{ \"type\":\"danger\" , " +
+            "\"header\":\"Добавить лист закупки сырья\"  , " +
+            "\"message\" : \"" + $targetWarehouse.options[0].textContent + "\" }";
 
     }
 
-    let $destinationWarehouse = document.getElementById('moving_material_stock_form_destinationWarehouse');
+    let $destinationWarehouse = document.getElementById("moving_material_stock_form_destinationWarehouse");
     if($destinationWarehouse.value.length === 0)
     {
 
-        $errorFormHandler = '{ "type":"danger" , ' +
-            '"header":"Добавить лист закупки сырья"  , ' +
-            '"message" : "' + $destinationWarehouse.options[0].textContent + '" }';
+        $errorFormHandler = "{ \"type\":\"danger\" , " +
+            "\"header\":\"Добавить лист закупки сырья\"  , " +
+            "\"message\" : \"" + $destinationWarehouse.options[0].textContent + "\" }";
 
     }
 
 
-    let $preMaterial = document.getElementById('moving_material_stock_form_preMaterial');
+    let $preMaterial = document.getElementById("moving_material_stock_form_preMaterial");
     if($preMaterial.value.length === 0)
     {
 
-        $errorFormHandler = '{ "type":"danger" , ' +
-            '"header":"' + header + '"  , ' +
-            '"message" : "' + $preMaterial.options[0].textContent + '" }';
+        $errorFormHandler = "{ \"type\":\"danger\" , " +
+            "\"header\":\"" + header + "\"  , " +
+            "\"message\" : \"" + $preMaterial.options[0].textContent + "\" }";
 
     }
 
 
-    let $preOffer = document.getElementById('moving_material_stock_form_preOffer');
+    let $preOffer = document.getElementById("moving_material_stock_form_preOffer");
     if($preOffer)
     {
-        if($preOffer.tagName === 'SELECT' && $preOffer.value.length === 0)
+        if($preOffer.tagName === "SELECT" && $preOffer.value.length === 0)
         {
 
-            $errorFormHandler = '{ "type":"danger" , ' +
-                '"header":"' + header + '"  , ' +
-                '"message" : "' + $preOffer.options[0].textContent + '" }';
+            $errorFormHandler = "{ \"type\":\"danger\" , " +
+                "\"header\":\"" + header + "\"  , " +
+                "\"message\" : \"" + $preOffer.options[0].textContent + "\" }";
         }
     }
 
 
-    let $preVariation = document.getElementById('moving_material_stock_form_preVariation');
+    let $preVariation = document.getElementById("moving_material_stock_form_preVariation");
     if($preVariation)
     {
-        if($preVariation.tagName === 'SELECT' && $preVariation.value.length === 0)
+        if($preVariation.tagName === "SELECT" && $preVariation.value.length === 0)
         {
 
-            $errorFormHandler = '{ "type":"danger" , ' +
-                '"header":"' + header + '"  , ' +
-                '"message" : "' + $preVariation.options[0].textContent + '" }';
+            $errorFormHandler = "{ \"type\":\"danger\" , " +
+                "\"header\":\"" + header + "\"  , " +
+                "\"message\" : \"" + $preVariation.options[0].textContent + "\" }";
         }
     }
 
-    let $preModification = document.getElementById('moving_material_stock_form_preModification');
+    let $preModification = document.getElementById("moving_material_stock_form_preModification");
     if($preModification)
     {
-        if($preModification.tagName === 'SELECT' && $preModification.value.length === 0)
+        if($preModification.tagName === "SELECT" && $preModification.value.length === 0)
         {
 
-            $errorFormHandler = '{ "type":"danger" , ' +
-                '"header":"' + header + '"  , ' +
-                '"message" : "' + $preModification.options[0].textContent + '" }';
+            $errorFormHandler = "{ \"type\":\"danger\" , " +
+                "\"header\":\"" + header + "\"  , " +
+                "\"message\" : \"" + $preModification.options[0].textContent + "\" }";
         }
     }
 
 
     if($targetWarehouse.value === $destinationWarehouse.value)
     {
-        $errorFormHandler = '{ "type":"danger" , ' +
-            '"header":"' + header + '"  , ' +
-            '"message" : "Внутренее перемещение! Выберите другой склад назначения либо отгрузки" }';
+        $errorFormHandler = "{ \"type\":\"danger\" , " +
+            "\"header\":\"" + header + "\"  , " +
+            "\"message\" : \"Внутренее перемещение! Выберите другой склад назначения либо отгрузки\" }";
     }
 
     if(collectionStock.has($targetWarehouse.value + $destinationWarehouse.value + $preMaterial.value + $preOffer.value + $preVariation.value + $preModification.value))
     {
-        $errorFormHandler = '{ "type":"danger" , ' +
-            '"header":"' + header + '"  , ' +
-            '"message" : "сырьё уже добавлено в список" }';
+        $errorFormHandler = "{ \"type\":\"danger\" , " +
+            "\"header\":\"" + header + "\"  , " +
+            "\"message\" : \"сырьё уже добавлено в список\" }";
     }
 
 
@@ -978,10 +972,10 @@ function addMaterialMoving()
 
 
     /* Вставляем новую коллекцию */
-    let stockDiv = document.createElement('div');
+    let stockDiv = document.createElement("div");
 
-    stockDiv.classList.add('item-collection-material');
-    stockDiv.classList.add('w-100');
+    stockDiv.classList.add("item-collection-material");
+    stockDiv.classList.add("w-100");
     stockDiv.innerHTML = newForm;
     $blockCollectionStock.append(stockDiv);
 
@@ -997,34 +991,34 @@ function addMaterialMoving()
     let $destinationWarehouseName = $destinationWarehouse.options[destinationWarehouseIndex].textContent;
 
     let variationIndex = $preVariation.selectedIndex;
-    let $variationName = $preVariation.tagName === 'SELECT' ? document.querySelector('label[for="' + $preVariation.id + '"]').textContent + ' ' + $preVariation.options[variationIndex].dataset.name : '';
+    let $variationName = $preVariation.tagName === "SELECT" ? document.querySelector("label[for=\"" + $preVariation.id + "\"]").textContent + " " + $preVariation.options[variationIndex].dataset.name : "";
 
     let modificationIndex = $preModification.selectedIndex;
-    let $modificationName = $preModification.tagName === 'SELECT' ? document.querySelector('label[for="' + $preModification.id + '"]').textContent + ' ' + $preModification.options[modificationIndex].dataset.name : '';
+    let $modificationName = $preModification.tagName === "SELECT" ? document.querySelector("label[for=\"" + $preModification.id + "\"]").textContent + " " + $preModification.options[modificationIndex].dataset.name : "";
 
     let offerIndex = $preOffer.selectedIndex;
-    let $offerName = $preOffer.tagName === 'SELECT' ? document.querySelector('label[for="' + $preOffer.id + '"]').textContent + ' ' + $preOffer.options[offerIndex].dataset.name : '';
+    let $offerName = $preOffer.tagName === "SELECT" ? document.querySelector("label[for=\"" + $preOffer.id + "\"]").textContent + " " + $preOffer.options[offerIndex].dataset.name : "";
 
 
-    let $materialTextBlock = stockDiv.querySelector('#material-text-' + index);
-    $materialTextBlock.innerHTML = $targetWarehouseName + '&nbsp; => &nbsp;' + $destinationWarehouseName + ' &nbsp; : &nbsp; ' + $materialName + ' ' + $offerName + ' ' + $variationName + ' ' + $modificationName + '&nbsp; : &nbsp;' + $TOTAL + ' шт.';
+    let $materialTextBlock = stockDiv.querySelector("#material-text-" + index);
+    $materialTextBlock.innerHTML = $targetWarehouseName + "&nbsp; => &nbsp;" + $destinationWarehouseName + " &nbsp; : &nbsp; " + $materialName + " " + $offerName + " " + $variationName + " " + $modificationName + "&nbsp; : &nbsp;" + $TOTAL + " шт.";
 
 
     /** Заполняем значения скрытых элементо */
 
-    let $warehouse = stockDiv.querySelector('#moving_material_stock_form_move_' + index + '_move_warehouse');
+    let $warehouse = stockDiv.querySelector("#moving_material_stock_form_move_" + index + "_move_warehouse");
 
-    let $destination = stockDiv.querySelector('#moving_material_stock_form_move_' + index + '_move_destination');
+    let $destination = stockDiv.querySelector("#moving_material_stock_form_move_" + index + "_move_destination");
 
-    let $material = stockDiv.querySelector('#moving_material_stock_form_move_' + index + '_material_' + index + '_material');
+    let $material = stockDiv.querySelector("#moving_material_stock_form_move_" + index + "_material_" + index + "_material");
 
-    let $offer = stockDiv.querySelector('#moving_material_stock_form_move_' + index + '_material_' + index + '_offer');
+    let $offer = stockDiv.querySelector("#moving_material_stock_form_move_" + index + "_material_" + index + "_offer");
 
-    let $variation = stockDiv.querySelector('#moving_material_stock_form_move_' + index + '_material_' + index + '_variation');
+    let $variation = stockDiv.querySelector("#moving_material_stock_form_move_" + index + "_material_" + index + "_variation");
 
-    let $modification = stockDiv.querySelector('#moving_material_stock_form_move_' + index + '_material_' + index + '_modification');
+    let $modification = stockDiv.querySelector("#moving_material_stock_form_move_" + index + "_material_" + index + "_modification");
 
-    let $total = stockDiv.querySelector('#moving_material_stock_form_move_' + index + '_material_' + index + '_total')
+    let $total = stockDiv.querySelector("#moving_material_stock_form_move_" + index + "_material_" + index + "_total");
 
 
     $warehouse.value = $targetWarehouse.value;
@@ -1036,9 +1030,9 @@ function addMaterialMoving()
     $total.value = $preTotal.value;
 
     /* Удаляем при клике колекцию СЕКЦИЙ */
-    stockDiv.querySelector('.del-item-material').addEventListener('click', function()
+    stockDiv.querySelector(".del-item-material").addEventListener("click", function()
     {
-        this.closest('.item-collection-material').remove();
+        this.closest(".item-collection-material").remove();
         index = $addButtonStock.dataset.index * 1;
         $addButtonStock.dataset.index = (index - 1).toString();
     });
@@ -1051,19 +1045,19 @@ function addMaterialMoving()
 
     collectionStock.set($targetWarehouse.value + $destinationWarehouse.value + $preMaterial.value + $preOffer.value + $preVariation.value + $preModification.value);
 
-    document.getElementById('moving_material_stock_form_preOffer_select2').remove();
+    document.getElementById("moving_material_stock_form_preOffer_select2").remove();
     //document.getElementById('moving_material_stock_form_preOffer').remove();
 
-    document.getElementById('moving_material_stock_form_preVariation_select2').remove();
+    document.getElementById("moving_material_stock_form_preVariation_select2").remove();
     //document.getElementById('moving_material_stock_form_preVariation').remove();
 
-    document.getElementById('moving_material_stock_form_preModification_select2').remove();
+    document.getElementById("moving_material_stock_form_preModification_select2").remove();
     //document.getElementById('moving_material_stock_form_preModification').remove();
 
 
     setTimeout(() =>
     {
-        document.getElementById('moving_material_stock_form_preMaterial_select2').click();
+        document.getElementById("moving_material_stock_form_preMaterial_select2").click();
     }, 100);
 
 

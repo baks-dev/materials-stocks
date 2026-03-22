@@ -100,7 +100,7 @@ final class SubReserveMaterialStockTotalByMove
             ->deduplication([
                 (string) $message->getId(),
                 MaterialStockStatusMoving::STATUS,
-                md5(self::class)
+                md5(self::class),
             ]);
 
         if($Deduplicator->isExecuted())
@@ -127,7 +127,7 @@ final class SubReserveMaterialStockTotalByMove
                     'variation' => (string) $material->getVariation(),
                     'modification' => (string) $material->getModification(),
                     'total' => $material->getTotal(),
-                ]
+                ],
             );
 
             /** Снимаем резерв и остаток на единицу сырья на складе грузоотправителя */
@@ -138,12 +138,12 @@ final class SubReserveMaterialStockTotalByMove
                     $material->getMaterial(),
                     $material->getOffer(),
                     $material->getVariation(),
-                    $material->getModification()
+                    $material->getModification(),
                 );
 
                 $this->messageDispatch->dispatch(
                     $SubMaterialStocksTotalMessage,
-                    transport: 'materials-stocks'
+                    transport: 'materials-stocks',
                 );
 
                 if($i === $material->getTotal())

@@ -52,7 +52,7 @@ final class MaterialStocksEventRepository implements MaterialStocksEventInterfac
             ->setParameter(
                 key: 'event',
                 value: $event,
-                type: MaterialStockEventUid::TYPE
+                type: MaterialStockEventUid::TYPE,
             );
 
         return $qb->getQuery()->getOneOrNullResult() ?: false;

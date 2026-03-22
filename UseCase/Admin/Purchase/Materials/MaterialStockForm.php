@@ -63,8 +63,8 @@ final class MaterialStockForm extends AbstractType
                 },
                 function($material) {
                     return new MaterialUid($material);
-                }
-            )
+                },
+            ),
         );
 
         // Торговое предложение
@@ -78,8 +78,8 @@ final class MaterialStockForm extends AbstractType
                 },
                 function($offer) {
                     return $offer ? new MaterialOfferConst($offer) : null;
-                }
-            )
+                },
+            ),
         );
 
         // Множественный вариант
@@ -93,8 +93,8 @@ final class MaterialStockForm extends AbstractType
                 },
                 function($variation) {
                     return $variation ? new MaterialVariationConst($variation) : null;
-                }
-            )
+                },
+            ),
         );
 
         // Модификация множественного варианта
@@ -108,8 +108,8 @@ final class MaterialStockForm extends AbstractType
                 },
                 function($modification) {
                     return $modification ? new MaterialModificationConst($modification) : null;
-                }
-            )
+                },
+            ),
         );
 
         // Количество

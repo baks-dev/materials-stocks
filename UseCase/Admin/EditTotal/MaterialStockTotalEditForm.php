@@ -47,7 +47,7 @@ final class MaterialStockTotalEditForm extends AbstractType
         $builder->add(
             'material_stock_total_edit',
             SubmitType::class,
-            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']]
+            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']],
         );
     }
 

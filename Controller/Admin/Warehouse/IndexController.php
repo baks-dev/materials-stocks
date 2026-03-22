@@ -59,7 +59,7 @@ final class IndexController extends AbstractController
             ->createForm(
                 type: SearchForm::class,
                 data: $search,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.warehouse.index')]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.warehouse.index')],
             )
             ->handleRequest($request);
 
@@ -73,7 +73,7 @@ final class IndexController extends AbstractController
             ->createForm(
                 type: MaterialFilterForm::class,
                 data: $filter,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.warehouse.index'),]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.warehouse.index'),],
             )
             ->handleRequest($request);
 
@@ -96,7 +96,7 @@ final class IndexController extends AbstractController
                 'filter' => $filterForm->createView(),
                 'current_profile' => $this->getCurrentProfileUid(),
                 'token' => $tokenUserGenerator->generate($this->getUsr()),
-            ]
+            ],
         );
     }
 }

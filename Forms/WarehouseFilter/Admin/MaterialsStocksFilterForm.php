@@ -65,7 +65,7 @@ final class MaterialsStocksFilterForm extends AbstractType
 
                 $this->request->getSession()->set(MaterialsStocksFilterDTO::warehouse, $data->getWarehouse());
 
-            }
+            },
         );
     }
 
@@ -76,7 +76,7 @@ final class MaterialsStocksFilterForm extends AbstractType
             [
                 'data_class' => MaterialsStocksFilterDTO::class,
                 'method' => 'POST',
-            ]
+            ],
         );
     }
 }

@@ -62,7 +62,7 @@ final readonly class CancelMaterialStocksByCancelOrderDispatcher
             ->deduplication([
                 (string) $message->getId(),
                 OrderStatusCanceled::STATUS,
-                self::class
+                self::class,
             ]);
 
         if($Deduplicator->isExecuted())
@@ -125,7 +125,7 @@ final readonly class CancelMaterialStocksByCancelOrderDispatcher
             $this->logger->critical('Ошибка отмены складской заявки', [
                 self::class.':'.__LINE__,
                 'MaterialStockEventUid' => (string) $MaterialStockEvent->getId(),
-                'OrderUid' => (string) $message->getId()
+                'OrderUid' => (string) $message->getId(),
             ]);
         }
 

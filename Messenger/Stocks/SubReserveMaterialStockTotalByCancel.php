@@ -88,7 +88,7 @@ final readonly class SubReserveMaterialStockTotalByCancel
             ->deduplication([
                 (string) $message->getId(),
                 MaterialStockStatusCancel::STATUS,
-                md5(self::class)
+                md5(self::class),
             ]);
 
         if($Deduplicator->isExecuted())
@@ -114,7 +114,7 @@ final readonly class SubReserveMaterialStockTotalByCancel
                     'MaterialOfferConst' => (string) $material->getOffer(),
                     'MaterialVariationConst' => (string) $material->getVariation(),
                     'MaterialModificationConst' => (string) $material->getModification(),
-                ]
+                ],
             );
 
             /** Снимаем ТОЛЬКО резерв сырья на складе */
@@ -125,7 +125,7 @@ final readonly class SubReserveMaterialStockTotalByCancel
                     $material->getMaterial(),
                     $material->getOffer(),
                     $material->getVariation(),
-                    $material->getModification()
+                    $material->getModification(),
                 );
 
                 $this->messageDispatch->dispatch($SubMaterialStocksTotalCancelMessage, transport: 'materials-stocks');

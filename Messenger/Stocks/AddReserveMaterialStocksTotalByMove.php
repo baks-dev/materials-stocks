@@ -85,7 +85,7 @@ final readonly class AddReserveMaterialStocksTotalByMove
             ->deduplication([
                 (string) $message->getId(),
                 MaterialStockStatusMoving::STATUS,
-                md5(self::class)
+                md5(self::class),
             ]);
 
         if($Deduplicator->isExecuted())
@@ -105,7 +105,7 @@ final readonly class AddReserveMaterialStocksTotalByMove
                     self::class.':'.__LINE__,
                     'total' => $material->getTotal(),
                     'number' => $MaterialStockEvent->getNumber(),
-                ]
+                ],
             );
 
             /**
@@ -118,12 +118,12 @@ final readonly class AddReserveMaterialStocksTotalByMove
                     $material->getMaterial(),
                     $material->getOffer(),
                     $material->getVariation(),
-                    $material->getModification()
+                    $material->getModification(),
                 );
 
                 $this->messageDispatch->dispatch(
                     $AddMaterialStocksReserve,
-                    transport: 'materials-stocks'
+                    transport: 'materials-stocks',
                 );
 
                 if($i === $material->getTotal())

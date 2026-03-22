@@ -66,7 +66,7 @@ final class StorageController extends AbstractController
             ->createForm(
                 type: MaterialStockStorageEditForm::class,
                 data: $MaterialStocksDTO,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.total.storage', ['id' => (string) $MaterialStocksTotal]),]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.total.storage', ['id' => (string) $MaterialStocksTotal]),],
             )
             ->handleRequest($request);
 
@@ -80,7 +80,7 @@ final class StorageController extends AbstractController
                 'page.total',
                 $handle instanceof MaterialStockTotal ? 'success.total' : 'danger.total',
                 'materials-stocks.admin',
-                $handle
+                $handle,
             );
 
             return $this->redirectToReferer();
@@ -95,7 +95,7 @@ final class StorageController extends AbstractController
 
         return $this->render([
             'form' => $form->createView(),
-            'card' => $MaterialDetail
+            'card' => $MaterialDetail,
         ]);
     }
 }

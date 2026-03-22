@@ -58,7 +58,7 @@ final class CsvController extends AbstractController
         $filterForm = $this
             ->createForm(
                 type: MaterialFilterForm::class,
-                data: $filter
+                data: $filter,
             )
             ->handleRequest($request);
 
@@ -69,7 +69,7 @@ final class CsvController extends AbstractController
             ->setLimit(100000)
             ->findPaginator(
                 $this->getUsr()?->getId(),
-                $this->getProfileUid()
+                $this->getProfileUid(),
             );
 
         if(empty($query->getData()))
@@ -121,7 +121,7 @@ final class CsvController extends AbstractController
                     $data['stock_reserve'],
                     $quantity,
                     $total_price,
-                    '. '.$data['stock_storage']
+                    '. '.$data['stock_storage'],
                 ]);
             }
 
@@ -134,7 +134,7 @@ final class CsvController extends AbstractController
                 '',
                 '',
                 $allPrice,
-                ''
+                '',
             ]);
 
             fclose($handle);

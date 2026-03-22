@@ -76,17 +76,17 @@ class MaterialStocksInvariable extends EntityReadonly
         $this->main = $event->getMain();
     }
 
-    public function __toString(): string
-    {
-        return (string) $this->main;
-    }
-
     /**
      * Main
      */
     public function getMain(): MaterialStockUid
     {
         return $this->main;
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->main;
     }
 
     public function setEvent(MaterialStockEvent $event): self

@@ -54,7 +54,7 @@ final class DivideMaterialStockForm extends AbstractType
         $builder->add(
             'divide',
             SubmitType::class,
-            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']]
+            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']],
         );
     }
 
@@ -65,7 +65,7 @@ final class DivideMaterialStockForm extends AbstractType
                 'data_class' => DivideMaterialStockDTO::class,
                 'method' => 'POST',
                 'attr' => ['class' => 'w-100'],
-            ]
+            ],
         );
     }
 }

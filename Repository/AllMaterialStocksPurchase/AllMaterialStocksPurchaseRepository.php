@@ -147,7 +147,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'invariable',
                 MaterialStock::class,
                 'stock',
-                'stock.id = invariable.main'
+                'stock.id = invariable.main',
             );
 
 
@@ -158,14 +158,14 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'stock',
                 MaterialStockEvent::class,
                 'event',
-                'event.id = stock.event AND event.status = :status'
+                'event.id = stock.event AND event.status = :status',
             );
 
 
         $dbal->setParameter(
             'status',
             MaterialStockStatus\Collection\MaterialStockStatusPurchase::class,
-            MaterialStockStatus::TYPE
+            MaterialStockStatus::TYPE,
         );
 
 
@@ -176,7 +176,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'event',
                 MaterialStockModify::class,
                 'modify',
-                'modify.event = stock.event'
+                'modify.event = stock.event',
             );
 
         $dbal
@@ -186,7 +186,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'event',
                 MaterialStockMaterial::class,
                 'stock_material',
-                'stock_material.event = stock.event'
+                'stock_material.event = stock.event',
             );
 
         $dbal
@@ -196,7 +196,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'stock_material',
                 Material::class,
                 'material',
-                'material.id = stock_material.material'
+                'material.id = stock_material.material',
             );
 
         // Material Event
@@ -204,7 +204,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             'material',
             MaterialEvent::class,
             'material_event',
-            'material_event.id = material.event'
+            'material_event.id = material.event',
         );
 
         $dbal
@@ -212,7 +212,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'material_event',
                 MaterialInfo::class,
                 'material_info',
-                'material_info.material = material.id'
+                'material_info.material = material.id',
             );
 
         // Material Trans
@@ -222,7 +222,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'material_event',
                 MaterialTrans::class,
                 'material_trans',
-                'material_trans.event = material_event.id AND material_trans.local = :local'
+                'material_trans.event = material_event.id AND material_trans.local = :local',
             );
 
         // Торговое предложение
@@ -234,7 +234,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'material_event',
                 MaterialOffer::class,
                 'material_offer',
-                'material_offer.event = material_event.id AND material_offer.const = stock_material.offer'
+                'material_offer.event = material_event.id AND material_offer.const = stock_material.offer',
             );
 
         // Получаем тип торгового предложения
@@ -244,7 +244,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'material_offer',
                 CategoryMaterialOffers::class,
                 'category_offer',
-                'category_offer.id = material_offer.category_offer'
+                'category_offer.id = material_offer.category_offer',
             );
 
         // Множественные варианты торгового предложения
@@ -256,7 +256,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'material_offer',
                 MaterialVariation::class,
                 'material_offer_variation',
-                'material_offer_variation.offer = material_offer.id AND material_offer_variation.const = stock_material.variation'
+                'material_offer_variation.offer = material_offer.id AND material_offer_variation.const = stock_material.variation',
             );
 
         // Получаем тип множественного варианта
@@ -266,7 +266,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'material_offer_variation',
                 CategoryMaterialVariation::class,
                 'category_offer_variation',
-                'category_offer_variation.id = material_offer_variation.category_variation'
+                'category_offer_variation.id = material_offer_variation.category_variation',
             );
 
         // Модификация множественного варианта торгового предложения
@@ -278,7 +278,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'material_offer_variation',
                 MaterialModification::class,
                 'material_offer_modification',
-                'material_offer_modification.variation = material_offer_variation.id AND material_offer_modification.const = stock_material.modification'
+                'material_offer_modification.variation = material_offer_variation.id AND material_offer_modification.const = stock_material.modification',
             );
 
         // Получаем тип модификации множественного варианта
@@ -288,7 +288,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'material_offer_modification',
                 CategoryMaterialModification::class,
                 'category_offer_modification',
-                'category_offer_modification.id = material_offer_modification.category_modification'
+                'category_offer_modification.id = material_offer_modification.category_modification',
             );
 
         // Артикул продукта
@@ -302,7 +302,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
 			   WHEN material_info.article IS NOT NULL THEN material_info.article
 			   ELSE NULL
 			END AS material_article
-		'
+		',
         );
 
         // Фото продукта
@@ -314,7 +314,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             '
 			material_offer_modification_image.modification = material_offer_modification.id AND
 			material_offer_modification_image.root = true
-			'
+			',
         );
 
         $dbal->leftJoin(
@@ -324,7 +324,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             '
 			material_offer_variation_image.variation = material_offer_variation.id AND
 			material_offer_variation_image.root = true
-			'
+			',
         );
 
         $dbal->leftJoin(
@@ -335,7 +335,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
 			material_offer_variation_image.name IS NULL AND
 			material_offer_images.offer = material_offer.id AND
 			material_offer_images.root = true
-			'
+			',
         );
 
         $dbal->leftJoin(
@@ -346,7 +346,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
 			material_offer_images.name IS NULL AND
 			material_photo.event = material_event.id AND
 			material_photo.root = true
-			'
+			',
         );
 
         $dbal->addSelect(
@@ -363,7 +363,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
 					CONCAT ( '/upload/".$dbal->table(MaterialPhoto::class)."' , '/', material_photo.name)
 			   ELSE NULL
 			END AS material_image
-		"
+		",
         );
 
         // Расширение файла
@@ -379,7 +379,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
 			   ELSE NULL
 			   
 			END AS material_image_ext
-		"
+		",
         );
 
         // Флаг загрузки файла CDN
@@ -394,7 +394,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
 					material_photo.cdn
 			   ELSE NULL
 			END AS material_image_cdn
-		'
+		',
         );
 
         // Категория
@@ -402,14 +402,14 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             'material_event',
             MaterialCategory::class,
             'material_event_category',
-            'material_event_category.event = material_event.id AND material_event_category.root = true'
+            'material_event_category.event = material_event.id AND material_event_category.root = true',
         );
 
         $dbal->leftJoin(
             'material_event_category',
             CategoryMaterial::class,
             'category',
-            'category.id = material_event_category.category'
+            'category.id = material_event_category.category',
         );
 
         $dbal
@@ -418,7 +418,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'category',
                 CategoryMaterialTrans::class,
                 'category_trans',
-                'category_trans.event = category.event AND category_trans.local = :local'
+                'category_trans.event = category.event AND category_trans.local = :local',
             );
 
         // ОТВЕТСТВЕННЫЙ
@@ -430,7 +430,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'event',
                 UserProfile::class,
                 'users_profile',
-                'users_profile.id = invariable.profile'
+                'users_profile.id = invariable.profile',
             );
 
         // Info
@@ -438,7 +438,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             'event',
             UserProfileInfo::class,
             'users_profile_info',
-            'users_profile_info.profile = invariable.profile'
+            'users_profile_info.profile = invariable.profile',
         );
 
         // Event
@@ -446,7 +446,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
             'users_profile',
             UserProfileEvent::class,
             'users_profile_event',
-            'users_profile_event.id = users_profile.event'
+            'users_profile_event.id = users_profile.event',
         );
 
         // Personal
@@ -456,7 +456,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'users_profile_event',
                 UserProfilePersonal::class,
                 'users_profile_personal',
-                'users_profile_personal.event = users_profile_event.id'
+                'users_profile_personal.event = users_profile_event.id',
             );
 
         // Avatar
@@ -469,7 +469,7 @@ final class AllMaterialStocksPurchaseRepository implements AllMaterialStocksPurc
                 'users_profile_event',
                 UserProfileAvatar::class,
                 'users_profile_avatar',
-                'users_profile_avatar.event = users_profile_event.id'
+                'users_profile_avatar.event = users_profile_event.id',
             );
 
         // Группа

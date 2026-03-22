@@ -41,7 +41,7 @@ final class CancelMaterialStockForm extends AbstractType
         $builder->add(
             'material_stock_cancel',
             SubmitType::class,
-            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-warning']]
+            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-warning']],
         );
     }
 

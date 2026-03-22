@@ -79,6 +79,24 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
         return $this;
     }
 
+    /**
+     * Метод возвращает место складирования сырья с минимальным количеством в наличии без учета резерва
+     */
+    public function findOneByTotalMin(): ?MaterialStockTotal
+    {
+
+        $orm = $this->builder();
+
+        $orm->orderBy('stock.total');
+
+        /* складские места только с наличием */
+        $orm->andWhere('stock.total > 0');
+
+        /* складские места только с резервом */
+        $orm->andWhere('stock.reserve > 0');
+
+        return $orm->getOneOrNullResult();
+    }
 
     private function builder(): ORMQueryBuilder
     {
@@ -104,7 +122,7 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
             ->setParameter(
                 key: 'profile',
                 value: $this->profile,
-                type: UserProfileUid::TYPE
+                type: UserProfileUid::TYPE,
             );
 
         $orm
@@ -112,7 +130,7 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
             ->setParameter(
                 key: 'material',
                 value: $this->material,
-                type: MaterialUid::TYPE
+                type: MaterialUid::TYPE,
             );
 
 
@@ -123,7 +141,7 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
                 ->setParameter(
                     key: 'offer',
                     value: $this->offer,
-                    type: MaterialOfferConst::TYPE
+                    type: MaterialOfferConst::TYPE,
                 );
         }
         else
@@ -138,7 +156,7 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
                 ->setParameter(
                     key: 'variation',
                     value: $this->variation,
-                    type: MaterialVariationConst::TYPE
+                    type: MaterialVariationConst::TYPE,
                 );
         }
         else
@@ -153,7 +171,7 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
                 ->setParameter(
                     key: 'modification',
                     value: $this->modification,
-                    type: MaterialModificationConst::TYPE
+                    type: MaterialModificationConst::TYPE,
                 );
         }
         else
@@ -165,25 +183,6 @@ final class MaterialStockQuantityRepository implements MaterialStockQuantityInte
 
         return $orm;
 
-    }
-
-    /**
-     * Метод возвращает место складирования сырья с минимальным количеством в наличии без учета резерва
-     */
-    public function findOneByTotalMin(): ?MaterialStockTotal
-    {
-
-        $orm = $this->builder();
-
-        $orm->orderBy('stock.total');
-
-        /* складские места только с наличием */
-        $orm->andWhere('stock.total > 0');
-
-        /* складские места только с резервом */
-        $orm->andWhere('stock.reserve > 0');
-
-        return $orm->getOneOrNullResult();
     }
 
     /**

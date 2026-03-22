@@ -83,13 +83,6 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
         return $this;
     }
 
-    public function setLimit(int $limit): self
-    {
-        $this->limit = $limit;
-        return $this;
-    }
-
-
     /**
      * Метод возвращает полное состояние складских остатков сырья
      */
@@ -135,7 +128,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'stock_material',
                 Material::class,
                 'material',
-                'material.id = stock_material.material'
+                'material.id = stock_material.material',
             );
 
         // Material Event
@@ -143,7 +136,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
             'material',
             MaterialEvent::class,
             'material_event',
-            'material_event.id = material.event'
+            'material_event.id = material.event',
         );
 
         $dbal
@@ -151,7 +144,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'material_event',
                 MaterialInfo::class,
                 'material_info',
-                'material_info.material = material.id'
+                'material_info.material = material.id',
             );
 
         // Material Trans
@@ -161,7 +154,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'material_event',
                 MaterialTrans::class,
                 'material_trans',
-                'material_trans.event = material_event.id AND material_trans.local = :local'
+                'material_trans.event = material_event.id AND material_trans.local = :local',
             );
 
         // Торговое предложение
@@ -173,7 +166,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'material_event',
                 MaterialOffer::class,
                 'material_offer',
-                'material_offer.event = material_event.id AND material_offer.const = stock_material.offer'
+                'material_offer.event = material_event.id AND material_offer.const = stock_material.offer',
             );
 
         if($this->filter?->getOffer())
@@ -190,7 +183,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'material_offer',
                 CategoryMaterialOffers::class,
                 'category_offer',
-                'category_offer.id = material_offer.category_offer'
+                'category_offer.id = material_offer.category_offer',
             );
 
         // Множественные варианты торгового предложения
@@ -202,7 +195,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'material_offer',
                 MaterialVariation::class,
                 'material_variation',
-                'material_variation.offer = material_offer.id AND material_variation.const = stock_material.variation'
+                'material_variation.offer = material_offer.id AND material_variation.const = stock_material.variation',
             );
 
         if($this->filter?->getVariation())
@@ -218,7 +211,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'material_variation',
                 CategoryMaterialVariation::class,
                 'category_variation',
-                'category_variation.id = material_variation.category_variation'
+                'category_variation.id = material_variation.category_variation',
             );
 
         // Модификация множественного варианта торгового предложения
@@ -230,7 +223,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'material_variation',
                 MaterialModification::class,
                 'material_modification',
-                'material_modification.variation = material_variation.id  AND material_modification.const = stock_material.modification'
+                'material_modification.variation = material_variation.id  AND material_modification.const = stock_material.modification',
             );
 
         if($this->filter?->getModification())
@@ -246,7 +239,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'material_modification',
                 CategoryMaterialModification::class,
                 'category_offer_modification',
-                'category_offer_modification.id = material_modification.category_modification'
+                'category_offer_modification.id = material_modification.category_modification',
             );
 
         // Артикул продукта
@@ -269,7 +262,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
             '
 			material_modification_image.modification = material_modification.id AND
 			material_modification_image.root = true
-			'
+			',
         );
 
         $dbal->leftJoin(
@@ -279,7 +272,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
             '
 			material_variation_image.variation = material_variation.id AND
 			material_variation_image.root = true
-			'
+			',
         );
 
         $dbal->leftJoin(
@@ -290,7 +283,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
 			material_variation_image.name IS NULL AND
 			material_offer_images.offer = material_offer.id AND
 			material_offer_images.root = true
-			'
+			',
         );
 
         $dbal->leftJoin(
@@ -301,7 +294,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
 			material_offer_images.name IS NULL AND
 			material_photo.event = material_event.id AND
 			material_photo.root = true
-			'
+			',
         );
 
         $dbal->addSelect(
@@ -318,7 +311,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
 					CONCAT ( '/upload/".$dbal->table(MaterialPhoto::class)."' , '/', material_photo.name)
 			   ELSE NULL
 			END AS material_image
-		"
+		",
         );
 
         // Расширение файла
@@ -333,7 +326,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
 			   ELSE NULL
 			   
 			END AS material_image_ext
-		"
+		",
         );
 
         // Флаг загрузки файла CDN
@@ -348,7 +341,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
 					material_photo.cdn
 			   ELSE NULL
 			END AS material_image_cdn
-		'
+		',
         );
 
         // Категория
@@ -356,7 +349,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
             'material_event',
             MaterialCategory::class,
             'material_event_category',
-            'material_event_category.event = material_event.id AND material_event_category.root = true'
+            'material_event_category.event = material_event.id AND material_event_category.root = true',
         );
 
         if($this->filter?->getCategory())
@@ -369,7 +362,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
             'material_event_category',
             CategoryMaterial::class,
             'category',
-            'category.id = material_event_category.category'
+            'category.id = material_event_category.category',
         );
 
         $dbal
@@ -378,7 +371,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'category',
                 CategoryMaterialTrans::class,
                 'category_trans',
-                'category_trans.event = category.event AND category_trans.local = :local'
+                'category_trans.event = category.event AND category_trans.local = :local',
             );
 
 
@@ -389,7 +382,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'stock_material',
                 UserProfile::class,
                 'users_profile',
-                'users_profile.id = stock_material.profile'
+                'users_profile.id = stock_material.profile',
             );
 
         $dbal
@@ -399,7 +392,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'users_profile',
                 UserProfilePersonal::class,
                 'users_profile_personal',
-                'users_profile_personal.event = users_profile.event'
+                'users_profile_personal.event = users_profile.event',
             );
 
 
@@ -410,7 +403,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
             'material',
             MaterialPrice::class,
             'material_price',
-            'material_price.event = material.event'
+            'material_price.event = material.event',
         );
 
         /* Цена торгового предположения */
@@ -419,7 +412,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'material_offer',
                 MaterialOfferPrice::class,
                 'material_offer_price',
-                'material_offer_price.offer = material_offer.id'
+                'material_offer_price.offer = material_offer.id',
             );
 
         /* Цена множественного варианта */
@@ -428,7 +421,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
                 'material_variation',
                 MaterialVariationPrice::class,
                 'material_variation_price',
-                'material_variation_price.variation = material_variation.id'
+                'material_variation_price.variation = material_variation.id',
             );
 
         /* Цена модификации множественного варианта */
@@ -436,7 +429,7 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
             'material_modification',
             MaterialModificationPrice::class,
             'material_modification_price',
-            'material_modification_price.modification = material_modification.id'
+            'material_modification_price.modification = material_modification.id',
         );
 
         $dbal->addSelect('
@@ -514,5 +507,11 @@ final class AllMaterialStocksRepository implements AllMaterialStocksInterface
             ->paginator
             ->fetchAllAssociative($dbal);
 
+    }
+
+    public function setLimit(int $limit): self
+    {
+        $this->limit = $limit;
+        return $this;
     }
 }

@@ -70,8 +70,8 @@ final readonly class AddMaterialStocksReserve
                     'material' => (string) $message->getMaterial(),
                     'offer' => (string) $message->getOffer(),
                     'variation' => (string) $message->getVariation(),
-                    'modification' => (string) $message->getModification()
-                ]
+                    'modification' => (string) $message->getModification(),
+                ],
             );
 
             throw new DomainException('Невозможно добавить резерв на сырьё');
@@ -95,8 +95,8 @@ final readonly class AddMaterialStocksReserve
                 'Не найдено сырья на складе для резервирования. Возможно остатки были изменены в указанном месте',
                 [
                     self::class.':'.__LINE__,
-                    'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()
-                ]
+                    'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId(),
+                ],
             );
 
             return;
@@ -106,8 +106,8 @@ final readonly class AddMaterialStocksReserve
             sprintf('%s : Добавили резерв на склад единицы сырья', $MaterialStockTotal->getStorage()),
             [
                 self::class.':'.__LINE__,
-                'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()
-            ]
+                'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId(),
+            ],
         );
     }
 }

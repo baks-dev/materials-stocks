@@ -59,14 +59,14 @@ final class MaterialStocksByOrderRepository implements MaterialStocksByOrderInte
             ->setParameter(
                 key: 'ord',
                 value: $order,
-                type: OrderUid::TYPE
+                type: OrderUid::TYPE,
             );
 
         $orm->join(
             MaterialStock::class,
             'stock',
             'WITH',
-            'stock.event = ord.event'
+            'stock.event = ord.event',
         );
 
         $orm
@@ -75,7 +75,7 @@ final class MaterialStocksByOrderRepository implements MaterialStocksByOrderInte
                 MaterialStockEvent::class,
                 'event',
                 'WITH',
-                'event.id = stock.event'
+                'event.id = stock.event',
             );
 
 

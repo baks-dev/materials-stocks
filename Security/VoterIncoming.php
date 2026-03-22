@@ -40,9 +40,10 @@ final class VoterIncoming implements VoterInterface, MenuAdminInterface
 
     public const string KEY = 'RmSWvqghac';
 
-    public static function getVoter(): string
+    /** Метод возвращает позицию, в которую располагается ссылка в секции меню */
+    public static function getSortMenu(): int
     {
-        return Role::ROLE.'_'.self::VOTER;
+        return 203;
     }
 
     public function equals(RoleInterface $role): bool
@@ -60,6 +61,11 @@ final class VoterIncoming implements VoterInterface, MenuAdminInterface
     public function getRole(): string
     {
         return self::getVoter();
+    }
+
+    public static function getVoter(): string
+    {
+        return Role::ROLE.'_'.self::VOTER;
     }
 
     /** Метод возвращает PATH раздела */
@@ -80,12 +86,6 @@ final class VoterIncoming implements VoterInterface, MenuAdminInterface
     public function getGroupMenu(): MenuAdminSectionGroupCollectionInterface|bool
     {
         return new MenuGroupStocks();
-    }
-
-    /** Метод возвращает позицию, в которую располагается ссылка в секции меню */
-    public static function getSortMenu(): int
-    {
-        return 203;
     }
 
     /** Метод возвращает флаг "Показать в выпадающем меню"  */

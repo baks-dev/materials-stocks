@@ -65,7 +65,7 @@ final class EditController extends AbstractController
             ->createForm(
                 type: MaterialStockTotalEditForm::class,
                 data: $MaterialStocksDTO,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.total.edit', ['id' => (string) $MaterialStocksTotal])]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.total.edit', ['id' => (string) $MaterialStocksTotal])],
             )
             ->handleRequest($request);
 
@@ -79,7 +79,7 @@ final class EditController extends AbstractController
                 'page.total',
                 $handle instanceof MaterialStockTotal ? 'success.total' : 'danger.total',
                 'materials-stocks.admin',
-                $handle
+                $handle,
             );
 
             return $this->redirectToReferer();
@@ -94,7 +94,7 @@ final class EditController extends AbstractController
 
         return $this->render([
             'form' => $form->createView(),
-            'card' => $MaterialDetail
+            'card' => $MaterialDetail,
         ]);
     }
 }

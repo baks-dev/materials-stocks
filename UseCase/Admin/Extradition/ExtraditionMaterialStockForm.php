@@ -35,7 +35,7 @@ final class ExtraditionMaterialStockForm extends AbstractType
         $builder->add(
             'extradition',
             SubmitType::class,
-            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']]
+            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']],
         );
     }
 
@@ -46,7 +46,7 @@ final class ExtraditionMaterialStockForm extends AbstractType
                 'data_class' => ExtraditionMaterialStockDTO::class,
                 'method' => 'POST',
                 'attr' => ['class' => 'w-100'],
-            ]
+            ],
         );
     }
 }

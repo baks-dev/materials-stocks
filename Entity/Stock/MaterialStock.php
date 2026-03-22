@@ -61,11 +61,6 @@ class MaterialStock
         return (string) $this->id;
     }
 
-    public function getId(): MaterialStockUid
-    {
-        return $this->id;
-    }
-
     public function getEvent(): MaterialStockEventUid
     {
         return $this->event;
@@ -74,5 +69,10 @@ class MaterialStock
     public function setEvent(MaterialStockEventUid|MaterialStockEvent $event): void
     {
         $this->event = $event instanceof MaterialStockEvent ? $event->getId() : $event;
+    }
+
+    public function getId(): MaterialStockUid
+    {
+        return $this->id;
     }
 }

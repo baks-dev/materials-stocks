@@ -60,14 +60,14 @@ final class MaterialStocksMoveByOrderRepository implements MaterialStocksMoveByO
             MaterialStock::class,
             'stock',
             'WITH',
-            'stock.event = move.event'
+            'stock.event = move.event',
         );
 
         $qb->join(
             MaterialStockEvent::class,
             'event',
             'WITH',
-            'event.id = stock.event AND event.warehouse = :warehouse AND event.status = :status '
+            'event.id = stock.event AND event.warehouse = :warehouse AND event.status = :status ',
         );
 
         $qb->where('move.ord = :ord');

@@ -47,7 +47,7 @@ final class CurrentMaterialStocksRepository implements CurrentMaterialStocksInte
             ->setParameter(
                 key: 'stock',
                 value: $stock,
-                type: MaterialStockUid::TYPE
+                type: MaterialStockUid::TYPE,
             );
 
         $qb
@@ -56,7 +56,7 @@ final class CurrentMaterialStocksRepository implements CurrentMaterialStocksInte
                 MaterialStockEvent::class,
                 'event',
                 'WITH',
-                'event.id = main.event'
+                'event.id = main.event',
             );
 
         return $qb->getOneOrNullResult();

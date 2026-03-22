@@ -59,7 +59,7 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
             ->setParameter(
                 key: 'usr',
                 value: $usr,
-                type: UserUid::TYPE
+                type: UserUid::TYPE,
             );
 
 
@@ -73,14 +73,14 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
             'stock',
             Material::class,
             'material',
-            'material.id = stock.material'
+            'material.id = stock.material',
         );
 
         $dbal->leftJoin(
             'material',
             MaterialTrans::class,
             'trans',
-            'trans.event = material.event AND trans.local = :local'
+            'trans.event = material.event AND trans.local = :local',
         );
 
 
@@ -120,7 +120,7 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
             Material::class,
             'material',
             'WITH',
-            'material.id = stock.material'
+            'material.id = stock.material',
         );
 
 
@@ -128,7 +128,7 @@ final readonly class MaterialChoiceWarehouseRepository implements MaterialChoice
             MaterialTrans::class,
             'trans',
             'WITH',
-            'trans.event = material.event AND trans.local = :local'
+            'trans.event = material.event AND trans.local = :local',
         );
 
 

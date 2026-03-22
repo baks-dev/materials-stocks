@@ -56,7 +56,7 @@ final class IndexController extends AbstractController
             ->createForm(
                 type: SearchForm::class,
                 data: $search,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.total.index')]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.total.index')],
             )
             ->handleRequest($request);
 
@@ -70,7 +70,7 @@ final class IndexController extends AbstractController
             ->createForm(
                 type: MaterialFilterForm::class,
                 data: $filter,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.total.index'),]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.total.index'),],
             )
             ->handleRequest($request);
         !$filterForm->isSubmitted() ?: $this->redirectToReferer();
@@ -87,7 +87,7 @@ final class IndexController extends AbstractController
             ->filter($filter)
             ->findPaginator(
                 $this->getUsr()?->getId(),
-                $this->getProfileUid()
+                $this->getProfileUid(),
             );
 
         return $this->render(

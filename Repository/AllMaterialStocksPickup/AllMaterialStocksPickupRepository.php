@@ -111,7 +111,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'stock',
                 MaterialStockEvent::class,
                 'event',
-                'event.id = stock.event AND event.status = :status AND event.profile = :profile'
+                'event.id = stock.event AND event.status = :status AND event.profile = :profile',
             )
             ->setParameter('profile', $profile, UserProfileUid::TYPE)
             ->setParameter('status', new MaterialStockStatus(new MaterialStockstatus\Collection\MaterialStockStatusExtradition()), MaterialStockStatus::TYPE);
@@ -123,7 +123,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'event',
                 MaterialStockModify::class,
                 'modify',
-                'modify.event = stock.event'
+                'modify.event = stock.event',
             );
 
         $dbal
@@ -134,7 +134,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'event',
                 MaterialStockMaterial::class,
                 'stock_material',
-                'stock_material.event = stock.event'
+                'stock_material.event = stock.event',
             );
 
         $dbal
@@ -144,7 +144,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'stock_material',
                 Material::class,
                 'material',
-                'material.id = stock_material.material'
+                'material.id = stock_material.material',
             );
 
         // Material Event
@@ -152,7 +152,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             'material',
             MaterialEvent::class,
             'material_event',
-            'material_event.id = material.event'
+            'material_event.id = material.event',
         );
 
         $dbal
@@ -160,7 +160,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'material_event',
                 MaterialInfo::class,
                 'material_info',
-                'material_info.material = material.id'
+                'material_info.material = material.id',
             );
 
         // Material Trans
@@ -170,7 +170,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'material_event',
                 MaterialTrans::class,
                 'material_trans',
-                'material_trans.event = material_event.id AND material_trans.local = :local'
+                'material_trans.event = material_event.id AND material_trans.local = :local',
             );
 
         // Торговое предложение
@@ -182,7 +182,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'material_event',
                 MaterialOffer::class,
                 'material_offer',
-                'material_offer.event = material_event.id AND material_offer.const = stock_material.offer'
+                'material_offer.event = material_event.id AND material_offer.const = stock_material.offer',
             );
 
         // Получаем тип торгового предложения
@@ -192,7 +192,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'material_offer',
                 CategoryMaterialOffers::class,
                 'category_offer',
-                'category_offer.id = material_offer.category_offer'
+                'category_offer.id = material_offer.category_offer',
             );
 
 
@@ -205,7 +205,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'material_offer',
                 MaterialVariation::class,
                 'material_variation',
-                'material_variation.offer = material_offer.id AND material_variation.const = stock_material.variation'
+                'material_variation.offer = material_offer.id AND material_variation.const = stock_material.variation',
             );
 
         // Получаем тип множественного варианта
@@ -215,7 +215,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'material_variation',
                 CategoryMaterialVariation::class,
                 'category_offer_variation',
-                'category_offer_variation.id = material_variation.category_variation'
+                'category_offer_variation.id = material_variation.category_variation',
             );
 
 
@@ -228,7 +228,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'material_variation',
                 MaterialModification::class,
                 'material_modification',
-                'material_modification.variation = material_variation.id AND material_modification.const = stock_material.modification'
+                'material_modification.variation = material_variation.id AND material_modification.const = stock_material.modification',
             );
 
 
@@ -239,7 +239,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'material_modification',
                 CategoryMaterialModification::class,
                 'category_modification',
-                'category_modification.id = material_modification.category_modification'
+                'category_modification.id = material_modification.category_modification',
             );
 
         // Артикул продукта
@@ -262,7 +262,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             '
 			material_modification_image.modification = material_modification.id AND
 			material_modification_image.root = true
-			'
+			',
         );
 
         $dbal->leftJoin(
@@ -272,7 +272,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             '
 			material_variation_image.variation = material_variation.id AND
 			material_variation_image.root = true
-			'
+			',
         );
 
         $dbal->leftJoin(
@@ -283,7 +283,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
 			material_variation_image.name IS NULL AND
 			material_offer_images.offer = material_offer.id AND
 			material_offer_images.root = true
-			'
+			',
         );
 
         $dbal->leftJoin(
@@ -294,7 +294,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
 			material_offer_images.name IS NULL AND
 			material_photo.event = material_event.id AND
 			material_photo.root = true
-			'
+			',
         );
 
         $dbal->addSelect(
@@ -315,7 +315,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
 					
 			   ELSE NULL
 			END AS material_image
-		"
+		",
         );
 
         // Расширение файла
@@ -338,7 +338,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
 			   ELSE NULL
 			   
 			END AS material_image_ext
-		"
+		",
         );
 
         // Флаг загрузки файла CDN
@@ -356,7 +356,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
 					
 			   ELSE NULL
 			END AS material_image_cdn
-		'
+		',
         );
 
         // Категория
@@ -364,14 +364,14 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             'material_event',
             MaterialCategory::class,
             'material_event_category',
-            'material_event_category.event = material_event.id AND material_event_category.root = true'
+            'material_event_category.event = material_event.id AND material_event_category.root = true',
         );
 
         $dbal->leftJoin(
             'material_event_category',
             CategoryMaterial::class,
             'category',
-            'category.id = material_event_category.category'
+            'category.id = material_event_category.category',
         );
 
         $dbal
@@ -380,7 +380,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'category',
                 CategoryMaterialTrans::class,
                 'category_trans',
-                'category_trans.event = category.event AND category_trans.local = :local'
+                'category_trans.event = category.event AND category_trans.local = :local',
             );
 
         // ОТВЕТСТВЕННЫЙ
@@ -392,7 +392,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'event',
                 UserProfile::class,
                 'users_profile',
-                'users_profile.id = event.profile'
+                'users_profile.id = event.profile',
             );
 
         // Info
@@ -400,7 +400,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             'event',
             UserProfileInfo::class,
             'users_profile_info',
-            'users_profile_info.profile = event.profile'
+            'users_profile_info.profile = event.profile',
         );
 
         // Event
@@ -408,7 +408,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             'users_profile',
             UserProfileEvent::class,
             'users_profile_event',
-            'users_profile_event.id = users_profile.event'
+            'users_profile_event.id = users_profile.event',
         );
 
         // Personal
@@ -418,7 +418,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'users_profile_event',
                 UserProfilePersonal::class,
                 'users_profile_personal',
-                'users_profile_personal.event = users_profile_event.id'
+                'users_profile_personal.event = users_profile_event.id',
             );
 
 
@@ -426,7 +426,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
             'stock',
             MaterialStockOrder::class,
             'material_stock_order',
-            'material_stock_order.event = stock.event'
+            'material_stock_order.event = stock.event',
         );
 
 
@@ -436,7 +436,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'material_stock_order',
                 Order::class,
                 'ord',
-                'ord.id = material_stock_order.ord'
+                'ord.id = material_stock_order.ord',
             );
 
         $dbal
@@ -445,7 +445,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'ord',
                 OrderUser::class,
                 'order_user',
-                'order_user.event = ord.event'
+                'order_user.event = ord.event',
             );
 
 
@@ -477,7 +477,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                     'order_user',
                     UserProfileValue::class,
                     'client_profile_value',
-                    " client_profile_value.event = order_user.profile AND client_profile_value.value LIKE '%' || :phone || '%'"
+                    " client_profile_value.event = order_user.profile AND client_profile_value.value LIKE '%' || :phone || '%'",
                 );
 
                 $phone = explode('(', $this->filter->getPhone());
@@ -491,14 +491,14 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'order_user',
                 OrderDelivery::class,
                 'order_delivery',
-                $delivery_condition
+                $delivery_condition,
             );
 
         $dbal->leftJoin(
             'order_delivery',
             DeliveryEvent::class,
             'delivery_event',
-            'delivery_event.id = order_delivery.event'
+            'delivery_event.id = order_delivery.event',
         );
 
         $dbal
@@ -507,7 +507,7 @@ final class AllMaterialStocksPickupRepository implements AllMaterialStocksPickup
                 'delivery_event',
                 DeliveryTrans::class,
                 'delivery_trans',
-                'delivery_trans.event = delivery_event.id AND delivery_trans.local = :local'
+                'delivery_trans.event = delivery_event.id AND delivery_trans.local = :local',
             );
 
 

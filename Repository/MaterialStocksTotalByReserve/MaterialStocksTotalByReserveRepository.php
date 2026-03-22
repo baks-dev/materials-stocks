@@ -35,16 +35,12 @@ use InvalidArgumentException;
 
 final class MaterialStocksTotalByReserveRepository implements MaterialStocksTotalByReserveInterface
 {
-    public function __construct(private readonly DBALQueryBuilder $DBALQueryBuilder) {}
-
     private MaterialUid|false $material = false;
-
     private MaterialOfferConst|false $offer = false;
-
     private MaterialVariationConst|false $variation = false;
-
     private MaterialModificationConst|false $modification = false;
 
+    public function __construct(private readonly DBALQueryBuilder $DBALQueryBuilder) {}
 
     public function material(MaterialUid|string $material): self
     {

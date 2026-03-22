@@ -57,7 +57,7 @@ final class CancelController extends AbstractController
             ->createForm(
                 type: CancelMaterialStockForm::class,
                 data: $CancelMaterialStockDTO,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.cancel', ['id' => (string) $Event])]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.cancel', ['id' => (string) $Event])],
             )
             ->handleRequest($request);
 
@@ -72,7 +72,7 @@ final class CancelController extends AbstractController
                 'page.cancel',
                 $handle instanceof MaterialStock ? 'success.cancel' : 'danger.cancel',
                 'materials-stocks.admin',
-                $handle
+                $handle,
             );
 
             return $this->redirectToReferer();
@@ -80,7 +80,7 @@ final class CancelController extends AbstractController
 
         return $this->render([
             'form' => $form->createView(),
-            'number' => $Event->getNumber()
+            'number' => $Event->getNumber(),
         ]);
     }
 }

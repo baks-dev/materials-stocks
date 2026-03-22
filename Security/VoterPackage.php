@@ -37,9 +37,10 @@ final class VoterPackage implements VoterInterface, MenuAdminInterface
 {
     public const string VOTER = 'PACKAGE';
 
-    public static function getVoter(): string
+    /** Метод возвращает позицию, в которую располагается ссылка в секции меню */
+    public static function getSortMenu(): int
     {
-        return Role::ROLE.'_'.self::VOTER;
+        return 201;
     }
 
     public function equals(RoleInterface $role): bool
@@ -57,6 +58,11 @@ final class VoterPackage implements VoterInterface, MenuAdminInterface
     public function getRole(): string
     {
         return self::getVoter();
+    }
+
+    public static function getVoter(): string
+    {
+        return Role::ROLE.'_'.self::VOTER;
     }
 
     /** Метод возвращает PATH раздела */
@@ -79,12 +85,6 @@ final class VoterPackage implements VoterInterface, MenuAdminInterface
     {
         return false;
         //return new MenuGroupStocks();
-    }
-
-    /** Метод возвращает позицию, в которую располагается ссылка в секции меню */
-    public static function getSortMenu(): int
-    {
-        return 201;
     }
 
     /** Метод возвращает флаг "Показать в выпадающем меню"  */

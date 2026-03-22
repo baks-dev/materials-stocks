@@ -47,14 +47,14 @@ final readonly class MaterialStockByNumberRepository implements MaterialStockByN
             ->where('invariable.number = :number')
             ->setParameter(
                 key: 'number',
-                value: $number
+                value: $number,
             );
 
         $qb->join(
             MaterialStock::class,
             'stock',
             'WITH',
-            'stock.id = invariable.main'
+            'stock.id = invariable.main',
         );
 
         $qb
@@ -63,7 +63,7 @@ final readonly class MaterialStockByNumberRepository implements MaterialStockByN
                 MaterialStockEvent::class,
                 'event',
                 'WITH',
-                'event.id = stock.event'
+                'event.id = stock.event',
             );
 
         return $qb->getOneOrNullResult() ?: false;

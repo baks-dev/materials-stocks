@@ -115,7 +115,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'stock',
                 MaterialStockEvent::class,
                 'stock_event',
-                'stock_event.id = stock.event'
+                'stock_event.id = stock.event',
             );
 
 
@@ -125,7 +125,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'stock',
                 MaterialStockMaterial::class,
                 'stock_material',
-                'stock_material.event = stock.event'
+                'stock_material.event = stock.event',
             );
 
 
@@ -135,7 +135,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             'stock_event',
             MaterialStockOrder::class,
             'stock_order',
-            'stock_order.event = stock_event.id'
+            'stock_order.event = stock_event.id',
         );
 
 
@@ -144,7 +144,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'stock_event',
                 MaterialStockMove::class,
                 'stock_move',
-                'stock_move.event = stock_event.id'
+                'stock_move.event = stock_event.id',
             );
 
         $dbal->join(
@@ -167,7 +167,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'stock_move',
                 UserProfile::class,
                 'destination',
-                'destination.id = stock_move.destination '
+                'destination.id = stock_move.destination ',
             );
 
 
@@ -179,7 +179,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'destination',
                 UserProfilePersonal::class,
                 'destination_personal',
-                'destination_personal.event = destination.event '
+                'destination_personal.event = destination.event ',
             );
 
 
@@ -187,7 +187,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             'orders',
             OrderEvent::class,
             'orders_event',
-            'orders_event.id = orders.event'
+            'orders_event.id = orders.event',
         );
 
 
@@ -197,7 +197,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'orders',
                 OrderUser::class,
                 'order_user',
-                'order_user.event = orders.event'
+                'order_user.event = orders.event',
             );
 
 
@@ -205,28 +205,28 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             'order_user',
             OrderDelivery::class,
             'order_delivery',
-            'order_delivery.usr = order_user.id'
+            'order_delivery.usr = order_user.id',
         );
 
         $dbal->leftJoin(
             'order_delivery',
             OrderDeliveryField::class,
             'order_delivery_fields',
-            'order_delivery_fields.delivery = order_delivery.id'
+            'order_delivery_fields.delivery = order_delivery.id',
         );
 
         $dbal->leftJoin(
             'order_delivery',
             DeliveryField::class,
             'delivery_field',
-            'delivery_field.id = order_delivery_fields.field'
+            'delivery_field.id = order_delivery_fields.field',
         );
 
         $dbal->leftJoin(
             'delivery_field',
             DeliveryFieldTrans::class,
             'delivery_field_trans',
-            'delivery_field_trans.field = delivery_field.id AND delivery_field_trans.local = :local'
+            'delivery_field_trans.field = delivery_field.id AND delivery_field_trans.local = :local',
         );
 
 
@@ -242,7 +242,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                         'order_field_value', order_delivery_fields.value
                     )
             )
-			AS order_fields"
+			AS order_fields",
         );
 
 
@@ -256,7 +256,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'stock',
                 Material::class,
                 'material',
-                'material.id = stock_material.material'
+                'material.id = stock_material.material',
             );
 
 
@@ -264,7 +264,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             'material',
             MaterialInfo::class,
             'material_info',
-            'material_info.material = stock_material.material '
+            'material_info.material = stock_material.material ',
         );
 
 
@@ -274,7 +274,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'material',
                 MaterialTrans::class,
                 'material_trans',
-                'material_trans.event = material.event AND material_trans.local = :local'
+                'material_trans.event = material.event AND material_trans.local = :local',
             );
 
 
@@ -287,7 +287,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'material',
                 MaterialOffer::class,
                 'material_offer',
-                'material_offer.const = stock_material.offer AND material_offer.event = material.event'
+                'material_offer.const = stock_material.offer AND material_offer.event = material.event',
             );
 
 
@@ -300,7 +300,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'material_offer',
                 CategoryMaterialOffers::class,
                 'category_offer',
-                'category_offer.id = material_offer.category_offer'
+                'category_offer.id = material_offer.category_offer',
             );
 
         /* Название торгового предложения */
@@ -308,7 +308,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             'category_offer',
             CategoryMaterialOffersTrans::class,
             'category_offer_trans',
-            'category_offer_trans.offer = category_offer.id AND category_offer_trans.local = :local'
+            'category_offer_trans.offer = category_offer.id AND category_offer_trans.local = :local',
         );
 
 
@@ -323,7 +323,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'material_offer',
                 MaterialVariation::class,
                 'material_variation',
-                'stock_material.variation IS NOT NULL AND  material_variation.offer = material_offer.id AND material_variation.const = stock_material.variation'
+                'stock_material.variation IS NOT NULL AND  material_variation.offer = material_offer.id AND material_variation.const = stock_material.variation',
             );
 
         /* Получаем тип множественного варианта */
@@ -334,7 +334,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'material_variation',
                 CategoryMaterialVariation::class,
                 'category_variation',
-                'category_variation.id = material_variation.category_variation'
+                'category_variation.id = material_variation.category_variation',
             );
 
         /* Получаем название множественного варианта */
@@ -344,7 +344,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'category_variation',
                 CategoryMaterialVariationTrans::class,
                 'category_variation_trans',
-                'category_variation_trans.variation = category_variation.id AND category_variation_trans.local = :local'
+                'category_variation_trans.variation = category_variation.id AND category_variation_trans.local = :local',
             );
 
 
@@ -359,7 +359,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'material_variation',
                 MaterialModification::class,
                 'material_modification',
-                'stock_material.modification IS NOT NULL AND material_modification.variation = material_variation.id AND material_modification.const = stock_material.modification'
+                'stock_material.modification IS NOT NULL AND material_modification.variation = material_variation.id AND material_modification.const = stock_material.modification',
             );
 
 
@@ -369,7 +369,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'material_modification',
                 CategoryMaterialModification::class,
                 'category_modification',
-                'category_modification.id = material_modification.category_modification'
+                'category_modification.id = material_modification.category_modification',
             );
 
         /* Получаем название типа модификации */
@@ -379,7 +379,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                 'category_modification',
                 CategoryMaterialModificationTrans::class,
                 'category_modification_trans',
-                'category_modification_trans.modification = category_modification.id AND category_modification_trans.local = :local'
+                'category_modification_trans.modification = category_modification.id AND category_modification_trans.local = :local',
             );
 
 
@@ -389,28 +389,28 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             'material',
             MaterialPhoto::class,
             'material_photo',
-            'material_photo.event = material.event AND material_photo.root = true'
+            'material_photo.event = material.event AND material_photo.root = true',
         );
 
         $dbal->leftJoin(
             'material_offer',
             MaterialOfferImage::class,
             'material_offer_image',
-            'material_offer_image.offer = material_offer.id AND material_offer_image.root = true'
+            'material_offer_image.offer = material_offer.id AND material_offer_image.root = true',
         );
 
         $dbal->leftJoin(
             'material_variation',
             MaterialVariationImage::class,
             'material_variation_image',
-            'material_variation_image.variation = material_variation.id AND material_variation_image.root = true'
+            'material_variation_image.variation = material_variation.id AND material_variation_image.root = true',
         );
 
         $dbal->leftJoin(
             'material_modification',
             MaterialModificationImage::class,
             'material_modification_image',
-            'material_modification_image.modification = material_modification.id AND material_modification_image.root = true'
+            'material_modification_image.modification = material_modification.id AND material_modification_image.root = true',
         );
 
         $dbal
@@ -474,7 +474,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             'material',
             MaterialCategory::class,
             'material_category',
-            'material_category.event = material.event AND material_category.root = true'
+            'material_category.event = material.event AND material_category.root = true',
         );
 
 
@@ -482,7 +482,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
             'material_category',
             CategoryMaterial::class,
             'category',
-            'category.id = material_category.category'
+            'category.id = material_category.category',
         );
 
 
@@ -500,7 +500,7 @@ final  class MaterialByMaterialStocksRepository implements MaterialByMaterialSto
                     stock_total.offer = material_offer.const AND
                     stock_total.variation = material_variation.const AND
                     stock_total.modification = material_modification.const
-                '
+                ',
             );
 
 

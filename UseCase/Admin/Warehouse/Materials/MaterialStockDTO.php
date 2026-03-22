@@ -33,31 +33,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class MaterialStockDTO implements MaterialStockMaterialInterface
 {
 
+    /** Вспомогательные свойства */
+    public ?array $detail = null;
     /** Продукт */
     #[Assert\NotBlank]
     #[Assert\Uuid]
     private MaterialUid $material;
-
     /** Торговое предложение */
     #[Assert\Uuid]
     private readonly ?MaterialOfferConst $offer;
-
     /** Множественный вариант */
     #[Assert\Uuid]
     private readonly ?MaterialVariationConst $variation;
-
     /** Модификация множественного варианта */
     #[Assert\Uuid]
     private readonly ?MaterialModificationConst $modification;
-
     /** Количество */
     #[Assert\NotBlank]
     #[Assert\Range(min: 1)]
     private int $total;
-
-
-    /** Вспомогательные свойства */
-    public ?array $detail = null;
 
     /** Продукт */
     public function getMaterial(): MaterialUid

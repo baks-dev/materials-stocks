@@ -102,7 +102,7 @@ final class MaterialOfferChoiceWarehouseRepository implements MaterialOfferChoic
             'stock',
             Material::class,
             'material',
-            'material.id = stock.material'
+            'material.id = stock.material',
         );
 
 
@@ -110,7 +110,7 @@ final class MaterialOfferChoiceWarehouseRepository implements MaterialOfferChoic
             'material',
             MaterialOffer::class,
             'offer',
-            'offer.const = stock.offer AND offer.event = material.event'
+            'offer.const = stock.offer AND offer.event = material.event',
         );
 
         // Тип торгового предложения
@@ -119,14 +119,14 @@ final class MaterialOfferChoiceWarehouseRepository implements MaterialOfferChoic
             'offer',
             CategoryMaterialOffers::class,
             'category_offer',
-            'category_offer.id = offer.category_offer'
+            'category_offer.id = offer.category_offer',
         );
 
         $dbal->leftJoin(
             'category_offer',
             CategoryMaterialOffersTrans::class,
             'category_offer_trans',
-            'category_offer_trans.offer = category_offer.id AND category_offer_trans.local = :local'
+            'category_offer_trans.offer = category_offer.id AND category_offer_trans.local = :local',
         );
 
 

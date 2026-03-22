@@ -95,7 +95,7 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
             ->deduplication([
                 (string) $message->getId(),
                 MaterialStockStatusIncoming::STATUS,
-                md5(self::class)
+                md5(self::class),
             ]);
 
         if($Deduplicator->isExecuted())
@@ -135,7 +135,7 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
                         [
                             self::class.':'.__LINE__,
                             'profile' => (string) $UserProfileUid,
-                        ]
+                        ],
                     );
 
                     throw new InvalidArgumentException('Ошибка при обновлении складских остатков.');
@@ -149,7 +149,7 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
                     $material->getOffer(),
                     $material->getVariation(),
                     $material->getModification(),
-                    $material->getStorage()
+                    $material->getStorage(),
                 );
 
                 $this->entityManager->persist($MaterialStockTotal);
@@ -165,13 +165,13 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
                         'offer' => (string) $material->getOffer(),
                         'variation' => (string) $material->getVariation(),
                         'modification' => (string) $material->getModification(),
-                    ]
+                    ],
                 );
             }
 
             $this->logger->info(
                 sprintf('Добавляем приход сырья по заявке %s', $MaterialStockEvent->getNumber()),
-                [self::class.':'.__LINE__]
+                [self::class.':'.__LINE__],
             );
 
             $this->handle($MaterialStockTotal, $material->getTotal());
@@ -198,8 +198,8 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
                 'Ошибка при обновлении складских остатков',
                 [
                     self::class.':'.__LINE__,
-                    'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()
-                ]
+                    'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId(),
+                ],
             );
 
             return;
@@ -209,8 +209,8 @@ final readonly class AddQuantityMaterialStocksTotalByIncomingStock
             'Добавили приход сырья на склад',
             [
                 self::class.':'.__LINE__,
-                'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()
-            ]
+                'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId(),
+            ],
         );
     }
 }

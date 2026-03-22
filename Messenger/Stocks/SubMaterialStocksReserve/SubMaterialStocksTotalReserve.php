@@ -69,8 +69,8 @@ final readonly class SubMaterialStocksTotalReserve
                     'material' => (string) $message->getMaterial(),
                     'offer' => (string) $message->getOffer(),
                     'variation' => (string) $message->getVariation(),
-                    'modification' => (string) $message->getModification()
-                ]
+                    'modification' => (string) $message->getModification(),
+                ],
             );
 
             return;
@@ -93,8 +93,8 @@ final readonly class SubMaterialStocksTotalReserve
                 'Невозможно снять резерв единицы сырья, которой заранее не зарезервирована',
                 [
                     self::class.':'.__LINE__,
-                    'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()
-                ]
+                    'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId(),
+                ],
             );
 
             return;
@@ -104,8 +104,8 @@ final readonly class SubMaterialStocksTotalReserve
             sprintf('Место %s: Сняли резерв сырья на складе на одну единицу', $MaterialStockTotal->getStorage()),
             [
                 self::class.':'.__LINE__,
-                'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId()
-            ]
+                'MaterialStockTotalUid' => (string) $MaterialStockTotal->getId(),
+            ],
         );
     }
 }

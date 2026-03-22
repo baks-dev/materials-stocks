@@ -95,7 +95,7 @@ final readonly class UpdateOrderStatusByExtraditionMaterialStocks
             ->deduplication([
                 (string) $message->getId(),
                 MaterialStockStatusExtradition::STATUS,
-                self::class
+                self::class,
             ]);
 
         if($Deduplicator->isExecuted())
@@ -131,8 +131,8 @@ final readonly class UpdateOrderStatusByExtraditionMaterialStocks
             [
                 self::class.':'.__LINE__,
                 'order' => (string) $MaterialStockEvent->getOrder(),
-                'profile' => (string) $MaterialStockEvent->getStocksProfile()
-            ]
+                'profile' => (string) $MaterialStockEvent->getStocksProfile(),
+            ],
         );
 
     }

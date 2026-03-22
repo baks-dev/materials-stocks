@@ -50,31 +50,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'material_stock_event')]
 class MaterialStockEvent extends EntityEvent
 {
+    /** Статус заявки */
+    #[Assert\NotBlank]
+    #[ORM\Column(type: MaterialStockStatus::TYPE)]
+    protected MaterialStockStatus $status;
+    /** Коллекция сырья в заявке */
+    #[Assert\Valid]
+    #[Assert\Count(min: 1)]
+    #[ORM\OneToMany(targetEntity: MaterialStockMaterial::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
+    protected Collection $material;
     /** ID */
     #[Assert\NotBlank]
     #[Assert\Uuid]
     #[ORM\Id]
     #[ORM\Column(type: MaterialStockEventUid::TYPE)]
     private MaterialStockEventUid $id;
-
     /** ID MaterialStock */
     #[Assert\NotBlank]
     #[Assert\Uuid]
     #[ORM\Column(type: MaterialStockUid::TYPE, nullable: false)]
     private ?MaterialStockUid $main = null;
-
-
-    /** Статус заявки */
-    #[Assert\NotBlank]
-    #[ORM\Column(type: MaterialStockStatus::TYPE)]
-    protected MaterialStockStatus $status;
-
-    /** Коллекция сырья в заявке */
-    #[Assert\Valid]
-    #[Assert\Count(min: 1)]
-    #[ORM\OneToMany(targetEntity: MaterialStockMaterial::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
-    protected Collection $material;
-
     /** Модификатор */
     #[ORM\OneToOne(targetEntity: MaterialStockModify::class, mappedBy: 'event', cascade: ['all'], fetch: 'EAGER')]
     private MaterialStockModify $modify;
@@ -119,9 +114,9 @@ class MaterialStockEvent extends EntityEvent
         return (string) $this->id;
     }
 
-    public function getId(): MaterialStockEventUid
+    public function getMain(): ?MaterialStockUid
     {
-        return $this->id;
+        return $this->main;
     }
 
     public function setMain(MaterialStockUid|MaterialStock $main): void
@@ -129,19 +124,14 @@ class MaterialStockEvent extends EntityEvent
         $this->main = $main instanceof MaterialStock ? $main->getId() : $main;
     }
 
-    public function getMain(): ?MaterialStockUid
+    public function getId(): MaterialStockEventUid
     {
-        return $this->main;
+        return $this->id;
     }
 
     public function getNumber(): string
     {
         return $this->invariable->getNumber();
-    }
-
-    public function getProfile(): ?UserProfileUid
-    {
-        return $this->invariable->getProfile();
     }
 
     public function equalsMaterialStockStatus(mixed $status): bool
@@ -157,9 +147,13 @@ class MaterialStockEvent extends EntityEvent
         return $this->fixed === null;
     }
 
-
-
-
+    /**
+     * Идентификатор заказа при перемещении.
+     */
+    public function getMoveOrder(): ?OrderUid
+    {
+        return $this->move?->getOrder();
+    }
 
     /**
      * Идентификатор заказа.
@@ -170,21 +164,12 @@ class MaterialStockEvent extends EntityEvent
     }
 
     /**
-     * Идентификатор заказа при перемещении.
-     */
-    public function getMoveOrder(): ?OrderUid
-    {
-        return $this->move?->getOrder();
-    }
-
-    /**
      * Идентификатор целевого склада при перемещении.
      */
     public function getMoveDestination(): ?UserProfileUid
     {
         return $this->move?->getDestination();
     }
-
 
     public function getMove(): ?MaterialStockMove
     {
@@ -195,6 +180,11 @@ class MaterialStockEvent extends EntityEvent
      * Идентификатор ответственного.
      */
     public function getStocksProfile(): UserProfileUid
+    {
+        return $this->invariable->getProfile();
+    }
+
+    public function getProfile(): ?UserProfileUid
     {
         return $this->invariable->getProfile();
     }

@@ -51,7 +51,7 @@ final class DeleteMaterialStocksHandler extends AbstractHandler
         /* Отправляем сообщение в шину */
         $this->messageDispatch->dispatch(
             message: new MaterialStockMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-            transport: 'material-stocks'
+            transport: 'material-stocks',
         );
 
         return $this->main;

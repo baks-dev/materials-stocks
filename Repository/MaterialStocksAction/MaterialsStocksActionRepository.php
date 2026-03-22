@@ -83,7 +83,7 @@ final class MaterialsStocksActionRepository implements MaterialsStocksActionInte
                 'event',
                 MaterialStockModify::class,
                 'modify',
-                'modify.event = event.id'
+                'modify.event = event.id',
             );
 
         $dbal
@@ -91,7 +91,7 @@ final class MaterialsStocksActionRepository implements MaterialsStocksActionInte
                 'modify',
                 UserProfileInfo::class,
                 'info',
-                'info.usr = modify.usr AND info.active = true'
+                'info.usr = modify.usr AND info.active = true',
             );
 
 
@@ -100,7 +100,7 @@ final class MaterialsStocksActionRepository implements MaterialsStocksActionInte
                 'info',
                 UserProfile::class,
                 'profile',
-                'profile.id = info.profile'
+                'profile.id = info.profile',
             );
 
         $dbal
@@ -109,7 +109,7 @@ final class MaterialsStocksActionRepository implements MaterialsStocksActionInte
                 'info',
                 UserProfilePersonal::class,
                 'personal',
-                'personal.event = profile.event'
+                'personal.event = profile.event',
             );
 
 

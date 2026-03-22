@@ -73,7 +73,7 @@ final class ExistMaterialStocksStatusRepository implements ExistMaterialStocksSt
                 'main',
                 MaterialStockEvent::class,
                 'event',
-                'event.id != :event AND event.status = :status'
+                'event.id != :event AND event.status = :status',
             )
             ->setParameter('event', $event, MaterialStockEventUid::TYPE)
             ->setParameter('status', $status, MaterialStockStatus::TYPE);

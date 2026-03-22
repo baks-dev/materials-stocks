@@ -69,7 +69,7 @@ final class IncomingController extends AbstractController
             ->createForm(
                 type: IncomingMaterialStockForm::class,
                 data: $IncomingMaterialStockDTO,
-                options: ['action' => $this->generateUrl('materials-stocks:admin.incoming.accept', ['id' => $IncomingMaterialStockDTO->getEvent()])]
+                options: ['action' => $this->generateUrl('materials-stocks:admin.incoming.accept', ['id' => $IncomingMaterialStockDTO->getEvent()])],
             )
             ->handleRequest($request);
 
@@ -90,7 +90,7 @@ final class IncomingController extends AbstractController
                 $handle instanceof MaterialStock ? 'success.accept' : 'danger.accept',
                 'materials-stocks.admin',
                 $handle,
-                $remove ? 200 : 302
+                $remove ? 200 : 302,
             );
 
             return $flash ?: $this->redirectToRoute('materials-stocks:admin.warehouse.index');
@@ -116,7 +116,7 @@ final class IncomingController extends AbstractController
             'form' => $form->createView(),
             'name' => $MaterialStockEvent->getNumber(),
             'order' => $MaterialStockEvent->getOrder() !== null,
-            'recommender' => $materialStorage
+            'recommender' => $materialStorage,
         ]);
     }
 }

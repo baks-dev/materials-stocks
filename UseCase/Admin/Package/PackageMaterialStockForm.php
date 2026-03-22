@@ -123,7 +123,7 @@ final class PackageMaterialStockForm extends AbstractType
                         'label' => false,
                         'required' => true,
                     ]);
-            }
+            },
         );
 
 
@@ -143,7 +143,7 @@ final class PackageMaterialStockForm extends AbstractType
                 'data_class' => PackageMaterialStockDTO::class,
                 'method' => 'POST',
                 'attr' => ['class' => 'w-100'],
-                'csrf_protection' => false
+                'csrf_protection' => false,
             ],
         );
     }

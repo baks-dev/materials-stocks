@@ -94,7 +94,7 @@ final class PurchaseMaterialStockForm extends AbstractType
                     },
                     function($material) {
                         return $material ? new MaterialUid($material) : null;
-                    }
+                    },
                 ),
             );
 
@@ -115,7 +115,7 @@ final class PurchaseMaterialStockForm extends AbstractType
                 },
                 function($offer) {
                     return $offer ? new MaterialOfferConst($offer) : null;
-                }
+                },
             ),
         );
 
@@ -135,7 +135,7 @@ final class PurchaseMaterialStockForm extends AbstractType
                 },
                 function($variation) {
                     return $variation ? new MaterialVariationConst($variation) : null;
-                }
+                },
             ),
         );
 
@@ -155,7 +155,7 @@ final class PurchaseMaterialStockForm extends AbstractType
                 },
                 function($modification) {
                     return $modification ? new MaterialModificationConst($modification) : null;
-                }
+                },
             ),
         );
 
@@ -223,7 +223,7 @@ final class PurchaseMaterialStockForm extends AbstractType
         $builder->add(
             'purchase',
             ButtonType::class,
-            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']]
+            ['label' => 'Save', 'label_html' => true, 'attr' => ['class' => 'btn-primary']],
         );
 
     }
@@ -255,7 +255,7 @@ final class PurchaseMaterialStockForm extends AbstractType
                     ] : [];
                 },
                 'label' => false,
-            ]
+            ],
         );
     }
 
@@ -426,7 +426,7 @@ final class PurchaseMaterialStockForm extends AbstractType
                 'data_class' => PurchaseMaterialStockDTO::class,
                 'method' => 'POST',
                 'attr' => ['class' => 'w-100'],
-            ]
+            ],
         );
     }
 }

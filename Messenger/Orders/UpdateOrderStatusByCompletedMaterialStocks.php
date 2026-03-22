@@ -79,7 +79,7 @@ final readonly class UpdateOrderStatusByCompletedMaterialStocks
             $this->logger
                 ->warning(
                     'Не обновляем статус заказа: Заявка на перемещение по заказу между складами (ожидаем сборку на целевом складе и доставки клиенту)',
-                    [self::class.':'.__LINE__, 'number' => $MaterialStockEvent->getNumber()]
+                    [self::class.':'.__LINE__, 'number' => $MaterialStockEvent->getNumber()],
                 );
 
             return;
@@ -102,7 +102,7 @@ final readonly class UpdateOrderStatusByCompletedMaterialStocks
             ->deduplication([
                 (string) $message->getId(),
                 MaterialStockStatusCompleted::STATUS,
-                self::class
+                self::class,
             ]);
 
         if($Deduplicator->isExecuted())
@@ -112,7 +112,7 @@ final readonly class UpdateOrderStatusByCompletedMaterialStocks
 
         $this->logger->info(
             'Обновляем статус заказа при доставке заказа в пункт назначения (выдан клиенту).',
-            [self::class.':'.__LINE__, 'number' => $MaterialStockEvent->getNumber()]
+            [self::class.':'.__LINE__, 'number' => $MaterialStockEvent->getNumber()],
         );
 
         /**
@@ -144,8 +144,8 @@ final readonly class UpdateOrderStatusByCompletedMaterialStocks
             [
                 self::class.':'.__LINE__,
                 'OrderUid' => (string) $MaterialStockEvent->getOrder(),
-                'UserProfileUid' => (string) $MaterialStockEvent->getStocksProfile()
-            ]
+                'UserProfileUid' => (string) $MaterialStockEvent->getStocksProfile(),
+            ],
         );
 
     }

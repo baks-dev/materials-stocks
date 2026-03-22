@@ -117,17 +117,6 @@ final class PurchaseMaterialStockDTO implements MaterialStockEventInterface
         return $this;
     }
 
-    /** Коллекция сырья  */
-    public function getMaterial(): ArrayCollection
-    {
-        return $this->material;
-    }
-
-    public function setMaterial(ArrayCollection $material): void
-    {
-        $this->material = $material;
-    }
-
     public function addMaterial(Materials\MaterialStockDTO $material): void
     {
         $filter = $this->material->filter(function(Materials\MaterialStockDTO $element) use ($material) {
@@ -141,6 +130,17 @@ final class PurchaseMaterialStockDTO implements MaterialStockEventInterface
         {
             $this->material->add($material);
         }
+    }
+
+    /** Коллекция сырья  */
+    public function getMaterial(): ArrayCollection
+    {
+        return $this->material;
+    }
+
+    public function setMaterial(ArrayCollection $material): void
+    {
+        $this->material = $material;
     }
 
     public function removeMaterial(Materials\MaterialStockDTO $material): void

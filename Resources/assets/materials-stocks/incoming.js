@@ -61,7 +61,7 @@
 function changeObjectMaterial()
 {
 
-    let replaceId = 'incoming_material_stock_form_preOffer';
+    let replaceId = "incoming_material_stock_form_preOffer";
 
 
     /* Создаём объект класса XMLHttpRequest */
@@ -71,12 +71,12 @@ function changeObjectMaterial()
     /* Имя формы */
     let incomingForm = document.forms.incoming_material_stock_form;
     let formData = new FormData();
-    formData.append(this.getAttribute('name'), this.value);
+    formData.append(this.getAttribute("name"), this.value);
 
-    requestModalName.open(incomingForm.getAttribute('method'), incomingForm.getAttribute('action'), true);
+    requestModalName.open(incomingForm.getAttribute("method"), incomingForm.getAttribute("action"), true);
 
     /* Указываем заголовки для сервера */
-    requestModalName.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    requestModalName.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
     /* Получаем ответ от сервера на запрос*/
     requestModalName.addEventListener("readystatechange", function()
@@ -85,23 +85,23 @@ function changeObjectMaterial()
         if(requestModalName.readyState === 4 && requestModalName.status === 200)
         {
 
-            let result = requestModalName.response.getElementById('preOffer');
+            let result = requestModalName.response.getElementById("preOffer");
 
 
-            document.getElementById('preOffer').replaceWith(result);
+            document.getElementById("preOffer").replaceWith(result);
 
             let replacer = document.getElementById(replaceId);
 
-            if(replacer.tagName === 'SELECT')
+            if(replacer.tagName === "SELECT")
             {
-                new NiceSelect(replacer, {searchable: true, id: 'select2-' + replaceId});
+                new NiceSelect(replacer, {searchable : true, id : "select2-" + replaceId});
 
                 /** Событие на изменение торгового предложения */
-                let offerChange = document.getElementById('incoming_material_stock_form_preOffer');
+                let offerChange = document.getElementById("incoming_material_stock_form_preOffer");
 
                 if(offerChange)
                 {
-                    offerChange.addEventListener('change', changeObjectOffer, false);
+                    offerChange.addEventListener("change", changeObjectOffer, false);
                 }
             }
 
@@ -119,7 +119,7 @@ function changeObjectOffer()
 {
 
 
-    let replaceId = 'incoming_material_stock_form_preVariation';
+    let replaceId = "incoming_material_stock_form_preVariation";
 
     /* Создаём объект класса XMLHttpRequest */
     const requestModalName = new XMLHttpRequest();
@@ -128,12 +128,12 @@ function changeObjectOffer()
     /* Имя формы */
     let incomingForm = document.forms.incoming_material_stock_form;
     let formData = new FormData();
-    formData.append(this.getAttribute('name'), this.value);
+    formData.append(this.getAttribute("name"), this.value);
 
-    requestModalName.open(incomingForm.getAttribute('method'), incomingForm.getAttribute('action'), true);
+    requestModalName.open(incomingForm.getAttribute("method"), incomingForm.getAttribute("action"), true);
 
     /* Указываем заголовки для сервера */
-    requestModalName.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    requestModalName.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
     /* Получаем ответ от сервера на запрос*/
     requestModalName.addEventListener("readystatechange", function()
@@ -142,22 +142,22 @@ function changeObjectOffer()
         if(requestModalName.readyState === 4 && requestModalName.status === 200)
         {
 
-            let result = requestModalName.response.getElementById('preVariation');
+            let result = requestModalName.response.getElementById("preVariation");
 
-            document.getElementById('preVariation').replaceWith(result);
+            document.getElementById("preVariation").replaceWith(result);
 
             let replacer = document.getElementById(replaceId);
 
-            if(replacer.tagName === 'SELECT')
+            if(replacer.tagName === "SELECT")
             {
-                new NiceSelect(document.getElementById(replaceId), {searchable: true, id: 'select2-' + replaceId});
+                new NiceSelect(document.getElementById(replaceId), {searchable : true, id : "select2-" + replaceId});
 
                 /** Событие на изменение множественного варианта предложения */
-                let offerVariation = document.getElementById('incoming_material_stock_form_preVariation');
+                let offerVariation = document.getElementById("incoming_material_stock_form_preVariation");
 
                 if(offerVariation)
                 {
-                    offerVariation.addEventListener('change', changeObjectVariation, false);
+                    offerVariation.addEventListener("change", changeObjectVariation, false);
                 }
             }
 
@@ -173,7 +173,7 @@ function changeObjectOffer()
 function changeObjectVariation()
 {
 
-    let replaceId = 'incoming_material_stock_form_preModification';
+    let replaceId = "incoming_material_stock_form_preModification";
 
     /* Создаём объект класса XMLHttpRequest */
     const requestModalName = new XMLHttpRequest();
@@ -182,12 +182,12 @@ function changeObjectVariation()
     /* Имя формы */
     let incomingForm = document.forms.incoming_material_stock_form;
     let formData = new FormData();
-    formData.append(this.getAttribute('name'), this.value);
+    formData.append(this.getAttribute("name"), this.value);
 
-    requestModalName.open(incomingForm.getAttribute('method'), incomingForm.getAttribute('action'), true);
+    requestModalName.open(incomingForm.getAttribute("method"), incomingForm.getAttribute("action"), true);
 
     /* Указываем заголовки для сервера */
-    requestModalName.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    requestModalName.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
     /* Получаем ответ от сервера на запрос*/
     requestModalName.addEventListener("readystatechange", function()
@@ -196,15 +196,15 @@ function changeObjectVariation()
         if(requestModalName.readyState === 4 && requestModalName.status === 200)
         {
 
-            let result = requestModalName.response.getElementById('preModification');
+            let result = requestModalName.response.getElementById("preModification");
 
-            document.getElementById('preModification').replaceWith(result);
+            document.getElementById("preModification").replaceWith(result);
 
             let replacer = document.getElementById(replaceId);
 
-            if(replacer.tagName === 'SELECT')
+            if(replacer.tagName === "SELECT")
             {
-                new NiceSelect(document.getElementById(replaceId), {searchable: true, id: 'select2-' + replaceId});
+                new NiceSelect(document.getElementById(replaceId), {searchable : true, id : "select2-" + replaceId});
             }
 
         }
@@ -221,7 +221,7 @@ function addMaterialIncoming()
 {
 
     /* Блок для новой коллекции КАТЕГОРИИ */
-    let $blockCollectionStock = document.getElementById('collectionStock');
+    let $blockCollectionStock = document.getElementById("collectionStock");
 
     /* Добавляем новую коллекцию */
     //$addButtonStock.addEventListener('click', function () {
@@ -230,73 +230,73 @@ function addMaterialIncoming()
     let $errorFormHandler = null;
 
 
-    let $preTotal = document.getElementById('incoming_material_stock_form_preTotal');
+    let $preTotal = document.getElementById("incoming_material_stock_form_preTotal");
     let $TOTAL = $preTotal.value * 1;
     if($TOTAL === undefined || $TOTAL < 1)
     {
 
-        $errorFormHandler = '{ "type":"danger" , ' +
-            '"header":"Добавить приход"  , ' +
-            '"message" : "Не заполнено количество прихода" }';
+        $errorFormHandler = "{ \"type\":\"danger\" , " +
+            "\"header\":\"Добавить приход\"  , " +
+            "\"message\" : \"Не заполнено количество прихода\" }";
 
     }
 
-    let $preWarehouse = document.getElementById('incoming_material_stock_form_preWarehouse');
+    let $preWarehouse = document.getElementById("incoming_material_stock_form_preWarehouse");
     if($preWarehouse.value.length === 0)
     {
 
-        $errorFormHandler = '{ "type":"danger" , ' +
-            '"header":"Добавить приход"  , ' +
-            '"message" : "' + $preWarehouse.options[0].textContent + '" }';
+        $errorFormHandler = "{ \"type\":\"danger\" , " +
+            "\"header\":\"Добавить приход\"  , " +
+            "\"message\" : \"" + $preWarehouse.options[0].textContent + "\" }";
 
     }
 
 
-    let $preMaterial = document.getElementById('incoming_material_stock_form_preMaterial');
+    let $preMaterial = document.getElementById("incoming_material_stock_form_preMaterial");
     if($preMaterial.value.length === 0)
     {
 
-        $errorFormHandler = '{ "type":"danger" , ' +
-            '"header":"Добавить приход"  , ' +
-            '"message" : "' + $preMaterial.options[0].textContent + '" }';
+        $errorFormHandler = "{ \"type\":\"danger\" , " +
+            "\"header\":\"Добавить приход\"  , " +
+            "\"message\" : \"" + $preMaterial.options[0].textContent + "\" }";
 
     }
 
 
-    let $preOffer = document.getElementById('incoming_material_stock_form_preOffer');
+    let $preOffer = document.getElementById("incoming_material_stock_form_preOffer");
     if($preOffer)
     {
-        if($preOffer.tagName === 'SELECT' && $preOffer.value.length === 0)
+        if($preOffer.tagName === "SELECT" && $preOffer.value.length === 0)
         {
 
-            $errorFormHandler = '{ "type":"danger" , ' +
-                '"header":"Добавить приход"  , ' +
-                '"message" : "' + $preOffer.options[0].textContent + '" }';
+            $errorFormHandler = "{ \"type\":\"danger\" , " +
+                "\"header\":\"Добавить приход\"  , " +
+                "\"message\" : \"" + $preOffer.options[0].textContent + "\" }";
         }
     }
 
 
-    let $preVariation = document.getElementById('incoming_material_stock_form_preVariation');
+    let $preVariation = document.getElementById("incoming_material_stock_form_preVariation");
     if($preVariation)
     {
-        if($preVariation.tagName === 'SELECT' && $preVariation.value.length === 0)
+        if($preVariation.tagName === "SELECT" && $preVariation.value.length === 0)
         {
 
-            $errorFormHandler = '{ "type":"danger" , ' +
-                '"header":"Добавить приход"  , ' +
-                '"message" : "' + $preVariation.options[0].textContent + '" }';
+            $errorFormHandler = "{ \"type\":\"danger\" , " +
+                "\"header\":\"Добавить приход\"  , " +
+                "\"message\" : \"" + $preVariation.options[0].textContent + "\" }";
         }
     }
 
-    let $preModification = document.getElementById('incoming_material_stock_form_preModification');
+    let $preModification = document.getElementById("incoming_material_stock_form_preModification");
     if($preModification)
     {
-        if($preModification.tagName === 'SELECT' && $preModification.value.length === 0)
+        if($preModification.tagName === "SELECT" && $preModification.value.length === 0)
         {
 
-            $errorFormHandler = '{ "type":"danger" , ' +
-                '"header":"Добавить приход"  , ' +
-                '"message" : "' + $preModification.options[0].textContent + '" }';
+            $errorFormHandler = "{ \"type\":\"danger\" , " +
+                "\"header\":\"Добавить приход\"  , " +
+                "\"message\" : \"" + $preModification.options[0].textContent + "\" }";
         }
     }
 
@@ -323,29 +323,29 @@ function addMaterialIncoming()
 
 
     /* Вставляем новую коллекцию */
-    let stockDiv = document.createElement('div');
+    let stockDiv = document.createElement("div");
 
-    stockDiv.classList.add('item-collection-material');
-    stockDiv.classList.add('w-100');
+    stockDiv.classList.add("item-collection-material");
+    stockDiv.classList.add("w-100");
     stockDiv.innerHTML = newForm;
     $blockCollectionStock.append(stockDiv);
 
-    let $warehouse = stockDiv.querySelector('#incoming_material_stock_form_material_' + index + '_warehouse');
+    let $warehouse = stockDiv.querySelector("#incoming_material_stock_form_material_" + index + "_warehouse");
     $warehouse.value = $preWarehouse.value;
 
-    let $material = stockDiv.querySelector('#incoming_material_stock_form_material_' + index + '_material');
+    let $material = stockDiv.querySelector("#incoming_material_stock_form_material_" + index + "_material");
     $material.value = $preMaterial.value;
 
-    let $offer = stockDiv.querySelector('#incoming_material_stock_form_material_' + index + '_offer');
+    let $offer = stockDiv.querySelector("#incoming_material_stock_form_material_" + index + "_offer");
     $offer.value = $preOffer.value;
 
-    let $variation = stockDiv.querySelector('#incoming_material_stock_form_material_' + index + '_variation');
+    let $variation = stockDiv.querySelector("#incoming_material_stock_form_material_" + index + "_variation");
     $variation.value = $preVariation.value;
 
-    let $modification = stockDiv.querySelector('#incoming_material_stock_form_material_' + index + '_modification');
+    let $modification = stockDiv.querySelector("#incoming_material_stock_form_material_" + index + "_modification");
     $modification.value = $preModification.value;
 
-    let $total = stockDiv.querySelector('#incoming_material_stock_form_material_' + index + '_total')
+    let $total = stockDiv.querySelector("#incoming_material_stock_form_material_" + index + "_total");
     $total.value = $preTotal.value;
 
 
@@ -353,25 +353,25 @@ function addMaterialIncoming()
     let $materialName = $preMaterial.options[materialIndex].textContent;
 
     let offerIndex = $preOffer.selectedIndex;
-    let $offerName = $preOffer.tagName === 'SELECT' ? document.querySelector('label[for="' + $preOffer.id + '"]').textContent + ' ' + $preOffer.options[offerIndex].textContent : '';
+    let $offerName = $preOffer.tagName === "SELECT" ? document.querySelector("label[for=\"" + $preOffer.id + "\"]").textContent + " " + $preOffer.options[offerIndex].textContent : "";
 
     let variationIndex = $preVariation.selectedIndex;
-    let $variationName = $preVariation.tagName === 'SELECT' ? document.querySelector('label[for="' + $preVariation.id + '"]').textContent + ' ' + $preVariation.options[variationIndex].textContent : '';
+    let $variationName = $preVariation.tagName === "SELECT" ? document.querySelector("label[for=\"" + $preVariation.id + "\"]").textContent + " " + $preVariation.options[variationIndex].textContent : "";
 
     let modificationIndex = $preModification.selectedIndex;
-    let $modificationName = $preModification.tagName === 'SELECT' ? document.querySelector('label[for="' + $preModification.id + '"]').textContent + ' ' + $preModification.options[modificationIndex].textContent : '';
+    let $modificationName = $preModification.tagName === "SELECT" ? document.querySelector("label[for=\"" + $preModification.id + "\"]").textContent + " " + $preModification.options[modificationIndex].textContent : "";
 
 
-    let $materialTextBlock = stockDiv.querySelector('#material-text-' + index);
-    $materialTextBlock.innerHTML = $materialName + ' ' + $offerName + ' ' + $variationName + ' ' + $modificationName + '&nbsp; : &nbsp;' + $total.value + ' шт.';
+    let $materialTextBlock = stockDiv.querySelector("#material-text-" + index);
+    $materialTextBlock.innerHTML = $materialName + " " + $offerName + " " + $variationName + " " + $modificationName + "&nbsp; : &nbsp;" + $total.value + " шт.";
 
     $preTotal.value = null;
 
 
     /* Удаляем при клике колекцию СЕКЦИЙ */
-    stockDiv.querySelector('.del-item-material').addEventListener('click', function()
+    stockDiv.querySelector(".del-item-material").addEventListener("click", function()
     {
-        this.closest('.item-collection-material').remove();
+        this.closest(".item-collection-material").remove();
         index = $addButtonStock.dataset.index * 1;
         $addButtonStock.dataset.index = (index - 1).toString();
     });

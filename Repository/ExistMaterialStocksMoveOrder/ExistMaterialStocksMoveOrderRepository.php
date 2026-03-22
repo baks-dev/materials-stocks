@@ -54,7 +54,7 @@ final readonly class ExistMaterialStocksMoveOrderRepository implements ExistMate
                 'move',
                 MaterialStockEvent::class,
                 'event',
-                'event.id = move.event AND event.status != :incoming '
+                'event.id = move.event AND event.status != :incoming ',
             )
             ->setParameter('incoming', MaterialStockStatusIncoming::class, MaterialStockStatus::TYPE);
 
@@ -62,7 +62,7 @@ final readonly class ExistMaterialStocksMoveOrderRepository implements ExistMate
             'event',
             MaterialStock::class,
             'stock',
-            'stock.event = event.id'
+            'stock.event = event.id',
         );
 
         return $dbal->fetchExist();

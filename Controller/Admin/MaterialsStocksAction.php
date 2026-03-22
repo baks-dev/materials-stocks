@@ -46,7 +46,7 @@ final class MaterialsStocksAction extends AbstractController
     ): Response
     {
         return $this->render([
-            'actions' => $materialsStocksAction->main($MaterialStock)->findAll()
+            'actions' => $materialsStocksAction->main($MaterialStock)->findAll(),
         ]);
     }
 }

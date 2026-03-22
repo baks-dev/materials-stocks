@@ -70,21 +70,21 @@ final class MaterialStockPickupFilterForm extends AbstractType
 
                 $this->request->getSession()->set(MaterialStockPickupFilterDTO::date, $data->getDate());
                 $this->request->getSession()->set(MaterialStockPickupFilterDTO::delivery, $data->getDelivery());
-            }
+            },
         );
 
 
         $builder->add(
             'back',
             SubmitType::class,
-            ['label' => 'Back', 'label_html' => true, 'attr' => ['class' => 'btn-light']]
+            ['label' => 'Back', 'label_html' => true, 'attr' => ['class' => 'btn-light']],
         );
 
 
         $builder->add(
             'next',
             SubmitType::class,
-            ['label' => 'next', 'label_html' => true, 'attr' => ['class' => 'btn-light']]
+            ['label' => 'next', 'label_html' => true, 'attr' => ['class' => 'btn-light']],
         );
     }
 
@@ -94,7 +94,7 @@ final class MaterialStockPickupFilterForm extends AbstractType
             [
                 'data_class' => MaterialStockPickupFilterDTO::class,
                 'method' => 'POST',
-            ]
+            ],
         );
     }
 }

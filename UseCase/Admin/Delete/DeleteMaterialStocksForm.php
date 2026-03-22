@@ -32,7 +32,7 @@ final class DeleteMaterialStocksForm extends AbstractType
         $builder->add(
             'delete_material_stock',
             SubmitType::class,
-            ['label' => 'Delete', 'label_html' => true, 'attr' => ['class' => 'btn-danger']]
+            ['label' => 'Delete', 'label_html' => true, 'attr' => ['class' => 'btn-danger']],
         );
     }
 
@@ -44,7 +44,7 @@ final class DeleteMaterialStocksForm extends AbstractType
                 'data_class' => DeleteMaterialStocksDTO::class,
                 'method' => 'POST',
                 'attr' => ['class' => 'w-100'],
-            ]
+            ],
         );
     }
 

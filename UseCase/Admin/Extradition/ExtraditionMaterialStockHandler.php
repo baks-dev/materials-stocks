@@ -53,7 +53,7 @@ final class ExtraditionMaterialStockHandler extends AbstractHandler
         /* Отправляем сообщение в шину */
         $this->messageDispatch->dispatch(
             message: new MaterialStockMessage($this->main->getId(), $this->main->getEvent(), $command->getEvent()),
-            transport: 'materials-stocks'
+            transport: 'materials-stocks',
         );
 
         return $this->main;

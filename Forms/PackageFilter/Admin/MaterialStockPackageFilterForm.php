@@ -68,21 +68,21 @@ final class MaterialStockPackageFilterForm extends AbstractType
 
                 $this->request->getSession()->set(MaterialStockPackageFilterDTO::date, $data->getDate());
                 $this->request->getSession()->set(MaterialStockPackageFilterDTO::delivery, $data->getDelivery());
-            }
+            },
         );
 
 
         $builder->add(
             'back',
             SubmitType::class,
-            ['label' => 'Back', 'label_html' => true, 'attr' => ['class' => 'btn-light']]
+            ['label' => 'Back', 'label_html' => true, 'attr' => ['class' => 'btn-light']],
         );
 
 
         $builder->add(
             'next',
             SubmitType::class,
-            ['label' => 'next', 'label_html' => true, 'attr' => ['class' => 'btn-light']]
+            ['label' => 'next', 'label_html' => true, 'attr' => ['class' => 'btn-light']],
         );
     }
 
@@ -92,7 +92,7 @@ final class MaterialStockPackageFilterForm extends AbstractType
             [
                 'data_class' => MaterialStockPackageFilterDTO::class,
                 'method' => 'POST',
-            ]
+            ],
         );
     }
 }

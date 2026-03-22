@@ -80,7 +80,7 @@ final class SelectionController extends AbstractController
                 'query' => $query,
                 //'search' => $searchForm->createView(),
                 //'filter' => $filterForm->createView(),
-            ], file: 'content.html.twig'
+            ], file: 'content.html.twig',
         );
     }
 }

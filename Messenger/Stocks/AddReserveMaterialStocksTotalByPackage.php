@@ -86,7 +86,7 @@ final readonly class AddReserveMaterialStocksTotalByPackage
             ->deduplication([
                 (string) $message->getId(),
                 MaterialStockStatusPackage::STATUS,
-                md5(self::class)
+                md5(self::class),
             ]);
 
         if($Deduplicator->isExecuted())
@@ -102,7 +102,7 @@ final readonly class AddReserveMaterialStocksTotalByPackage
         {
             $this->logger->info(
                 'Добавляем резерв сырья на складе при создании заявки на упаковку',
-                ['total' => $material->getTotal()]
+                ['total' => $material->getTotal()],
             );
 
 
@@ -116,12 +116,12 @@ final readonly class AddReserveMaterialStocksTotalByPackage
                     $material->getMaterial(),
                     $material->getOffer(),
                     $material->getVariation(),
-                    $material->getModification()
+                    $material->getModification(),
                 );
 
                 $this->messageDispatch->dispatch(
                     $AddMaterialStocksReserve,
-                    transport: 'materials-stocks'
+                    transport: 'materials-stocks',
                 );
 
                 if($i === $material->getTotal())

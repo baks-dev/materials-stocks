@@ -166,7 +166,7 @@ final class MaterialModificationChoiceWarehouseRepository implements MaterialMod
             'stock',
             MaterialModification::class,
             'modification',
-            'modification.const = stock.modification AND modification.variation = variation.id'
+            'modification.const = stock.modification AND modification.variation = variation.id',
         );
 
 
@@ -176,14 +176,14 @@ final class MaterialModificationChoiceWarehouseRepository implements MaterialMod
             'modification',
             CategoryMaterialModification::class,
             'category_modification',
-            'category_modification.id = modification.category_modification'
+            'category_modification.id = modification.category_modification',
         );
 
         $dbal->leftJoin(
             'category_modification',
             CategoryMaterialModificationTrans::class,
             'category_modification_trans',
-            'category_modification_trans.modification = category_modification.id AND category_modification_trans.local = :local'
+            'category_modification_trans.modification = category_modification.id AND category_modification_trans.local = :local',
         );
 
 

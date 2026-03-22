@@ -42,36 +42,6 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
 {
     public function __construct(private readonly ORMQueryBuilder $ORMQueryBuilder) {}
 
-
-    private function builder()
-    {
-        $orm = $this->ORMQueryBuilder->createQueryBuilder(self::class);
-
-        $orm
-            ->from(MaterialStock::class, 'stock')
-            ->where('stock.id = :id');
-
-        $orm
-            ->join(
-                MaterialStockEvent::class,
-                'event',
-                'WITH',
-                'event.id = stock.event AND event.status = :status'
-            );
-
-        $orm
-            ->select('material')
-            ->leftJoin(
-                MaterialStockMaterial::class,
-                'material',
-                'WITH',
-                'material.event = event.id'
-            );
-
-        return $orm;
-    }
-
-
     /**
      * Метод возвращает всю сырьё заявке с определенным статусом
      */
@@ -86,7 +56,7 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
         $orm->setParameter(
             key: 'id',
             value: $id,
-            type: MaterialStockUid::TYPE
+            type: MaterialStockUid::TYPE,
         );
 
         $orm->setParameter(
@@ -98,6 +68,33 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
         return $orm->getResult();
     }
 
+    private function builder()
+    {
+        $orm = $this->ORMQueryBuilder->createQueryBuilder(self::class);
+
+        $orm
+            ->from(MaterialStock::class, 'stock')
+            ->where('stock.id = :id');
+
+        $orm
+            ->join(
+                MaterialStockEvent::class,
+                'event',
+                'WITH',
+                'event.id = stock.event AND event.status = :status',
+            );
+
+        $orm
+            ->select('material')
+            ->leftJoin(
+                MaterialStockMaterial::class,
+                'material',
+                'WITH',
+                'material.event = event.id',
+            );
+
+        return $orm;
+    }
 
     /** Метод возвращает всю сырьё в приходном ордере */
     public function getMaterialsIncomingStocks(MaterialStockUid $id): ?array
@@ -108,13 +105,13 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
         $orm->setParameter(
             key: 'id',
             value: $id,
-            type: MaterialStockUid::TYPE
+            type: MaterialStockUid::TYPE,
         );
 
         $orm->setParameter(
             key: 'status',
             value: new MaterialStockStatus(MaterialStockStatusIncoming::class),
-            type: MaterialStockStatus::TYPE
+            type: MaterialStockStatus::TYPE,
         );
 
         return $orm->getResult();
@@ -131,13 +128,13 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
         $orm->setParameter(
             key: 'id',
             value: $id,
-            type: MaterialStockUid::TYPE
+            type: MaterialStockUid::TYPE,
         );
 
         $orm->setParameter(
             key: 'status',
             value: new MaterialStockStatus(MaterialStockStatusPackage::class),
-            type: MaterialStockStatus::TYPE
+            type: MaterialStockStatus::TYPE,
         );
 
         return $orm->getResult();
@@ -153,13 +150,13 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
         $orm->setParameter(
             key: 'id',
             value: $id,
-            type: MaterialStockUid::TYPE
+            type: MaterialStockUid::TYPE,
         );
 
         $orm->setParameter(
             key: 'status',
             value: new MaterialStockStatus(MaterialStockStatusMoving::class),
-            type: MaterialStockStatus::TYPE
+            type: MaterialStockStatus::TYPE,
         );
 
         return $orm->getResult();
@@ -176,13 +173,13 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
         $orm->setParameter(
             key: 'id',
             value: $id,
-            type: MaterialStockUid::TYPE
+            type: MaterialStockUid::TYPE,
         );
 
         $orm->setParameter(
             key: 'status',
             value: new MaterialStockStatus(MaterialStockStatusWarehouse::class),
-            type: MaterialStockStatus::TYPE
+            type: MaterialStockStatus::TYPE,
         );
 
         return $orm->getResult();
@@ -199,13 +196,13 @@ final class MaterialStocksByIdRepository implements MaterialStocksByIdInterface
         $orm->setParameter(
             key: 'id',
             value: $id,
-            type: MaterialStockUid::TYPE
+            type: MaterialStockUid::TYPE,
         );
 
         $orm->setParameter(
             key: 'status',
             value: new MaterialStockStatus(MaterialStockStatusCancel::class),
-            type: MaterialStockStatus::TYPE
+            type: MaterialStockStatus::TYPE,
         );
 
         return $orm->getResult();

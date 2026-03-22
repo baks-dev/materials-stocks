@@ -61,14 +61,14 @@ final class MaterialStocksNewByOrderRepository implements MaterialStocksNewByOrd
             MaterialStock::class,
             'stock',
             'WITH',
-            'stock.event = orders.event'
+            'stock.event = orders.event',
         );
 
         $qb->join(
             MaterialStockEvent::class,
             'event',
             'WITH',
-            'event.id = stock.event AND event.profile = :profile AND event.status = :status '
+            'event.id = stock.event AND event.profile = :profile AND event.status = :status ',
         );
 
         $qb->where('orders.ord = :ord');
