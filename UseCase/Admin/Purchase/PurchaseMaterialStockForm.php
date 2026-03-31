@@ -1,17 +1,17 @@
 <?php
 /*
- *  Copyright 2025.  Baks.dev <admin@baks.dev>
- *  
+ *  Copyright 2026.  Baks.dev <admin@baks.dev>
+ *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
  *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *  copies of the Software, and to permit persons to whom the Software is furnished
  *  to do so, subject to the following conditions:
- *  
+ *
  *  The above copyright notice and this permission notice shall be included in all
  *  copies or substantial portions of the Software.
- *  
+ *
  *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  *  FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,6 +19,7 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
+ *
  */
 
 namespace BaksDev\Materials\Stocks\UseCase\Admin\Purchase;
@@ -33,6 +34,9 @@ use BaksDev\Materials\Catalog\Type\Offers\Variation\Modification\ConstId\Materia
 use BaksDev\Materials\Category\Repository\CategoryChoice\CategoryMaterialChoiceInterface;
 use BaksDev\Materials\Category\Type\Id\CategoryMaterialUid;
 use BaksDev\Products\Product\Type\Material\MaterialUid;
+use BaksDev\Users\Profile\UserProfile\Entity\UserProfile;
+use BaksDev\Users\Profile\UserProfile\Repository\UserProfileChoice\UserProfileChoiceInterface;
+use BaksDev\Users\Profile\UserProfile\Repository\UserProfileTokenStorage\UserProfileTokenStorageInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -47,6 +51,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class PurchaseMaterialStockForm extends AbstractType
 {
@@ -57,10 +62,32 @@ final class PurchaseMaterialStockForm extends AbstractType
         private readonly MaterialOfferChoiceInterface $materialOfferChoice,
         private readonly MaterialVariationChoiceInterface $materialVariationChoice,
         private readonly MaterialModificationChoiceInterface $modificationChoice,
+
+        private readonly UserProfileTokenStorageInterface $userProfileTokenStorage,
     ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** Профили */
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function(FormEvent $event): void {
+
+                /** @var $PurchaseMaterialStockDTO PurchaseMaterialStockDTO */
+                $PurchaseMaterialStockDTO = $event->getData();
+
+                if(true === ($PurchaseMaterialStockDTO instanceof PurchaseMaterialStockDTO))
+                {
+                    $UserUid = $this->userProfileTokenStorage->getUser() ?: null;
+                    $UserProfileUid = $this->userProfileTokenStorage->getProfile() ?: null;
+
+                    $PurchaseMaterialStockDTO->getInvariable()->setUsr($UserUid);
+                    $PurchaseMaterialStockDTO->getInvariable()->setProfile($UserProfileUid);
+                }
+
+            }
+        );
+
 
         $builder->add('invariable', Invariable\PurchaseMaterialInvariableForm::class, ['label' => false]);
 
