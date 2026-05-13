@@ -86,7 +86,7 @@ final class IndexController extends AbstractController
             ->search($search)
             ->filter($filter)
             ->findPaginator(
-                $this->getUsr()?->getId(),
+                $this->getUsr()->getId(),
                 $this->getProfileUid(),
             );
 

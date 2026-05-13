@@ -68,7 +68,7 @@ final class CsvController extends AbstractController
             ->filter($filter)
             ->setLimit(100000)
             ->findPaginator(
-                $this->getUsr()?->getId(),
+                $this->getUsr()->getId(),
                 $this->getProfileUid(),
             );
 
